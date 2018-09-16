@@ -30,6 +30,7 @@ class CubeShift:
 
     def _shift_top(self):
         """Shift the top layer clockwise by 90 degrees."""
+        # back -> right -> front -> left -> back
         temp_row = self.left_face.get_top_row()
         self.left_face.fill_top_row(self.front_face.get_top_row())
         self.front_face.fill_top_row(self.right_face.get_top_row())
@@ -37,6 +38,7 @@ class CubeShift:
         self.back_face.fill_top_row(temp_row)
 
     def _shift_bottom(self):
+        # front -> right -> back -> left -> front
         """Shift the bottom layer clockwise by 90 degrees."""
         temp_row = self.left_face.get_bottom_row()
         self.left_face.fill_bottom_row(self.back_face.get_bottom_row())
@@ -55,6 +57,7 @@ class CubeShift:
 
     def _shift_right(self):
         """Shift the right layer clockwise by 90 degrees."""
+        # top -> back -> bottom -> front -> top
         temp_col = self.front_face.get_right_col()
         self.front_face.fill_right_col(self.bottom_face.get_right_col())
         self.bottom_face.fill_right_col(self.back_face.get_right_col())
@@ -63,6 +66,7 @@ class CubeShift:
 
     def _shift_left(self):
         """Shift the left layer clockwise by 90 degrees."""
+        # bottom -> back -> top -> front -> bottom
         temp_col = self.front_face.get_left_col()
         self.front_face.fill_left_col(self.top_face.get_left_col())
         self.top_face.fill_left_col(self.back_face.get_left_col())
@@ -77,4 +81,3 @@ class CubeShift:
         self.bottom_face.fill_central_col(self.back_face.get_central_col())
         self.back_face.fill_central_col(self.top_face.get_central_col())
         self.top_face.fill_central_col(temp_col)
-
