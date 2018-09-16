@@ -6,9 +6,10 @@ SIDE_LENGTH = 3
 
 class CubeFace:
     def __init__(self, face_input: str):
+        face_input_list = list(face_input)
         self.face_matrix = np.array(
-            [face_input[index: index + SIDE_LENGTH]
-             for index in range(0, len(face_input), SIDE_LENGTH)]
+            [face_input_list[index: index + SIDE_LENGTH]
+             for index in range(0, len(face_input_list), SIDE_LENGTH)]
         )
 
     def get_face(self) -> np.ndarray:
