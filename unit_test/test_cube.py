@@ -1,5 +1,6 @@
 import numpy as np
 from cube_encryption.cube import Cube
+from cube_encryption.constants import WRONG_CUBE_MOVE, WRONG_LENGTH
 
 
 class TestCubeShift:
@@ -53,3 +54,18 @@ class TestCubeShift:
             cube.top_face.get_top_row(),
             ["5", "5", "5"]
         )
+
+    def test_invalid_length(self):
+        try:
+            Cube(cube_input="magic")
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == WRONG_LENGTH
+
+    def test_invalid_move(self):
+        try:
+            cube = Cube(cube_input=self.CUBE_INPUT)
+            cube.shift(move="magic", angle=90)
+            raise AssertionError("Error message did not raise.")
+        except ValueError as error:
+            assert str(error) == WRONG_CUBE_MOVE

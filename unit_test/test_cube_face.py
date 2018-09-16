@@ -58,7 +58,7 @@ class TestCubeFace:
 
         try:
             test_cube_face.fill_top_row([1])
-            raise AssertionError("Wrong length error did not raise.")
+            raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_LENGTH
 
@@ -72,7 +72,7 @@ class TestCubeFace:
 
         try:
             test_cube_face.fill_bottom_row([1])
-            raise AssertionError("Wrong length error did not raise.")
+            raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_LENGTH
 
@@ -86,7 +86,7 @@ class TestCubeFace:
 
         try:
             test_cube_face.fill_central_row([1])
-            raise AssertionError("Wrong length error did not raise.")
+            raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_LENGTH
 
@@ -100,7 +100,7 @@ class TestCubeFace:
 
         try:
             test_cube_face.fill_right_col([1])
-            raise AssertionError("Wrong length error did not raise.")
+            raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_LENGTH
 
@@ -114,7 +114,7 @@ class TestCubeFace:
 
         try:
             test_cube_face.fill_left_col([1])
-            raise AssertionError("Wrong length error did not raise.")
+            raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_LENGTH
 
@@ -128,14 +128,15 @@ class TestCubeFace:
 
         try:
             test_cube_face.fill_central_col([1])
-            raise AssertionError("Wrong length error did not raise.")
+            raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_LENGTH
 
 
 class TestCubeFaceClassError:
-    try:
-        _ = CubeFace(face_input="123")
-        raise AssertionError("Wrong length error did not raise.")
-    except AssertionError as error:
-        assert str(error) == WRONG_LENGTH
+    def test_special_case(self):
+        try:
+            _ = CubeFace(face_input="123")
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == WRONG_LENGTH
