@@ -97,3 +97,27 @@ class CubeFace:
         """Fill central col with a input list."""
         assert len(input_list) == SIDE_LENGTH, WRONG_LENGTH
         self._face_matrix[..., 1] = input_list
+
+    def get_top_row_str(self) -> str:
+        """Get the top row as a formatted string."""
+        return "".join(["|", "|".join(self.get_top_row()), "|"])
+
+    def get_bottom_row_str(self) -> str:
+        """Get the top row as a formatted string."""
+        return "".join(["|", "|".join(self.get_bottom_row()), "|"])
+
+    def get_central_row_str(self) -> str:
+        """Get the top row as a formatted string."""
+        return "".join(["|", "|".join(self.get_central_row()), "|"])
+
+    def get_right_col_str(self) -> str:
+        """Get the top row as a formatted string."""
+        return "".join(["|", "|".join(self.get_right_col()), "|"])
+
+    def get_left_col_str(self) -> str:
+        """Get the top row as a formatted string."""
+        return "".join(["|", "|".join(self.get_left_col()), "|"])
+
+    def get_central_col_str(self) -> str:
+        """Get the top row as a formatted string."""
+        return "".join(["|", "|".join(self.get_central_col()), "|"])
