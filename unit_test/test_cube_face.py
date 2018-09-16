@@ -1,4 +1,6 @@
 import numpy as np
+
+from constants import WRONG_LENGTH
 from cube_shift import CubeFace
 
 
@@ -46,3 +48,12 @@ class TestCubeFace:
             self.cube_face.get_central_col(),
             ["2", "5", "8"]
         )
+
+
+class TestCubeFaceClassError:
+    try:
+        _ = CubeFace("123")
+        raise AssertionError("Wrong length error did not raise.")
+    except AssertionError as error:
+        assert str(error) == WRONG_LENGTH
+
