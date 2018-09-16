@@ -1,0 +1,13 @@
+# Set the language to be python.
+language: python
+
+# Set the version of python to be the latest version.
+python:
+  - "3.7"
+
+# Installations.
+install:
+  # Upgrade pip to the latest version.
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+
