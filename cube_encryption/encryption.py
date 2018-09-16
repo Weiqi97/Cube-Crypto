@@ -40,3 +40,13 @@ class Encryption:
                 angle=(360 - key.angle)
             )
 
+
+protocol = Encryption(
+    message="111111111222222222333333333444444444555555555666666666"
+)
+protocol.cube.print_cube()
+key = protocol.generate_random_key(length=25)
+protocol.encrypt(key=key)
+protocol.cube.print_cube()
+protocol.decrypt()
+protocol.cube.print_cube()
