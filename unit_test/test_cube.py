@@ -1,4 +1,5 @@
 import numpy as np
+from unittest.mock import patch, call
 from cube_encryption.cube import Cube
 from cube_encryption.constants import WRONG_CUBE_MOVE, WRONG_LENGTH
 
@@ -93,3 +94,17 @@ class TestCubeShift:
             raise AssertionError("Error message did not raise.")
         except ValueError as error:
             assert str(error) == WRONG_CUBE_MOVE
+
+    @patch("builtins.print")
+    def test_print_cube(self, print_output):
+        cube = Cube(cube_input=self.CUBE_INPUT)
+        cube.print_cube()
+        assert print_output.mock_calls == [
+            call("       |1|1|1|\n       |1|1|1|\n       |1|1|1|\n "
+                 "- - - - - - - - - - - - - - \n"
+                 "|5|5|5||2|2|2||3|3|3||4|4|4|\n"
+                 "|5|5|5||2|2|2||3|3|3||4|4|4|\n"
+                 "|5|5|5||2|2|2||3|3|3||4|4|4|\n "
+                 "- - - - - - - - - - - - - - \n       "
+                 "|6|6|6|\n       |6|6|6|\n       |6|6|6|\n")
+        ]
