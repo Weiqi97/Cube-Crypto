@@ -12,8 +12,8 @@ environment:
 install:
   # Upgrade pip to the latest version.
   - python -m pip install --upgrade pip
-  - pip install -r requirements.txt
-  - pip install -r dev_requirements.txt
+  - pip install -r -U requirements.txt
+  - pip install -r -U dev_requirements.txt
 
 # Testing script.
 test_script:
