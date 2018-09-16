@@ -5,19 +5,23 @@ from enum import Enum
 # Set side length of the cube.
 SIDE_LENGTH = 3
 MOVE_ANGLE = [90, 180, 270]
-CUBE_MOVE = ["right", "left", "top", "bottom", "front", "back"]
+CUBE_MOVE = ["right", "left", "top", "bottom", "front", "back",
+             "front_center_row", "top_center_row", "top_center_col"]
 
 
 # Set enum object for moves.
 class CubeMove(Enum):
     """Define the legal moves for a cube."""
 
-    right = "right"
     left = "left"
+    right = "right"
     top = "top"
     bottom = "bottom"
     front = "front"
     back = "back"
+    top_center_row = "top_center_row"
+    top_center_col = "top_center_col"
+    front_center_row = "front_center_row"
 
 
 # ---------------------------- Error Messages --------------------------------

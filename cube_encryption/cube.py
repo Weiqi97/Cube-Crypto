@@ -144,6 +144,18 @@ class Cube:
             for __ in range(movements):
                 self._shift_back()
 
+        elif move == CubeMove.front_center_row.value:
+            for __ in range(movements):
+                self._shift_front_center_row()
+
+        elif move == CubeMove.top_center_row.value:
+            for __ in range(movements):
+                self._shift_top_center_row()
+
+        elif move == CubeMove.top_center_col.value:
+            for __ in range(movements):
+                self._shift_top_center_col()
+
         # If the input movement was not defined.
         else:
             raise ValueError(WRONG_CUBE_MOVE)
