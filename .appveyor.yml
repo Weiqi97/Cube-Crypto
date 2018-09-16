@@ -1,0 +1,30 @@
+# Set up environment.
+environment:
+  # Run for both architecture for python 3.7.
+  matrix:
+    - PYTHON: "C:\Python37"
+      PYTHON_VERSION: "3.7.0"
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\Python37-x64"
+      PYTHON_VERSION: "3.7.0"
+      PYTHON_ARCH: "64"
+
+# Installations.
+install:
+  # Upgrade pip to the latest version.
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - pip install -r dev_requirements.txt
+
+# Testing script.
+test_script:
+  # Test for python styles.
+  - pep8
+  - flake8
+  - pydocstyle
+
+  # Test for unit test.
+  - pytest
+
+build: off
