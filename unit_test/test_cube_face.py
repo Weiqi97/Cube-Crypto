@@ -9,7 +9,7 @@ class TestCubeFace:
 
     def test_cube_face(self):
         np.testing.assert_array_equal(
-            self.cube_face.get_face(),
+            self.cube_face.get_face,
             [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]]
         )
 
