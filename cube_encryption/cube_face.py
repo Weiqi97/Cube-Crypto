@@ -26,6 +26,16 @@ class CubeFace:
         """
         return self._face_matrix
 
+    @property
+    def get_face_str(self) -> str:
+        """Get the entire cube face as one string.
+
+        :return: String contains all cubies.
+        """
+        return f"{''.join(self.get_top_row())}" \
+               f"{''.join(self.get_central_row())}" \
+               f"{''.join(self.get_bottom_row())}"
+
     def get_top_row(self) -> list:
         """Get top row of the cube face.
 

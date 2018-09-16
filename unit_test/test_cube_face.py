@@ -12,6 +12,9 @@ class TestCubeFace:
             [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]]
         )
 
+    def test_cube_face_string(self):
+        assert self.cube_face.get_face_str == "123456789"
+
     def test_cube_top_row(self):
         np.testing.assert_array_equal(
             self.cube_face.get_top_row(),
