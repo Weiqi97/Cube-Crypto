@@ -55,6 +55,30 @@ class TestCubeShift:
             ["5", "5", "5"]
         )
 
+    def test_top_center_row_shift(self):
+        cube = Cube(cube_input=self.CUBE_INPUT)
+        cube.shift(move="top_center_row", angle=90)
+        np.testing.assert_array_equal(
+            cube.left_face.get_top_row(),
+            ["5", "6", "5"]
+        )
+
+    def test_top_center_col_shift(self):
+        cube = Cube(cube_input=self.CUBE_INPUT)
+        cube.shift(move="top_center_col", angle=90)
+        np.testing.assert_array_equal(
+            cube.front_face.get_top_row(),
+            ["2", "6", "2"]
+        )
+
+    def test_front_center_row_shift(self):
+        cube = Cube(cube_input=self.CUBE_INPUT)
+        cube.shift(move="front_center_row", angle=90)
+        np.testing.assert_array_equal(
+            cube.front_face.get_central_row(),
+            ["3", "3", "3"]
+        )
+
     def test_invalid_length(self):
         try:
             Cube(cube_input="magic")

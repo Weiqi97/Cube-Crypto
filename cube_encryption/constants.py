@@ -6,7 +6,7 @@ from enum import Enum
 SIDE_LENGTH = 3
 MOVE_ANGLE = [90, 180, 270]
 CUBE_MOVE = ["right", "left", "top", "bottom", "front", "back",
-             "front_center_row", "top_center_row", "top_center_col"]
+             "top_center_row", "top_center_col", "front_center_row"]
 
 
 # Set enum object for moves.
