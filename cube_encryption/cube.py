@@ -1,5 +1,6 @@
 """This file defines shifts of a cube."""
-from cube_encryption.constants import SIDE_LENGTH, WRONG_LENGTH, CubeMove
+from cube_encryption.constants import CubeMove, SIDE_LENGTH, WRONG_LENGTH, \
+    WRONG_CUBE_MOVE
 from cube_encryption.cube_face import CubeFace
 
 
@@ -141,5 +142,6 @@ class Cube:
             for _ in range(movements):
                 self._shift_back()
 
+        # If the input movement was not defined.
         else:
-            raise ValueError("The input move name is not supported.")
+            raise ValueError(WRONG_CUBE_MOVE)
