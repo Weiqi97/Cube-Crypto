@@ -11,3 +11,12 @@ install:
   - pip install --upgrade pip
   - pip install -r requirements.txt
 
+# Testing script.
+script:
+  # Test for python styles.
+  - pep8
+  - flake8
+  - pydocstyle
+
+  # Test for unit test.
+  - pytest
