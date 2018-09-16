@@ -9,7 +9,7 @@ class CubeFace:
     def __init__(self, face_input: str):
         """Initialize with a string of desired length."""
         # Check length of the input.
-        assert len(face_input) == SIDE_LENGTH ^ 2, WRONG_LENGTH
+        assert len(face_input) == SIDE_LENGTH ** 2, WRONG_LENGTH
 
         # Fill the cubies on a cube face.
         face_input_list = list(face_input)
