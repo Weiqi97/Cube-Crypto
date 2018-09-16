@@ -83,6 +83,14 @@ class TestCubeShift:
     @patch("builtins.print")
     def test_print_cube(self, print_output):
         cube = Cube(cube_input=self.CUBE_INPUT)
+        cube.get_cube_string()
+        assert print_output.mock_calls == [
+            call(self.CUBE_INPUT)
+        ]
+
+    @patch("builtins.print")
+    def test_cube_string(self, print_output):
+        cube = Cube(cube_input=self.CUBE_INPUT)
         cube.print_cube()
         assert print_output.mock_calls == [
             call("       |1|1|1|\n       |1|1|1|\n       |1|1|1|\n "
