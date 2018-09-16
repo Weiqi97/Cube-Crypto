@@ -48,6 +48,24 @@ class TestCubeFace:
             ["2", "5", "8"]
         )
 
+    def test_cube_top_row_str(self):
+        assert self.cube_face.get_top_row_str() == "|1|2|3|"
+
+    def test_cube_bottom_row_str(self):
+        assert self.cube_face.get_bottom_row_str() == "|7|8|9|"
+
+    def test_cube_central_row_str(self):
+        assert self.cube_face.get_central_row_str() == "|4|5|6|"
+
+    def test_cube_right_col_str(self):
+        assert self.cube_face.get_right_col_str() == "|3|6|9|"
+
+    def test_cube_left_col_str(self):
+        assert self.cube_face.get_left_col_str() == "|1|4|7|"
+
+    def test_cube_central_col_str(self):
+        assert self.cube_face.get_central_col_str() == "|2|5|8|"
+
     def test_fill_cube_top_row(self):
         test_cube_face = CubeFace("123456789")
         test_cube_face.fill_top_row(["1", "1", "1"])
