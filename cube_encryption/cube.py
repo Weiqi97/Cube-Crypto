@@ -159,3 +159,33 @@ class Cube:
         # If the input movement was not defined.
         else:
             raise ValueError(WRONG_CUBE_MOVE)
+
+    def print_cube(self):
+        cube_string = f"       {self.top_face.get_top_row_str()}\n" \
+                      f"       {self.top_face.get_central_row_str()}\n" \
+                      f"       {self.top_face.get_bottom_row_str()}\n" \
+                      f" - - - - - - - - - - - - - - \n" \
+                      f"{self.left_face.get_top_row_str()}" \
+                      f"{self.front_face.get_top_row_str()}" \
+                      f"{self.right_face.get_top_row_str()}" \
+                      f"{self.back_face.get_top_row_str()}\n" \
+                      f"{self.left_face.get_central_row_str()}" \
+                      f"{self.front_face.get_central_row_str()}" \
+                      f"{self.right_face.get_central_row_str()}" \
+                      f"{self.back_face.get_central_row_str()}\n" \
+                      f"{self.left_face.get_bottom_row_str()}" \
+                      f"{self.front_face.get_bottom_row_str()}" \
+                      f"{self.right_face.get_bottom_row_str()}" \
+                      f"{self.back_face.get_bottom_row_str()}\n" \
+                      f" - - - - - - - - - - - - - - \n" \
+                      f"       {self.bottom_face.get_top_row_str()}\n" \
+                      f"       {self.bottom_face.get_central_row_str()}\n" \
+                      f"       {self.bottom_face.get_bottom_row_str()}\n"
+
+        print(cube_string)
+
+
+cube = Cube(cube_input="111111111222222222333333333444444444555555555666666666")
+cube.print_cube()
+cube.shift("right", 180)
+cube.print_cube()
