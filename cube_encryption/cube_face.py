@@ -7,7 +7,7 @@ class CubeFace:
     """Class contains method to get and fill row/col in a cube face."""
 
     def __init__(self, face_input: str):
-        """Initialize with a string of desired length."""
+        """Initialize one cube face with a string of desired length."""
         # Check length of the input.
         assert len(face_input) == SIDE_LENGTH ** 2, WRONG_LENGTH
 
