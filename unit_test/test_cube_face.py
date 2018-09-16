@@ -1,7 +1,7 @@
 import numpy as np
 
-from constants import WRONG_LENGTH
-from cube_shift import CubeFace
+from cube_encryption.constants import WRONG_LENGTH
+from cube_encryption.cube_face import CubeFace
 
 
 class TestCubeFace:

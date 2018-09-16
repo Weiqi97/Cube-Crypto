@@ -27,6 +27,6 @@ test_script:
   - pydocstyle
 
   # Test for unit test.
-  - python3 -m pytest unit_test/
+  - python -m pytest unit_test/
 
 build: off
