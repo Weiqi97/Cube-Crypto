@@ -1,5 +1,5 @@
 """This file defines shifts of a cube."""
-from cube_encryption.constants import SIDE_LENGTH, WRONG_LENGTH
+from cube_encryption.constants import SIDE_LENGTH, WRONG_LENGTH, CubeMove
 from cube_encryption.cube_face import CubeFace
 
 
@@ -46,7 +46,7 @@ class CubeShift:
         self.right_face.fill_bottom_row(self.front_face.get_bottom_row())
         self.front_face.fill_bottom_row(temp_row)
 
-    def _shift_central_row(self):
+    def _shift_front_center_row(self):
         """Shift the central horizontal layer clockwise by 90 degrees."""
         # Assume this shift is in the same direction as top shift.
         temp_row = self.left_face.get_central_row()
@@ -73,7 +73,7 @@ class CubeShift:
         self.back_face.fill_left_col(self.bottom_face.get_left_col())
         self.bottom_face.fill_left_col(temp_col)
 
-    def _shift_central_col(self):
+    def _shift_top_center_col(self):
         """Shift the central vertical layer clockwise by 90 degrees."""
         # Assume this shift is in the same direction as right shift.
         temp_col = self.front_face.get_central_col()
@@ -81,3 +81,61 @@ class CubeShift:
         self.bottom_face.fill_central_col(self.back_face.get_central_col())
         self.back_face.fill_central_col(self.top_face.get_central_col())
         self.top_face.fill_central_col(temp_col)
+
+    def _shift_front(self):
+        """Shift the front layer clockwise by 90 degrees."""
+        temp_col = self.top_face.get_bottom_row()
+        self.top_face.fill_bottom_row(self.left_face.get_right_col())
+        self.left_face.fill_right_col(self.bottom_face.get_top_row())
+        self.bottom_face.fill_top_row(self.right_face.get_left_col())
+        self.right_face.fill_left_col(temp_col)
+
+    def _shift_back(self):
+        """Shift the back layer clockwise by 90 degrees."""
+        temp_col = self.top_face.get_top_row()
+        self.top_face.fill_top_row(self.right_face.get_right_col())
+        self.right_face.fill_right_col(self.bottom_face.get_bottom_row())
+        self.bottom_face.fill_bottom_row(self.left_face.get_left_col())
+        self.left_face.fill_left_col(temp_col)
+
+    def _shift_top_center_row(self):
+        """Shift the central horizontal layer clockwise by 90 degrees."""
+        # Assume this shift is in the same direction as front shift.
+        temp_col = self.top_face.get_central_row()
+        self.top_face.fill_central_row(self.left_face.get_central_col())
+        self.left_face.fill_central_col(self.bottom_face.get_central_row())
+        self.bottom_face.fill_central_row(self.right_face.get_central_col())
+        self.right_face.fill_central_col(temp_col)
+
+    def shift(self, move: str, angle: int):
+        """Shift the cube with a move in certain amount of angle.
+
+        :param move: The desired move the cube should shift.
+        :param angle: The desired angle the cube should shift.
+        """
+        if move == CubeMove.right:
+            for _ in range(0, angle, 90):
+                self._shift_right()
+
+        elif move == CubeMove.left:
+            for _ in range(0, angle, 90):
+                self._shift_left()
+
+        elif move == CubeMove.top:
+            for _ in range(0, angle, 90):
+                self._shift_top()
+
+        elif move == CubeMove.bottom:
+            for _ in range(0, angle, 90):
+                self._shift_bottom()
+
+        elif move == CubeMove.front:
+            for _ in range(0, angle, 90):
+                self._shift_front()
+
+        elif move == CubeMove.back:
+            for _ in range(0, angle, 90):
+                self._shift_back()
+
+        else:
+            raise ValueError("The input move name is not supported.")
