@@ -10,6 +10,7 @@ CUBE_MOVE = ["right", "left", "top", "bottom", "front", "back"]
 
 # Set enum object for moves.
 class CubeMove(Enum):
+    """Define the legal moves for a cube."""
     right = "right"
     left = "left"
     top = "top"

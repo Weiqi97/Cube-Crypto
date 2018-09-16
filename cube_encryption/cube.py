@@ -5,6 +5,7 @@ from cube_encryption.cube_face import CubeFace
 
 
 class Cube:
+    """Define all possible shift of a cube."""
     def __init__(self, cube_input: str):
         """Initialize entire cube with a string of desired length."""
         # Check length of the input.
@@ -119,27 +120,27 @@ class Cube:
 
         # Perform moves based on the inputs.
         if move == CubeMove.right.value:
-            for _ in range(movements):
+            for __ in range(movements):
                 self._shift_right()
 
         elif move == CubeMove.left.value:
-            for _ in range(movements):
+            for __ in range(movements):
                 self._shift_left()
 
         elif move == CubeMove.top.value:
-            for _ in range(movements):
+            for __ in range(movements):
                 self._shift_top()
 
         elif move == CubeMove.bottom.value:
-            for _ in range(movements):
+            for __ in range(movements):
                 self._shift_bottom()
 
         elif move == CubeMove.front.value:
-            for _ in range(movements):
+            for __ in range(movements):
                 self._shift_front()
 
         elif move == CubeMove.back.value:
-            for _ in range(movements):
+            for __ in range(movements):
                 self._shift_back()
 
         # If the input movement was not defined.
