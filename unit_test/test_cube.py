@@ -38,4 +38,18 @@ class TestCubeShift:
             ["4", "4", "4"]
         )
 
+    def test_front_shift(self):
+        cube = Cube(cube_input=self.CUBE_INPUT)
+        cube.shift(move="front", angle=270)
+        np.testing.assert_array_equal(
+            cube.top_face.get_bottom_row(),
+            ["3", "3", "3"]
+        )
 
+    def test_back_shift(self):
+        cube = Cube(cube_input=self.CUBE_INPUT)
+        cube.shift(move="back", angle=270)
+        np.testing.assert_array_equal(
+            cube.top_face.get_top_row(),
+            ["5", "5", "5"]
+        )

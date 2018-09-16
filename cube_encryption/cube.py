@@ -38,8 +38,8 @@ class Cube:
         self.back_face.fill_top_row(temp_row)
 
     def _shift_bottom(self):
-        # front -> right -> back -> left -> front
         """Shift the bottom layer clockwise by 90 degrees."""
+        # front -> right -> back -> left -> front
         temp_row = self.left_face.get_bottom_row()
         self.left_face.fill_bottom_row(self.back_face.get_bottom_row())
         self.back_face.fill_bottom_row(self.right_face.get_bottom_row())
@@ -63,7 +63,6 @@ class Cube:
         self.bottom_face.fill_right_col(self.back_face.get_right_col())
         self.back_face.fill_right_col(self.top_face.get_right_col())
         self.top_face.fill_right_col(temp_col)
-        print("DONE")
 
     def _shift_left(self):
         """Shift the left layer clockwise by 90 degrees."""
@@ -114,29 +113,32 @@ class Cube:
         :param move: The desired move the cube should shift.
         :param angle: The desired angle the cube should shift.
         """
+        # Find number of movements.
         movements = int(angle / 90)
+
+        # Perform moves based on the inputs.
         if move == CubeMove.right.value:
             for _ in range(movements):
                 self._shift_right()
 
         elif move == CubeMove.left.value:
-            for _ in range(0, angle, 90):
+            for _ in range(movements):
                 self._shift_left()
 
         elif move == CubeMove.top.value:
-            for _ in range(0, angle, 90):
+            for _ in range(movements):
                 self._shift_top()
 
         elif move == CubeMove.bottom.value:
-            for _ in range(0, angle, 90):
+            for _ in range(movements):
                 self._shift_bottom()
 
         elif move == CubeMove.front.value:
-            for _ in range(0, angle, 90):
+            for _ in range(movements):
                 self._shift_front()
 
         elif move == CubeMove.back.value:
-            for _ in range(0, angle, 90):
+            for _ in range(movements):
                 self._shift_back()
 
         else:
