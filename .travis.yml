@@ -20,7 +20,7 @@ script:
   - pydocstyle
 
   # Test for unit test.
-  - python -m pytest --cov=./ unit_test/
+  - python -m pytest --cov=./cube_encryption unit_test/
 
 # Find code coverage.
 after_success:
