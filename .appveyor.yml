@@ -1,11 +1,11 @@
 # Set up environment.
 environment:
-  # Run for both architecture for python 3.6.x
+  # Run for both architecture for python 3.7.x
   matrix:
-    - PYTHON: "C:\Python36"
+    - PYTHON: "C:\Python37"
       PYTHON_ARCH: "32"
 
-    - PYTHON: "C:\Python36-x64"
+    - PYTHON: "C:\Python37-x64"
       PYTHON_ARCH: "64"
 
 # Installations.
@@ -18,8 +18,8 @@ install:
 # Testing script.
 test_script:
   # Test for python styles.
-  - flake8
-  - pydocstyle
+  - python -m flake8
+  - python -m pydocstyle
 
   # Test for unit test.
   - python -m pytest unit_test/
