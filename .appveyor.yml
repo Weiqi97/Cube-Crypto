@@ -18,6 +18,7 @@ install:
 # Testing script.
 test_script:
   # Test for python styles.
+  - flake8 --version
   - python -m flake8
   - python -m pydocstyle
 
