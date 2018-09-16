@@ -3,7 +3,7 @@ from cube_encryption.constants import SIDE_LENGTH, WRONG_LENGTH, CubeMove
 from cube_encryption.cube_face import CubeFace
 
 
-class CubeShift:
+class Cube:
     def __init__(self, cube_input: str):
         """Initialize entire cube with a string of desired length."""
         # Check length of the input.
@@ -63,6 +63,7 @@ class CubeShift:
         self.bottom_face.fill_right_col(self.back_face.get_right_col())
         self.back_face.fill_right_col(self.top_face.get_right_col())
         self.top_face.fill_right_col(temp_col)
+        print("DONE")
 
     def _shift_left(self):
         """Shift the left layer clockwise by 90 degrees."""
@@ -113,27 +114,28 @@ class CubeShift:
         :param move: The desired move the cube should shift.
         :param angle: The desired angle the cube should shift.
         """
-        if move == CubeMove.right:
-            for _ in range(0, angle, 90):
+        movements = int(angle / 90)
+        if move == CubeMove.right.value:
+            for _ in range(movements):
                 self._shift_right()
 
-        elif move == CubeMove.left:
+        elif move == CubeMove.left.value:
             for _ in range(0, angle, 90):
                 self._shift_left()
 
-        elif move == CubeMove.top:
+        elif move == CubeMove.top.value:
             for _ in range(0, angle, 90):
                 self._shift_top()
 
-        elif move == CubeMove.bottom:
+        elif move == CubeMove.bottom.value:
             for _ in range(0, angle, 90):
                 self._shift_bottom()
 
-        elif move == CubeMove.front:
+        elif move == CubeMove.front.value:
             for _ in range(0, angle, 90):
                 self._shift_front()
 
-        elif move == CubeMove.back:
+        elif move == CubeMove.back.value:
             for _ in range(0, angle, 90):
                 self._shift_back()
 
