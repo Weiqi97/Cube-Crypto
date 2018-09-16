@@ -163,7 +163,7 @@ class Cube:
     def print_cube(self):
         """Print formatted cube faces as string."""
         # Format cube to a string.
-        cube_string = \
+        formatted_cube_string = \
             f"       {self.top_face.get_top_row_str()}\n" \
             f"       {self.top_face.get_central_row_str()}\n" \
             f"       {self.top_face.get_bottom_row_str()}\n" \
@@ -184,5 +184,18 @@ class Cube:
             f"       {self.bottom_face.get_top_row_str()}\n" \
             f"       {self.bottom_face.get_central_row_str()}\n" \
             f"       {self.bottom_face.get_bottom_row_str()}\n"
+        # Print the string.
+        print(formatted_cube_string)
+
+    def get_cube_string(self):
+        """Get the cubies in the same order as they were filled in."""
+        # Get all cube faces as string in the right order.
+        cube_string = \
+            f"{self.top_face.get_face_str}" \
+            f"{self.front_face.get_face_str}" \
+            f"{self.right_face.get_face_str}" \
+            f"{self.back_face.get_face_str}" \
+            f"{self.left_face.get_face_str}" \
+            f"{self.bottom_face.get_face_str}"
         # Print the string.
         print(cube_string)
