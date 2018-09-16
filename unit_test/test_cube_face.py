@@ -140,4 +140,3 @@ class TestCubeFaceClassError:
         raise AssertionError("Wrong length error did not raise.")
     except AssertionError as error:
         assert str(error) == WRONG_LENGTH
-

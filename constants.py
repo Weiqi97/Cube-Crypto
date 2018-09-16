@@ -1,3 +1,5 @@
+"""Constants for the project."""
+
 # Set side length of the cube.
 SIDE_LENGTH = 3
 
