@@ -20,11 +20,10 @@ install:
 # Testing script.
 test_script:
   # Test for python styles.
-  - pep8
   - flake8
   - pydocstyle
 
   # Test for unit test.
-  - pytest
+  - python -m pytest unit_test/
 
 build: off
