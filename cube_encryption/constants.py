@@ -1,5 +1,6 @@
 """Constants for the project."""
 from enum import Enum
+from typing import NamedTuple
 
 # ------------------------------- Constants ----------------------------------
 # Set side length of the cube.
@@ -7,6 +8,11 @@ SIDE_LENGTH = 3
 MOVE_ANGLE = [90, 180, 270]
 CUBE_MOVE = ["right", "left", "top", "bottom", "front", "back",
              "top_center_row", "top_center_col", "front_center_row"]
+
+
+class Key(NamedTuple):
+    move: str
+    angle: int
 
 
 # Set enum object for moves.
