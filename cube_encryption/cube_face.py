@@ -18,6 +18,7 @@ class CubeFace:
              for index in range(0, len(face_input_list), SIDE_LENGTH)]
         )
 
+    @property
     def get_face(self) -> np.ndarray:
         """Get the entire cube face as a 2D matrix.
 
