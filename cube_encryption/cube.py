@@ -6,6 +6,7 @@ from cube_encryption.cube_face import CubeFace
 
 class Cube:
     """Define all possible shift of a cube."""
+
     def __init__(self, cube_input: str):
         """Initialize entire cube with a string of desired length."""
         # Check length of the input.

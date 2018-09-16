@@ -136,7 +136,7 @@ class TestCubeFace:
 class TestCubeFaceClassError:
     def test_special_case(self):
         try:
-            _ = CubeFace(face_input="123")
+            CubeFace(face_input="123")
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_LENGTH
