@@ -11,6 +11,7 @@ CUBE_MOVE = ["right", "left", "top", "bottom", "front", "back",
 
 
 class Key(NamedTuple):
+    """Define the components of a legal key."""
     move: str
     angle: int
 
