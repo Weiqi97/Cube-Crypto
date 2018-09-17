@@ -3,7 +3,7 @@ import numpy as np
 from typing import List
 from collections import deque
 from cube_encryption.cube import Cube
-from cube_encryption.constants import Key, CUBE_MOVE, MOVE_ANGLE
+from cube_encryption.constants import CUBE_MOVE, MOVE_ANGLE, Key
 
 
 class Encryption:
@@ -11,8 +11,8 @@ class Encryption:
 
     def __init__(self, message: str):
         """Put the message into a cube and create a queue to hold keys."""
-        self.cube = Cube(cube_input=message)
-        self.key = deque()
+        self._cube = Cube(cube_input=message)
+        self._key = deque()
 
     @staticmethod
     def generate_random_key(length: int) -> List[Key]:
@@ -32,31 +32,25 @@ class Encryption:
     def encrypt(self, key: List[Key]):
         """Encrypt the message based on a given key."""
         for each_key in key:
-            self.cube.shift(
+            self._cube.shift(
                 move=each_key.move,
                 angle=each_key.angle
             )
-            self.key.append(each_key)
+            self._key.append(each_key)
 
     def decrypt(self):
         """Decrypt the message to plain text."""
-        while self.key:
-            key = self.key.pop()
-            self.cube.shift(
+        while self._key:
+            key = self._key.pop()
+            self._cube.shift(
                 move=key.move,
                 angle=(360 - key.angle)
             )
 
-#
-# protocol = Encryption(
-#     message="111111111222222222333333333444444444555555555666666666"
-# )
-# protocol.cube.print_cube()
-# key = protocol.generate_random_key(length=25)
-# protocol.encrypt(key=key)
-# protocol.cube.print_cube()
-# key = protocol.generate_random_key(length=25)
-# protocol.encrypt(key=key)
-# protocol.cube.print_cube()
-# protocol.decrypt()
-# protocol.cube.print_cube()
+    def print_formatted_cube(self):
+        """Print current cube state as formatted string."""
+        print(self._cube.get_cube_formatted())
+
+    def print_message(self):
+        """Print current cube state as plain text string."""
+        print(self._cube.get_cube_string())
