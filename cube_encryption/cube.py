@@ -160,14 +160,17 @@ class Cube:
         else:
             raise ValueError(WRONG_CUBE_MOVE)
 
-    def print_cube(self):
-        """Print formatted cube faces as string."""
+    def get_cube_formatted(self) -> str:
+        """Format the cube into a pretty displayable string.
+
+        :return: The formatted cube as a string.
+        """
         # Format cube to a string.
-        formatted_cube_string = \
+        return \
             f"       {self.top_face.get_top_row_str()}\n" \
             f"       {self.top_face.get_central_row_str()}\n" \
             f"       {self.top_face.get_bottom_row_str()}\n" \
-            f" - - - - - - - - - - - - - - \n" \
+            f" - - -  - - -  - - -  - - -\n" \
             f"{self.left_face.get_top_row_str()}" \
             f"{self.front_face.get_top_row_str()}" \
             f"{self.right_face.get_top_row_str()}" \
@@ -180,22 +183,21 @@ class Cube:
             f"{self.front_face.get_bottom_row_str()}" \
             f"{self.right_face.get_bottom_row_str()}" \
             f"{self.back_face.get_bottom_row_str()}\n" \
-            f" - - - - - - - - - - - - - - \n" \
+            f" - - -  - - -  - - -  - - -\n" \
             f"       {self.bottom_face.get_top_row_str()}\n" \
             f"       {self.bottom_face.get_central_row_str()}\n" \
             f"       {self.bottom_face.get_bottom_row_str()}\n"
-        # Print the string.
-        print(formatted_cube_string)
 
-    def get_cube_string(self):
-        """Get the cubies in the same order as they were filled in."""
+    def get_cube_string(self) -> str:
+        """Format all cubies into a continuous string.
+
+        :return: A string contains all cubies.
+        """
         # Get all cube faces as string in the right order.
-        cube_string = \
+        return \
             f"{self.top_face.get_face_str}" \
             f"{self.front_face.get_face_str}" \
             f"{self.right_face.get_face_str}" \
             f"{self.back_face.get_face_str}" \
             f"{self.left_face.get_face_str}" \
             f"{self.bottom_face.get_face_str}"
-        # Print the string.
-        print(cube_string)
