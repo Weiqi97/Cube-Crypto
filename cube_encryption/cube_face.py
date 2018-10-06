@@ -1,19 +1,23 @@
-"""Define what each cube face can do."""
+"""Define contents and operations of a cube face."""
 
 import numpy as np
 from typing import List
 from cube_encryption.cubie import Cubie
-from cube_encryption.constants import CUBIE_LENGTH, WRONG_LENGTH
+from cube_encryption.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
+    WRONG_CUBE_FACE_INPUT
 
 
 class CubeFace:
-    """Class contains method to get and fill row/col in a cube face."""
+    """Create a cube face with desired size on inputs."""
 
     def __init__(self, cube_face_input: str, cube_side_length):
-        """Initialize one cube face with a string of desired length."""
+        """Initialize one cube face.
+        :param cube_face_input: The input needed to fill in the cube face.
+        :param cube_side_length: The desired side length of the cube.
+        """
         # Error check. The input length should be cube face size times 4.
         assert len(cube_face_input) == cube_side_length ** 2 * CUBIE_LENGTH, \
-            WRONG_LENGTH
+            WRONG_CUBE_FACE_INPUT
 
         # Save the cube side length.
         self._side_length = cube_side_length
@@ -57,7 +61,7 @@ class CubeFace:
     def fill_row(self, row_index: int, input_list: List[Cubie]):
         """Fill one row in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
-        assert len(input_list) == self._side_length, WRONG_LENGTH
+        assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         self._face_cubie_matrix[row_index] = input_list
 
     def get_col(self, col_index: int) -> List[Cubie]:
@@ -68,78 +72,14 @@ class CubeFace:
     def fill_col(self, col_index: int, input_list: List[Cubie]):
         """Fill one column in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
-        assert len(input_list) == self._side_length, WRONG_LENGTH
+        assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         self._face_cubie_matrix[..., col_index] = input_list
 
-    #
-    # def get_bottom_row(self) -> list:
-    #     """Get bottom row of the cube face.
-    #
-    #     :return: A list of cubies.
-    #     """
-    #     return self._face_matrix[2].copy()
-    #
-    # def fill_bottom_row(self, input_list: list):
-    #     """Fill bottom row with a input list."""
-    #     assert len(input_list) == SIDE_LENGTH, WRONG_LENGTH
-    #     self._face_matrix[2] = input_list
-    #
-    # def get_right_col(self) -> list:
-    #     """Get right col of the cube face.
-    #
-    #     :return: A list of cubies.
-    #     """
-    #     return self._face_matrix[..., 2].copy()
-    #
-    # def fill_right_col(self, input_list: list):
-    #     """Fill right col with a input list."""
-    #     assert len(input_list) == SIDE_LENGTH, WRONG_LENGTH
-    #     self._face_matrix[..., 2] = input_list
-    #
-    # def get_left_col(self) -> list:
-    #     """Get left col of the cube face.
-    #
-    #     :return: A list of cubies.
-    #     """
-    #     return self._face_matrix[..., 0].copy()
-    #
-    # def fill_left_col(self, input_list: list):
-    #     """Fill left col with a input list."""
-    #     assert len(input_list) == SIDE_LENGTH, WRONG_LENGTH
-    #     self._face_matrix[..., 0] = input_list
-    #
-    # def get_central_row(self) -> list:
-    #     """Get central row of the cube face.
-    #
-    #     :return: A list of cubies.
-    #     """
-    #     return self._face_matrix[1].copy()
-    #
-    # def fill_central_row(self, input_list: list):
-    #     """Fill central row with a input list."""
-    #     assert len(input_list) == SIDE_LENGTH, WRONG_LENGTH
-    #     self._face_matrix[1] = input_list
-    #
-    # def get_central_col(self) -> list:
-    #     """Get central col of the cube face.
-    #
-    #     :return: A list of cubies.
-    #     """
-    #     return self._face_matrix[..., 1].copy()
-    #
-    # def fill_central_col(self, input_list: list):
-    #     """Fill central col with a input list."""
-    #     assert len(input_list) == SIDE_LENGTH, WRONG_LENGTH
-    #     self._face_matrix[..., 1] = input_list
-    #
-    # def get_top_row_str(self) -> str:
-    #     """Get the top row as a formatted string."""
-    #     return "".join(["|", "|".join(self.get_top_row()), "|"])
-    #
-    # def get_bottom_row_str(self) -> str:
-    #     """Get the bottom row as a formatted string."""
-    #     return "".join(["|", "|".join(self.get_bottom_row()), "|"])
-    #
-    # def get_central_row_str(self) -> str:
-    #     """Get the central row as a formatted string."""
-    #     return "".join(["|", "|".join(self.get_central_row()), "|"])
+    def get_row_str(self, row_index: int) -> str:
+        """Get one row in the cube face by index as a string."""
+        # Get the desired cube row.
+        cubie_row = self.get_row(row_index=row_index)
+        # Convert each cubie to its string format.
+        cubie_str_row = [cubie.get_content_string() for cubie in cubie_row]
+        # Concatenate the list to a string.
+        return "".join(["|", "|".join(cubie_str_row), "|"])

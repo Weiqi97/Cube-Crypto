@@ -6,8 +6,6 @@ class TestCubeFace:
     # Setup testing input.
     face_input = "000100100101101010101010101010101010"
     cube_face = CubeFace(cube_face_input=face_input, cube_side_length=3)
-    A = cube_face.get_col(col_index=0)
-    print("DONE")
 
     def test_cube_face(self):
         assert self.cube_face.face_string == self.face_input
@@ -66,6 +64,28 @@ class TestCubeFace:
         assert col_0[0].get_content_string() == "0001"
         assert col_1[0].get_content_string() == "1111"
 
+    def test_cube_row_str(self):
+        # Get rows as strings and check if they equal to desired value.
+        row_str_0 = self.cube_face.get_row_str(row_index=0)
+        row_str_1 = self.cube_face.get_row_str(row_index=1)
+        assert row_str_0 == "|0001|0010|0101|"
+        assert row_str_1 == "|1010|1010|1010|"
+
+
+class TestCubeFaceErrorCheck:
+    def test_init(self):
+        try:
+            CubeFace(cube_face_input="abracadabra", cube_side_length=3)
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == WRONG_CUBIE_INPUT
+
+    def test_rotate(self):
+        try:
+            Cubie(cubie_input=["1", "0", "1", "0"]).rotate_by_angle(angle=123)
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == WRONG_ROTATION_ANGLE
 
 #     def test_cube_face_string(self):
 #         assert self.cube_face.get_face_str == "123456789"
