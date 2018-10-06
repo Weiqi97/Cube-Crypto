@@ -30,4 +30,4 @@ class Cubie:
         # Find how many clockwise 90 degree is needed.
         rotate_step = int(angle / 90)
         # Do the desired amount of rotations.
-        self._content.rotate(n=rotate_step)
+        self._content.rotate(rotate_step)
