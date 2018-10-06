@@ -1,13 +1,14 @@
 """Define contents and operations of a cubie."""
 from collections import deque
-from cube_encryption.constants import MOVE_ANGLE
+from cube_encryption.constants import MOVE_ANGLE, CUBIE_LENGTH, \
+    WRONG_CUBIE_INPUT, WRONG_ROTATION_ANGLE
 
 
 class Cubie:
     """Create a cubie with 4 bits on the given input."""
     def __init__(self, cubie_input: str):
         # Error check. Each cubie should only hold 4 bits.
-        assert len(cubie_input) == 4, "Wrong input length for cubie."
+        assert len(cubie_input) == CUBIE_LENGTH, WRONG_CUBIE_INPUT
         # Fill in the input bits as a queue.
         self._content = deque(cubie_input)
 
@@ -25,7 +26,7 @@ class Cubie:
         :param angle: The angle of desired rotation.
         """
         # Error check. Only possible angles are 90, 180 and 270 degrees.
-        assert angle in MOVE_ANGLE, "Wrong rotating angle."
+        assert angle in MOVE_ANGLE, WRONG_ROTATION_ANGLE
         # Find how many clockwise 90 degree is needed.
         rotate_step = int(angle / 90)
         # Do the desired amount of rotations.

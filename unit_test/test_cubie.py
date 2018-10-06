@@ -3,7 +3,7 @@ from cube_encryption.cubie import Cubie
 
 
 class TestCubie:
-    cubie = Cubie("1010")
+    cubie = Cubie(cubie_input="1010")
 
     def test_get_content(self):
         assert self.cubie.get_content() == deque("1010")
@@ -18,4 +18,8 @@ class TestCubie:
 class TestCubieErrorCheck:
     def test_init(self):
         try:
+            Cubie(cubie_input="abracadabra")
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == ""
 
