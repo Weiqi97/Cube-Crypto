@@ -10,7 +10,6 @@ environment:
 
 # Set python path.
 init:
-  - ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%
   - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
 
 # Installations.
