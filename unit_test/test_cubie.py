@@ -4,6 +4,7 @@ from cube_encryption.constants import WRONG_CUBIE_INPUT, WRONG_ROTATION_ANGLE
 
 
 class TestCubie:
+    # Setup testing input.
     cubie = Cubie(cubie_input=["1", "0", "1", "0"])
 
     def test_get_content(self):
@@ -20,7 +21,7 @@ class TestCubie:
 class TestCubieErrorCheck:
     def test_init(self):
         try:
-            Cubie(cubie_input="abracadabra".split(""))
+            Cubie(cubie_input=list("abracadabra"))
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_CUBIE_INPUT
