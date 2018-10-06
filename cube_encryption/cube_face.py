@@ -4,7 +4,7 @@ import numpy as np
 from typing import List
 from cube_encryption.cubie import Cubie
 from cube_encryption.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
-    WRONG_CUBE_FACE_INPUT
+    WRONG_CUBE_FACE_INPUT, INDEX_OUT_CUBE_LENGTH
 
 
 class CubeFace:
@@ -62,6 +62,9 @@ class CubeFace:
         """Fill one row in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
+        # Error check. The index is not out of the list.
+        assert row_index < self._side_length, INDEX_OUT_CUBE_LENGTH
+        # Fill the desired row.
         self._face_cubie_matrix[row_index] = input_list
 
     def get_col(self, col_index: int) -> List[Cubie]:
@@ -73,6 +76,9 @@ class CubeFace:
         """Fill one column in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
+        # Error check. The index is not out of the list.
+        assert col_index < self._side_length, INDEX_OUT_CUBE_LENGTH
+        # Fill the desired column.
         self._face_cubie_matrix[..., col_index] = input_list
 
     def get_row_str(self, row_index: int) -> str:
