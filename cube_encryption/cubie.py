@@ -1,5 +1,6 @@
 """Define contents and operations of a cubie."""
 
+from typing import List
 from collections import deque
 from cube_encryption.constants import MOVE_ANGLE, CUBIE_LENGTH, \
     WRONG_CUBIE_INPUT, WRONG_ROTATION_ANGLE
@@ -8,7 +9,7 @@ from cube_encryption.constants import MOVE_ANGLE, CUBIE_LENGTH, \
 class Cubie:
     """Create a cubie with 4 bits on the given input."""
 
-    def __init__(self, cubie_input: str):
+    def __init__(self, cubie_input: List[str]):
         """Create a queue to hold the input 4 bits."""
         # Error check. Each cubie should only hold 4 bits.
         assert len(cubie_input) == CUBIE_LENGTH, WRONG_CUBIE_INPUT

@@ -1,7 +1,8 @@
 """Define what each cube face can do."""
 
 import numpy as np
-from cube_encryption.constants import SIDE_LENGTH, WRONG_LENGTH
+from cube_encryption.constants import SIDE_LENGTH, WRONG_LENGTH, CUBIE_LENGTH
+from cube_encryption.cubie import Cubie
 
 
 class CubeFace:
@@ -10,10 +11,20 @@ class CubeFace:
     def __init__(self, cube_face_input: str, cube_side_length):
         """Initialize one cube face with a string of desired length."""
         # Error check. The input length should be cube face size times 4.
-        assert len(cube_face_input) == cube_side_length ** 2 * 4, WRONG_LENGTH
+        assert len(cube_face_input) == cube_side_length ** 2 * CUBIE_LENGTH, \
+            WRONG_LENGTH
 
-        # Fill the cubies on a cube face.
-        face_input_list = list(face_input)
+        # Split the cube face input to chunks with length of 4.
+        face_input_list = np.array_split(
+            ary=cube_face_input,
+            indices_or_sections=len(cube_face_input) / CUBIE_LENGTH
+        )
+
+        # Create a list of cubies.
+        face_input_cubie_list = [
+            Cubie(cubie_input=cubie_input) for cubie_input in face_input_list
+        ]
+
         self._face_cubie_matrix = np.array(
             [face_input_list[index: index + SIDE_LENGTH]
              for index in range(0, len(face_input_list), SIDE_LENGTH)]
