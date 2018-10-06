@@ -1,4 +1,5 @@
 """Define what each cube face can do."""
+
 import numpy as np
 from cube_encryption.constants import SIDE_LENGTH, WRONG_LENGTH
 
