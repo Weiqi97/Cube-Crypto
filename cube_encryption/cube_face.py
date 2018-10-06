@@ -89,3 +89,9 @@ class CubeFace:
         cubie_str_row = [cubie.get_content_string() for cubie in cubie_row]
         # Concatenate the list to a string.
         return "".join(["|", "|".join(cubie_str_row), "|"])
+
+    def rotate_by_angle(self, angle: int):
+        """Rotate each cubie within a cube face by the desired angle."""
+        # Iterate over and rotate each cubie in the cube face.
+        for cubie in self._face_cubie_matrix.flat:
+            cubie.rotate_by_angle(angle=angle)
