@@ -73,6 +73,15 @@ class TestCubeFace:
         assert row_str_0 == "|0001|0010|0101|"
         assert row_str_1 == "|1010|1010|1010|"
 
+    def test_cube_face_rotate(self):
+        # Create new testing cube face since the value get changed.
+        cube_face = CubeFace(
+            cube_face_input=self.face_input,
+            cube_side_length=3
+        )
+        cube_face.rotate_by_angle(angle=90)
+        assert cube_face.face_string == "100000011010010101010101010101010101"
+
 
 class TestCubeFaceErrorCheck:
     # Setup testing input.
