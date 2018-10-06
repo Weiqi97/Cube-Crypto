@@ -7,14 +7,14 @@ from cube_encryption.constants import SIDE_LENGTH, WRONG_LENGTH
 class CubeFace:
     """Class contains method to get and fill row/col in a cube face."""
 
-    def __init__(self, face_input: str):
+    def __init__(self, cube_face_input: str, cube_side_length):
         """Initialize one cube face with a string of desired length."""
-        # Check length of the input.
-        assert len(face_input) == SIDE_LENGTH ** 2, WRONG_LENGTH
+        # Error check. The input length should be cube face size times 4.
+        assert len(cube_face_input) == cube_side_length ** 2 * 4, WRONG_LENGTH
 
         # Fill the cubies on a cube face.
         face_input_list = list(face_input)
-        self._face_matrix = np.array(
+        self._face_cubie_matrix = np.array(
             [face_input_list[index: index + SIDE_LENGTH]
              for index in range(0, len(face_input_list), SIDE_LENGTH)]
         )
