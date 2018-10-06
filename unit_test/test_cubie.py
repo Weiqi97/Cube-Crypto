@@ -28,6 +28,6 @@ class TestCubieErrorCheck:
     def test_rotate(self):
         try:
             Cubie(cubie_input="1010").rotate_by_angle(angle=123)
-            raise  AssertionError("Error message did not raise.")
+            raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_ROTATION_ANGLE
