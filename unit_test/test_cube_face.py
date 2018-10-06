@@ -1,5 +1,7 @@
 from cube_encryption.cubie import Cubie
 from cube_encryption.cube_face import CubeFace
+from cube_encryption.constants import WRONG_CUBE_FACE_INPUT, \
+    WRONG_SIDE_LENGTH, INDEX_OUT_CUBE_LENGTH
 
 
 class TestCubeFace:
@@ -73,157 +75,63 @@ class TestCubeFace:
 
 
 class TestCubeFaceErrorCheck:
+    # Setup testing input.
+    face_input = "000100100101101010101010101010101010"
+    cube_face = CubeFace(cube_face_input=face_input, cube_side_length=3)
+
     def test_init(self):
         try:
             CubeFace(cube_face_input="abracadabra", cube_side_length=3)
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
-            assert str(error) == WRONG_CUBIE_INPUT
+            assert str(error) == WRONG_CUBE_FACE_INPUT
 
-    def test_rotate(self):
+    def test_fill_row(self):
         try:
-            Cubie(cubie_input=["1", "0", "1", "0"]).rotate_by_angle(angle=123)
+            self.cube_face.fill_row(
+                row_index=1,
+                input_list=[
+                    Cubie(cubie_input=list("0000"))
+                ]
+            )
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
-            assert str(error) == WRONG_ROTATION_ANGLE
+            assert str(error) == WRONG_SIDE_LENGTH
 
-#     def test_cube_face_string(self):
-#         assert self.cube_face.get_face_str == "123456789"
-#
-#     def test_cube_top_row(self):
-#         np.testing.assert_array_equal(
-#             self.cube_face.get_top_row(),
-#             ["1", "2", "3"]
-#         )
-#
-#     def test_cube_bottom_row(self):
-#         np.testing.assert_array_equal(
-#             self.cube_face.get_bottom_row(),
-#             ["7", "8", "9"]
-#         )
-#
-#     def test_cube_right_col(self):
-#         np.testing.assert_array_equal(
-#             self.cube_face.get_right_col(),
-#             ["3", "6", "9"]
-#         )
-#
-#     def test_cube_left_col(self):
-#         np.testing.assert_array_equal(
-#             self.cube_face.get_left_col(),
-#             ["1", "4", "7"]
-#         )
-#
-#     def test_cube_central_row(self):
-#         np.testing.assert_array_equal(
-#             self.cube_face.get_central_row(),
-#             ["4", "5", "6"]
-#         )
-#
-#     def test_cube_central_col(self):
-#         np.testing.assert_array_equal(
-#             self.cube_face.get_central_col(),
-#             ["2", "5", "8"]
-#         )
-#
-#     def test_cube_top_row_str(self):
-#         assert self.cube_face.get_top_row_str() == "|1|2|3|"
-#
-#     def test_cube_bottom_row_str(self):
-#         assert self.cube_face.get_bottom_row_str() == "|7|8|9|"
-#
-#     def test_cube_central_row_str(self):
-#         assert self.cube_face.get_central_row_str() == "|4|5|6|"
-#
-#     def test_fill_cube_top_row(self):
-#         test_cube_face = CubeFace("123456789")
-#         test_cube_face.fill_top_row(["1", "1", "1"])
-#         np.testing.assert_array_equal(
-#             test_cube_face.get_top_row(),
-#             ["1", "1", "1"]
-#         )
-#
-#         try:
-#             test_cube_face.fill_top_row([1])
-#             raise AssertionError("Error message did not raise.")
-#         except AssertionError as error:
-#             assert str(error) == WRONG_LENGTH
-#
-#     def test_fill_cube_bottom_row(self):
-#         test_cube_face = CubeFace(face_input="123456789")
-#         test_cube_face.fill_bottom_row(["1", "1", "1"])
-#         np.testing.assert_array_equal(
-#             test_cube_face.get_bottom_row(),
-#             ["1", "1", "1"]
-#         )
-#
-#         try:
-#             test_cube_face.fill_bottom_row([1])
-#             raise AssertionError("Error message did not raise.")
-#         except AssertionError as error:
-#             assert str(error) == WRONG_LENGTH
-#
-#     def test_fill_cube_central_row(self):
-#         test_cube_face = CubeFace(face_input="123456789")
-#         test_cube_face.fill_central_row(["1", "1", "1"])
-#         np.testing.assert_array_equal(
-#             test_cube_face.get_central_row(),
-#             ["1", "1", "1"]
-#         )
-#
-#         try:
-#             test_cube_face.fill_central_row([1])
-#             raise AssertionError("Error message did not raise.")
-#         except AssertionError as error:
-#             assert str(error) == WRONG_LENGTH
-#
-#     def test_fill_cube_right_col(self):
-#         test_cube_face = CubeFace(face_input="123456789")
-#         test_cube_face.fill_right_col(["1", "1", "1"])
-#         np.testing.assert_array_equal(
-#             test_cube_face.get_right_col(),
-#             ["1", "1", "1"]
-#         )
-#
-#         try:
-#             test_cube_face.fill_right_col([1])
-#             raise AssertionError("Error message did not raise.")
-#         except AssertionError as error:
-#             assert str(error) == WRONG_LENGTH
-#
-#     def test_fill_cube_left_col(self):
-#         test_cube_face = CubeFace(face_input="123456789")
-#         test_cube_face.fill_left_col(["1", "1", "1"])
-#         np.testing.assert_array_equal(
-#             test_cube_face.get_left_col(),
-#             ["1", "1", "1"]
-#         )
-#
-#         try:
-#             test_cube_face.fill_left_col([1])
-#             raise AssertionError("Error message did not raise.")
-#         except AssertionError as error:
-#             assert str(error) == WRONG_LENGTH
-#
-#     def test_fill_cube_central_col(self):
-#         test_cube_face = CubeFace(face_input="123456789")
-#         test_cube_face.fill_central_col(["1", "1", "1"])
-#         np.testing.assert_array_equal(
-#             test_cube_face.get_central_col(),
-#             ["1", "1", "1"]
-#         )
-#
-#         try:
-#             test_cube_face.fill_central_col([1])
-#             raise AssertionError("Error message did not raise.")
-#         except AssertionError as error:
-#             assert str(error) == WRONG_LENGTH
-#
-#
-# class TestCubeFaceClassError:
-#     def test_special_case(self):
-#         try:
-#             CubeFace(face_input="123")
-#             raise AssertionError("Error message did not raise.")
-#         except AssertionError as error:
-#             assert str(error) == WRONG_LENGTH
+        try:
+            self.cube_face.fill_row(
+                row_index=3,
+                input_list=[
+                    Cubie(cubie_input=list("0000")),
+                    Cubie(cubie_input=list("0000")),
+                    Cubie(cubie_input=list("0000"))
+                ]
+            )
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == INDEX_OUT_CUBE_LENGTH
+
+    def test_fill_col(self):
+        try:
+            self.cube_face.fill_col(
+                col_index=1,
+                input_list=[
+                    Cubie(cubie_input=list("0000"))
+                ]
+            )
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == WRONG_SIDE_LENGTH
+
+        try:
+            self.cube_face.fill_col(
+                col_index=3,
+                input_list=[
+                    Cubie(cubie_input=list("0000")),
+                    Cubie(cubie_input=list("0000")),
+                    Cubie(cubie_input=list("0000"))
+                ]
+            )
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == INDEX_OUT_CUBE_LENGTH
