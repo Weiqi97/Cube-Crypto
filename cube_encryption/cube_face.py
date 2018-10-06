@@ -1,9 +1,9 @@
 """Define what each cube face can do."""
-from typing import List
 
 import numpy as np
-from cube_encryption.constants import SIDE_LENGTH, WRONG_LENGTH, CUBIE_LENGTH
+from typing import List
 from cube_encryption.cubie import Cubie
+from cube_encryption.constants import CUBIE_LENGTH, WRONG_LENGTH
 
 
 class CubeFace:
@@ -29,13 +29,12 @@ class CubeFace:
             Cubie(cubie_input=cubie_input) for cubie_input in face_input_list
         ]
 
-        # Get the length of all cubies.
-        cubie_list_length = len(face_input_cubie_list)
-
         # Fill in the cube face matrix with the cubies.
         self._face_cubie_matrix = np.array(
-            [face_input_cubie_list[index: index + cube_side_length]
-             for index in range(0, cubie_list_length, cube_side_length)]
+            np.array_split(
+                ary=face_input_cubie_list,
+                indices_or_sections=cube_side_length
+            )
         )
 
     @property
@@ -51,16 +50,27 @@ class CubeFace:
         return "".join(cubie_strings)
 
     def get_row(self, row_index: int) -> List[Cubie]:
-        """Get top row of the cube face.
-
-        :return: A list of cubies.
-        """
+        """Get one row in the cube face by index as a list of cubies."""
+        # Return a deep copy of the desired row.
         return self._face_cubie_matrix[row_index].copy()
 
     def fill_row(self, row_index: int, input_list: List[Cubie]):
-        """Fill top row with a input list."""
+        """Fill one row in the cube face by index with a list of cubies."""
+        # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_LENGTH
         self._face_cubie_matrix[row_index] = input_list
+
+    def get_col(self, col_index: int) -> List[Cubie]:
+        """Get one column in the cube face by index as a list of cubies."""
+        # Return a deep copy of the desired row.
+        return self._face_cubie_matrix[..., col_index].copy()
+
+    def fill_col(self, col_index: int, input_list: List[Cubie]):
+        """Fill one column in the cube face by index with a list of cubies."""
+        # Error check. The input length is the same as side length of the cube.
+        assert len(input_list) == self._side_length, WRONG_LENGTH
+        self._face_cubie_matrix[..., col_index] = input_list
+
     #
     # def get_bottom_row(self) -> list:
     #     """Get bottom row of the cube face.
