@@ -1,5 +1,6 @@
 from collections import deque
 from cube_encryption.cubie import Cubie
+from cube_encryption.constants import WRONG_CUBIE_INPUT, WRONG_ROTATION_ANGLE
 
 
 class TestCubie:
@@ -15,11 +16,18 @@ class TestCubie:
         self.cubie.rotate_by_angle(angle=90)
         assert self.cubie.get_content_string() == "0101"
 
+
 class TestCubieErrorCheck:
     def test_init(self):
         try:
             Cubie(cubie_input="abracadabra")
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
-            assert str(error) == ""
+            assert str(error) == WRONG_CUBIE_INPUT
 
+    def test_rotate(self):
+        try:
+            Cubie(cubie_input="1010").rotate_by_angle(angle=123)
+            raise  AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == WRONG_ROTATION_ANGLE
