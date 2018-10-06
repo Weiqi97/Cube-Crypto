@@ -1,21 +1,24 @@
-"""This file defines shifts of a cube."""
+"""Define contents and operations of the entire cube."""
+
+import numpy as np
 from cube_encryption.constants import CubeMove, SIDE_LENGTH, WRONG_LENGTH, \
-    WRONG_CUBE_MOVE
+    WRONG_CUBE_MOVE, WRONG_CUBE_INPUT
 from cube_encryption.cube_face import CubeFace
 
 
 class Cube:
-    """Define all possible shift of a cube."""
+    """Create a full cube with desired side length on inputs."""
 
-    def __init__(self, cube_input: str):
+    def __init__(self, cube_input: str, cube_side_length: int):
         """Initialize entire cube with a string of desired length."""
         # Check length of the input.
-        assert len(cube_input) == SIDE_LENGTH ** 2 * 6, WRONG_LENGTH
+        assert len(cube_input) == cube_side_length ** 2 * 6, WRONG_CUBE_INPUT
 
-        cube_input_list = [
-            cube_input[index: index + SIDE_LENGTH ** 2]
-            for index in range(0, len(cube_input), SIDE_LENGTH ** 2)
-        ]
+        # Split the cube input into six arrays.
+        cube_input_list = np.array_split(
+            ary=list(cube_input),
+            indices_or_sections=6
+        )
 
         # Assume that we fill the cube in the following order:
         #   - 1. Top face
@@ -24,12 +27,30 @@ class Cube:
         #   - 4. Back face
         #   - 5. Left face
         #   - 6. Bottom face
-        self.top_face = CubeFace(cube_input_list[0])
-        self.front_face = CubeFace(cube_input_list[1])
-        self.right_face = CubeFace(cube_input_list[2])
-        self.back_face = CubeFace(cube_input_list[3])
-        self.left_face = CubeFace(cube_input_list[4])
-        self.bottom_face = CubeFace(cube_input_list[5])
+        self._top_face = CubeFace(
+            cube_face_input=cube_input_list[0],
+            cube_side_length=cube_side_length
+        )
+        self._front_face = CubeFace(
+            cube_face_input=cube_input_list[1],
+            cube_side_length=cube_side_length
+        )
+        self._right_face = CubeFace(
+            cube_face_input=cube_input_list[2],
+            cube_side_length=cube_side_length
+        )
+        self._back_face = CubeFace(
+            cube_face_input=cube_input_list[3],
+            cube_side_length=cube_side_length
+        )
+        self._left_face = CubeFace(
+            cube_face_input=cube_input_list[4],
+            cube_side_length=cube_side_length
+        )
+        self._bottom_face = CubeFace(
+            cube_face_input=cube_input_list[5],
+            cube_side_length=cube_side_length
+        )
 
     def _shift_top(self):
         """Shift the top layer clockwise by 90 degrees."""

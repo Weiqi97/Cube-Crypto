@@ -1,4 +1,4 @@
-"""Define contents and operations of a cube face."""
+"""Define contents and operations of one cube face."""
 
 import numpy as np
 from typing import List
@@ -8,9 +8,9 @@ from cube_encryption.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
 
 
 class CubeFace:
-    """Create a cube face with desired size on inputs."""
+    """Create a cube face with desired side length on inputs."""
 
-    def __init__(self, cube_face_input: str, cube_side_length):
+    def __init__(self, cube_face_input: list, cube_side_length):
         """Initialize one cube face.
         :param cube_face_input: The input needed to fill in the cube face.
         :param cube_side_length: The desired side length of the cube.
@@ -24,8 +24,8 @@ class CubeFace:
 
         # Split the cube face input to chunks with length of 4.
         face_input_list = np.array_split(
-            ary=list(cube_face_input),
-            indices_or_sections=len(cube_face_input) / CUBIE_LENGTH
+            ary=cube_face_input,
+            indices_or_sections=cube_side_length ** 2
         )
 
         # Create a list of cubies.
