@@ -1,26 +1,34 @@
-# from unittest.mock import patch, call
-# from cube_encryption.encryption import Encryption
-# from cube_encryption.constants import MOVE_ANGLE, CUBE_MOVE, Key
-#
-#
-# class TestEncryption:
-#     # Set the test plain message.
-#     message = "111111111222222222333333333444444444555555555666666666"
-#
-#     # Set the testing protocol.
-#     protocol = Encryption(
-#         message=message
-#     )
-#
-#     def test_init(self):
-#         assert len(self.protocol._key) == 0
-#         assert self.protocol._cube.get_cube_string() == self.message
-#
-#     def test_key_gen(self):
-#         # Generate key and extract the only key.
-#         key = self.protocol.generate_random_key(length=1)[0]
-#         assert key.angle in MOVE_ANGLE
-#         assert key.move in CUBE_MOVE
+from unittest.mock import patch, call
+from cube_encryption.encryption import Encryption
+from cube_encryption.constants import MOVE_ANGLE, CUBE_MOVE, Key
+
+
+class TestEncryptionOneCube:
+    # Set the test plain message.
+    message = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwX"
+
+    # Set the testing protocol.
+    protocol = Encryption(message=message, cube_side_length=4)
+
+    def test_init(self):
+        # Check initialization.
+        assert len(self.protocol._key) == 0
+        assert len(self.protocol._cubes) == 1
+
+    def test_pad_string(self):
+        # See if the padding works correctly.
+        assert self.protocol.get_pad_content() == \
+            "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwX@"
+
+    def test_un_pad_string(self):
+        # See if the un-pad works correctly.
+        assert self.protocol.get_un_pad_content() == self.message
+
+    def test_key_gen(self):
+        # Generate key and extract the only key.
+        key = self.protocol.generate_random_key(length=1)[0]
+        assert key.angle in MOVE_ANGLE
+        assert key.move in CUBE_MOVE
 #
 #     @patch("builtins.print")
 #     def test_encryption(self, print_output):
