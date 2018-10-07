@@ -1,4 +1,3 @@
-from unittest.mock import patch, call
 from cube_encryption.encryption import Encryption
 from cube_encryption.constants import MOVE_ANGLE, CUBE_MOVE, Key
 
@@ -24,11 +23,22 @@ class TestEncryptionOneCube:
         # See if the un-pad works correctly.
         assert self.protocol.get_un_pad_content() == self.message
 
-    # def test_key_gen(self):
-    #     # Generate key and extract the only key.
-    #     key = self.protocol.generate_random_key(length=1)[0]
-    #     assert key.angle in MOVE_ANGLE
-    #     assert key.move in CUBE_MOVE
+    def test_gen_t_b_l_index(self):
+        protocol = Encryption(message="1" * 7 * 7 * 3, cube_side_length=7)
+        index_set = set([protocol._get_t_b_l_index() for _ in range(1000)])
+        assert index_set == {0, 1, 2}
+
+    def test_gen_d_f_r_index(self):
+        protocol = Encryption(message="1" * 7 * 7 * 3, cube_side_length=7)
+        index_set = set([protocol._get_d_f_r_index() for _ in range(1000)])
+        assert index_set == {4, 5, 6}
+
+    def test_key_gen(self):
+        # Generate key and extract the only key.
+        key = self.protocol.generate_random_key(length=1)[0]
+        assert key.angle in MOVE_ANGLE
+        assert key.move in CUBE_MOVE
+        assert key.index < 4
 
     # def test_encryption(self):
     #     self.protocol.encrypt(

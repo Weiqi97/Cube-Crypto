@@ -17,6 +17,8 @@ class Encryption:
         :param message: The message to encrypt.
         :param cube_side_length: The desired length of cube side.
         """
+        # Store the cube max index.
+        self._cube_max_index = cube_side_length - 1
         # Find the size of each block.
         block_size = cube_side_length ** 2 * 6 * CUBIE_LENGTH
         # Convert the string to binary numbers.
@@ -47,6 +49,7 @@ class Encryption:
         :param block_size: Number of bits each cube can hold.
         :return: The padded binary string.
         """
+        A = len(input_string)
         # Find the number of block required for the encryption.
         num_block_need = int(np.ceil(len(input_string) / block_size))
         # Find the number of extra zero needed.
@@ -78,7 +81,11 @@ class Encryption:
         """
         string_to_byte = binascii.a2b_qp(input_string)
         byte_to_binary = bin(int.from_bytes(string_to_byte, byteorder="big"))
-        return byte_to_binary.replace("b", "")
+        byte_to_binary = byte_to_binary.replace("b", "")
+        # Make sure what ever being returned is multiple of 8.
+        return f"{'0' * (8 - len(byte_to_binary) % 8)}{byte_to_binary}" \
+            if len(byte_to_binary) % 8 != 0 \
+            else byte_to_binary
 
     @staticmethod
     def binary_to_string(input_binary: str) -> str:
@@ -94,20 +101,39 @@ class Encryption:
         )
         return binary_to_byte.decode("utf-8")
 
-    @staticmethod
-    def generate_random_key(length: int) -> List[Key]:
+    def _get_t_b_l_index(self) -> int:
+        """Get the index for movements: top, back and left."""
+        # Find index upper bound. Note: for odd side, center is exclusive.
+        upper_bound = np.ceil(self._cube_max_index / 2)
+        # Return the random selected index.
+        return np.random.randint(low=0, high=upper_bound)
+
+    def _get_d_f_r_index(self) -> int:
+        """Get the index for movements: down, front and right."""
+        # Find index lower bound. Note: for odd side, center is exclusive.
+        lower_bound = np.floor(self._cube_max_index / 2) + 1
+        # Return the random selected index.
+        return np.random.randint(
+            low=lower_bound, high=self._cube_max_index + 1
+        )
+
+    def generate_random_key(self, length: int) -> List[Key]:
         """Generate a randomized key based on the input length.
 
         :param length: The desired key length.
         :return: A list of key object, each key contains move and angle.
         """
-        return [
-            Key(
-                move=np.random.choice(CUBE_MOVE, size=1),
-                angle=np.random.choice(MOVE_ANGLE, size=1)
-            )
-            for __ in range(length)
-        ]
+        def generate_one_key() -> Key:
+            """Generate key with random move, angle and index based on move."""
+            move = np.random.choice(CUBE_MOVE, size=1)
+            angle = np.random.choice(MOVE_ANGLE, size=1)
+            if move in ["right", "front", "back"]:
+                index = self._get_d_f_r_index()
+            else:
+                index = self._get_t_b_l_index()
+            return Key(move=move, angle=angle, index=index)
+
+        return [generate_one_key() for __ in range(length)]
 
     def encrypt(self, key: List[Key]):
         """Encrypt the message based on a given key.
@@ -119,7 +145,7 @@ class Encryption:
             # Shift all the cubes.
             for cube in self._cubes:
                 # Shift cube.
-                cube.shift(move=each_key.move, angle=each_key.angle)
+                cube.shift(key=each_key)
                 # Shuffle bits.
                 cube.shift_cubie_content()
             # Append the used key to key list.
@@ -133,7 +159,7 @@ class Encryption:
             for cube in self._cubes:
                 # Shift content backward by one space.
                 cube.shift_cubie_content_back()
-                cube.shift(move=each_key.move, angle=360 - each_key.angle)
+                cube.shift(key=each_key)
 
     def get_pad_content(self):
         """Return current padded Ascii string."""
@@ -145,12 +171,12 @@ class Encryption:
 
     def get_un_pad_content(self):
         """Return current un-padded Ascii string."""
-        string_list = [
-            self.binary_to_string(
-                input_binary=self._un_pad_binary_str(
-                    input_string=cube.content
-                )
-            )
-            for cube in self._cubes
-        ]
-        return "".join(string_list)
+        # NOTE: This method should only be called when the cube is decrypted.
+        # Get all cube contents.
+        cube_content = "".join([
+            cube.content for cube in self._cubes
+        ])
+        # Remove all the trailing 0's.
+        cube_content = cube_content.rstrip("0")
+        # Remove the padded 01 and the decode to Ascii.
+        return self.binary_to_string(input_binary=cube_content[:-2])
