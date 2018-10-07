@@ -61,17 +61,6 @@ class Encryption:
         return f"{input_string}01{'0' * extra_zero_need}"
 
     @staticmethod
-    def _un_pad_binary_str(input_string: str) -> str:
-        """Remove the pad from binary string.
-
-        :param input_string: The padded binary string.
-        :return: The un-padded binary string.
-        """
-        # First strip all the trailing zeros.
-        input_string = input_string.rstrip("0")
-        return input_string[:-2]
-
-    @staticmethod
     def string_to_binary(input_string: str) -> str:
         """Convert Ascii string to binary string.
 
@@ -100,6 +89,24 @@ class Encryption:
         )
         return binary_to_byte.decode("utf-8")
 
+    def get_pad_binary(self) -> str:
+        """Get the padded binary string at the current state."""
+        return "".join([cube.content for cube in self._cubes])
+
+    def get_un_pad_binary(self) -> str:
+        """Remove the padding from the current binary string."""
+        # NOTE! This function should not be used while the cube is encrypted.
+        un_pad_string = self.get_pad_binary().rstrip("0")
+        return un_pad_string[:-2]
+
+    def get_pad_string(self):
+        """Return current padded Ascii string."""
+        return self.binary_to_string(input_binary=self.get_pad_binary())
+
+    def get_un_pad_string(self):
+        """Return current un-padded Ascii string."""
+        return self.binary_to_string(input_binary=self.get_un_pad_binary())
+
     def _get_t_b_l_index(self) -> int:
         """Get the index for movements: top, back and left."""
         # Find index upper bound. Note: for odd side, center is exclusive.
@@ -122,6 +129,7 @@ class Encryption:
         :param length: The desired key length.
         :return: A list of key object, each key contains move and angle.
         """
+
         def generate_one_key() -> Key:
             """Generate key with random move, angle and index based on move."""
             move = np.random.choice(CUBE_MOVE, size=1)[0]
@@ -166,26 +174,3 @@ class Encryption:
                         index=each_key.index
                     )
                 )
-
-    def get_pad_content(self):
-        """Return current padded Ascii string."""
-        string_list = [
-            self.binary_to_string(input_binary=cube.content)
-            for cube in self._cubes
-        ]
-        return "".join(string_list)
-
-    def get_un_pad_content(self):
-        """Return current un-padded Ascii string."""
-        # NOTE: This method should only be called when the cube is decrypted.
-        # Get all cube contents.
-        cube_content = "".join([
-            cube.content for cube in self._cubes
-        ])
-
-        # Remove the padded 01 and the decode to Ascii.
-        return self.binary_to_string(
-            input_binary=self._un_pad_binary_str(
-                input_string=cube_content
-            )
-        )
