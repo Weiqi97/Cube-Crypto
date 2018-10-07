@@ -3,7 +3,7 @@
 import numpy as np
 from cube_encryption.cube_face import CubeFace
 from cube_encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
-    CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH
+    CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, Key
 
 
 class Cube:
@@ -237,45 +237,44 @@ class Cube:
         for _ in range(num_movement):
             self._shift_in_y_z(col_index=col_index)
 
-    def shift(self, move: str, angle: int):
+    def shift(self, key: Key):
         """Shift the cube with a move in certain amount of angle.
 
-        :param move: The desired move the cube should shift.
-        :param angle: The desired angle the cube should shift.
+        :param key: A named tuple that holds information for one shift.
         """
         # Perform moves based on the inputs.
-        if move == CubeMove.left.value:
+        if key.move == CubeMove.left.value:
             self._shift_in_y_z_by_num_movement(
-                num_movement=int(angle / 90),
-                col_index=self._get_t_b_l_index()
+                num_movement=int(key.angle / 90),
+                col_index=key.index
             )
-        elif move == CubeMove.right.value:
+        elif key.move == CubeMove.right.value:
             self._shift_in_y_z_by_num_movement(
-                num_movement=int((360 - angle) / 90),
-                col_index=self._get_d_f_r_index()
+                num_movement=int((360 - key.angle) / 90),
+                col_index=key.index
             )
-        elif move == CubeMove.top.value:
+        elif key.move == CubeMove.top.value:
             self._shift_in_x_y_by_num_movement(
-                num_movement=int(angle / 90),
-                row_index=self._get_t_b_l_index()
+                num_movement=int(key.angle / 90),
+                row_index=key.index
             )
 
-        elif move == CubeMove.down.value:
+        elif key.move == CubeMove.down.value:
             self._shift_in_x_y_by_num_movement(
-                num_movement=int((360 - angle) / 90),
-                row_index=self._get_d_f_r_index()
+                num_movement=int((360 - key.angle) / 90),
+                row_index=key.index
             )
 
-        elif move == CubeMove.back.value:
+        elif key.move == CubeMove.back.value:
             self._shift_in_x_z_by_num_movement(
-                num_movement=int(angle / 90),
-                index=self._get_t_b_l_index()
+                num_movement=int(key.angle / 90),
+                index=key.index
             )
 
-        elif move == CubeMove.front.value:
+        elif key.move == CubeMove.front.value:
             self._shift_in_x_z_by_num_movement(
-                num_movement=int((360 - angle) / 90),
-                index=self._get_d_f_r_index()
+                num_movement=int((360 - key.angle) / 90),
+                index=key.index
             )
 
         # If the input movement was not defined.

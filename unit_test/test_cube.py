@@ -1,7 +1,7 @@
 import copy
 from cube_encryption.cube import Cube
 from cube_encryption.constants import CubeMove, WRONG_CUBE_MOVE, \
-    WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
+    WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH, Key
 
 
 class TestCubeOperations:
@@ -169,7 +169,7 @@ class TestCubeShift:
     def test_right_90(self):
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
-        cube.shift(move=CubeMove.right.value, angle=90)
+        cube.shift(Key(move=CubeMove.right.value, angle=90, index=1))
         assert cube.content == \
             "101020201010202020206060202060600303030303030303" \
             "404010104040101050505050505050506060404060604040"
@@ -177,7 +177,7 @@ class TestCubeShift:
     def test_left_90(self):
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
-        cube.shift(move=CubeMove.left.value, angle=90)
+        cube.shift(Key(move=CubeMove.left.value, angle=90, index=0))
         assert cube.content == \
             "404010104040101010102020101020203030303030303030" \
             "606040406060404005050505050505052020606020206060"
@@ -185,7 +185,7 @@ class TestCubeShift:
     def test_front_90(self):
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
-        cube.shift(move=CubeMove.front.value, angle=90)
+        cube.shift(Key(move=CubeMove.front.value, angle=90, index=1))
         assert cube.content == \
             "101010103030303002020202020202026060303060603030" \
             "404040404040404050501010505010105050505060606060"
@@ -193,7 +193,7 @@ class TestCubeShift:
     def test_back_90(self):
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
-        cube.shift(move=CubeMove.back.value, angle=90)
+        cube.shift(Key(move=CubeMove.back.value, angle=90, index=0))
         assert cube.content == \
             "505050501010101020202020202020203030101030301010" \
             "040404040404040460605050606050506060606030303030"
@@ -201,7 +201,7 @@ class TestCubeShift:
     def test_top_90(self):
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
-        cube.shift(move=CubeMove.top.value, angle=90)
+        cube.shift(Key(move=CubeMove.top.value, angle=90, index=0))
         assert cube.content == \
             "010101010101010130303030202020204040404030303030" \
             "505050504040404020202020505050506060606060606060"
@@ -209,7 +209,7 @@ class TestCubeShift:
     def test_down_90(self):
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
-        cube.shift(move=CubeMove.down.value, angle=90)
+        cube.shift(Key(move=CubeMove.down.value, angle=90, index=1))
         assert cube.content == \
             "101010101010101020202020505050503030303020202020" \
             "404040403030303050505050404040400606060606060606"
@@ -218,7 +218,7 @@ class TestCubeShift:
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         try:
-            cube.shift(move="abracadabra", angle=90)
+            cube.shift(Key(move="abracadabra", angle=90, index=0))
             raise AssertionError("Error message did not raise.")
         except ValueError as error:
             assert str(error) == WRONG_CUBE_MOVE

@@ -15,6 +15,7 @@ class Key(NamedTuple):
 
     move: str
     angle: int
+    index: int
 
 
 # Set enum object for moves.
