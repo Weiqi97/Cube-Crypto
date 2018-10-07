@@ -13,11 +13,6 @@ trim_trailing_whitespace = true
 indent_size = 4
 indent_style = space
 
-# Javascript language indentation settings.
-[*.js]
-indent_size = 2
-indent_style = space
-
 # All json or yml files.
 [{package.json,.travis.yml}]
 indent_size = 2
