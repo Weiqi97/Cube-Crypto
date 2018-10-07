@@ -236,80 +236,47 @@ class Cube:
         for _ in range(num_movement):
             self._shift_in_y_z(col_index=col_index)
 
-    # def shift(self, move: str, angle: int):
-    #     """Shift the cube with a move in certain amount of angle.
-    #
-    #     :param move: The desired move the cube should shift.
-    #     :param angle: The desired angle the cube should shift.
-    #     """
-    #     # Find number of movements.
-    #     movements = int(angle / 90)
-    #
-    #     # Perform moves based on the inputs.
-    #     if move == CubeMove.right.value:
-    #         self._shift_in_x_y_by_num_movement(
-    #             num_movement=movements, row_index=)
-    #
-    #     elif move == CubeMove.left.value:
-    #         for __ in range(movements):
-    #             self._shift_left()
-    #
-    #     elif move == CubeMove.top.value:
-    #         for __ in range(movements):
-    #             self._shift_top()
-    #
-    #     elif move == CubeMove.bottom.value:
-    #         for __ in range(movements):
-    #             self._shift_bottom()
-    #
-    #     elif move == CubeMove.front.value:
-    #         for __ in range(movements):
-    #             self._shift_front()
-    #
-    #     elif move == CubeMove.back.value:
-    #         for __ in range(movements):
-    #             self._shift_back()
-    #
-    #     elif move == CubeMove.front_center_row.value:
-    #         for __ in range(movements):
-    #             self._shift_front_center_row()
-    #
-    #     elif move == CubeMove.top_center_row.value:
-    #         for __ in range(movements):
-    #             self._shift_top_center_row()
-    #
-    #     elif move == CubeMove.top_center_col.value:
-    #         for __ in range(movements):
-    #             self._shift_top_center_col()
-    #
-    #     # If the input movement was not defined.
-    #     else:
-    #         raise ValueError(WRONG_CUBE_MOVE)
-    # #
-    # def get_cube_formatted(self) -> str:
-    #     """Format the cube into a pretty displayable string.
-    #
-    #     :return: The formatted cube as a string.
-    #     """
-    #     # Format cube to a string.
-    #     return \
-    #         f"       {self.top_face.get_top_row_str()}\n" \
-    #         f"       {self.top_face.get_central_row_str()}\n" \
-    #         f"       {self.top_face.get_bottom_row_str()}\n" \
-    #         f" - - -  - - -  - - -  - - -\n" \
-    #         f"{self.left_face.get_top_row_str()}" \
-    #         f"{self.front_face.get_top_row_str()}" \
-    #         f"{self.right_face.get_top_row_str()}" \
-    #         f"{self.back_face.get_top_row_str()}\n" \
-    #         f"{self.left_face.get_central_row_str()}" \
-    #         f"{self.front_face.get_central_row_str()}" \
-    #         f"{self.right_face.get_central_row_str()}" \
-    #         f"{self.back_face.get_central_row_str()}\n" \
-    #         f"{self.left_face.get_bottom_row_str()}" \
-    #         f"{self.front_face.get_bottom_row_str()}" \
-    #         f"{self.right_face.get_bottom_row_str()}" \
-    #         f"{self.back_face.get_bottom_row_str()}\n" \
-    #         f" - - -  - - -  - - -  - - -\n" \
-    #         f"       {self.bottom_face.get_top_row_str()}\n" \
-    #         f"       {self.bottom_face.get_central_row_str()}\n" \
-    #         f"       {self.bottom_face.get_bottom_row_str()}\n"
+    def shift(self, move: str, angle: int):
+        """Shift the cube with a move in certain amount of angle.
+
+        :param move: The desired move the cube should shift.
+        :param angle: The desired angle the cube should shift.
+        """
+        # Perform moves based on the inputs.
+        if move == CubeMove.left.value:
+            self._shift_in_y_z_by_num_movement(
+                num_movement=int(angle / 90),
+                col_index=self._get_t_b_l_index()
+            )
+        elif move == CubeMove.right.value:
+            self._shift_in_y_z_by_num_movement(
+                num_movement=int((360 - angle) / 90),
+                col_index=self._get_d_f_r_index()
+            )
+        elif move == CubeMove.top.value:
+            self._shift_in_x_y_by_num_movement(
+                num_movement=int(angle / 90),
+                row_index=self._get_t_b_l_index()
+            )
+
+        elif move == CubeMove.down.value:
+            self._shift_in_x_y_by_num_movement(
+                num_movement=int((360 - angle) / 90),
+                row_index=self._get_d_f_r_index()
+            )
+
+        elif move == CubeMove.back.value:
+            self._shift_in_x_z_by_num_movement(
+                num_movement=int(angle / 90),
+                index=self._get_t_b_l_index()
+            )
+
+        elif move == CubeMove.front.value:
+            self._shift_in_x_z_by_num_movement(
+                num_movement=int((360 - angle) / 90),
+                index=self._get_d_f_r_index()
+            )
+
+        # If the input movement was not defined.
+        else:
+            raise ValueError(WRONG_CUBE_MOVE)
