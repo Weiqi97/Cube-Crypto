@@ -76,20 +76,6 @@ class Cube:
             f"{self._left_face.face_string}" \
             f"{self._down_face.face_string}"
 
-    def _get_t_b_l_index(self) -> int:
-        """Get the index for movements: top, back and left."""
-        # Find index upper bound. Note: for odd side, center is exclusive.
-        upper_bound = np.ceil(self._cube_max_index / 2)
-        # Return the random selected index.
-        return np.random.randint(low=0, high=upper_bound)
-
-    def _get_d_f_r_index(self) -> int:
-        """Get the index for movements: down, front and right."""
-        # Find index lower bound. Note: for odd side, center is exclusive.
-        lower_bound = np.floor(self._cube_max_index / 2) + 1
-        # Return the random selected index.
-        return np.random.randint(low=lower_bound, high=self._side_length)
-
     def shift_cubie_content(self):
         """Shift the cube binary representation to right by one bit."""
         # Obtain the shifted content by padding the last bit to the first.

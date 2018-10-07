@@ -23,16 +23,6 @@ class TestCubeOperations:
     def test_cube_content(self):
         assert self.cube.content == self.cube_input
 
-    def test_gen_t_b_l_index(self):
-        cube = Cube(cube_input="1" * 7 * 7 * 6 * 4, cube_side_length=7)
-        index_set = set([cube._get_t_b_l_index() for _ in range(1000)])
-        assert index_set == {0, 1, 2}
-
-    def test_gen_d_f_r_index(self):
-        cube = Cube(cube_input="1" * 7 * 7 * 6 * 4, cube_side_length=7)
-        index_set = set([cube._get_d_f_r_index() for _ in range(1000)])
-        assert index_set == {4, 5, 6}
-
     def test_cube_shift_cubie_content(self):
         self.cube.shift_cubie_content()
         assert self.cube.content == f"{self.cube_input[-1]}" \
