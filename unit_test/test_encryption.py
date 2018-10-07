@@ -16,12 +16,12 @@ class TestEncryptionOneCube:
 
     def test_pad_string(self):
         # See if the padding works correctly.
-        assert self.protocol.get_pad_content() == \
+        assert self.protocol.get_pad_string() == \
             "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwX@"
 
     def test_un_pad_string(self):
         # See if the un-pad works correctly.
-        assert self.protocol.get_un_pad_content() == self.message
+        assert self.protocol.get_un_pad_string() == self.message
 
     def test_gen_t_b_l_index(self):
         protocol = Encryption(message="1" * 7 * 7 * 3, cube_side_length=7)
@@ -54,7 +54,7 @@ class TestEncryptionOneCube:
                 Key(move="back", angle=360, index=0)
             ]
         )
-        assert self.protocol.get_un_pad_content() == self.message
+        assert self.protocol.get_un_pad_string() == self.message
 
     def test_decrypt(self):
         self.protocol.encrypt(
@@ -63,4 +63,4 @@ class TestEncryptionOneCube:
             ]
         )
         self.protocol.decrypt()
-        assert self.protocol.get_un_pad_content() == self.message
+        assert self.protocol.get_un_pad_string() == self.message
