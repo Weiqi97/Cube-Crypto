@@ -159,7 +159,14 @@ class Encryption:
             for cube in self._cubes:
                 # Shift content backward by one space.
                 cube.shift_cubie_content_back()
-                cube.shift(key=each_key)
+                # Reverse the cube shift move.
+                cube.shift(
+                    key=Key(
+                        move=each_key.move,
+                        angle=360 - each_key.angle,
+                        index=each_key.index
+                    )
+                )
 
     def get_pad_content(self):
         """Return current padded Ascii string."""

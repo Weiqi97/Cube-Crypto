@@ -40,24 +40,24 @@ class TestEncryptionOneCube:
         assert key.move in CUBE_MOVE
         assert key.index < 4
 
-    # def test_encryption(self):
-    #     self.protocol.encrypt(
-    #         key=[
-    #             Key(move="right", angle=360), Key(move="left", angle=360),
-    #             Key(move="top", angle=360), Key(move="down", angle=360),
-    #             Key(move="front", angle=360), Key(move="back", angle=360)
-    #         ]
-    #     )
-    #     assert self.protocol.get_un_pad_content() == self.message
-    #
-    # def test_decrypt(self):
-    #     self.protocol.encrypt(
-    #         key=[
-    #             Key(move="right", angle=90), Key(move="left", angle=90),
-    #             Key(move="top", angle=90), Key(move="down", angle=90),
-    #             Key(move="front", angle=90), Key(move="back", angle=90)
-    #         ]
-    #     )
-    #     self.protocol.decrypt()
-    #     print("DONE")
-    #     assert self.protocol.get_un_pad_content() == self.message
+    def test_encryption(self):
+        self.protocol.encrypt(
+            key=[
+                Key(move="right", angle=360, index=0),
+                Key(move="left", angle=360, index=0),
+                Key(move="top", angle=360, index=0),
+                Key(move="down", angle=360, index=0),
+                Key(move="front", angle=360, index=0),
+                Key(move="back", angle=360, index=0)
+            ]
+        )
+        assert self.protocol.get_un_pad_content() == self.message
+
+    def test_decrypt(self):
+        self.protocol.encrypt(
+            key=[
+                Key(move="right", angle=90, index=0)
+            ]
+        )
+        self.protocol.decrypt()
+        assert self.protocol.get_un_pad_content() == self.message
