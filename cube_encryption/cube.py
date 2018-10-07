@@ -18,8 +18,9 @@ class Cube:
         assert len(cube_input) == cube_side_length ** 2 * 6 * CUBIE_LENGTH, \
             WRONG_CUBE_INPUT
 
-        # Save the cube side length.
+        # Save the cube side length and cube max index.
         self._side_length = cube_side_length
+        self._cube_max_index = cube_side_length - 1
 
         # Split the cube input into six arrays.
         cube_input_list = np.array_split(
@@ -104,11 +105,13 @@ class Cube:
             self._top_face.rotate_by_angle(angle=90)
 
         # Rotate down face cubies if the most down layer selected.
-        if row_index == self._side_length - 1:
+        if row_index == self._cube_max_index:
             self._down_face.rotate_by_angle(angle=90)
 
-        # back -> right -> front -> left -> back
+        # Save temp row.
         temp_row = self._left_face.get_row(row_index=row_index)
+
+        # back -> right -> front -> left -> back
         self._left_face.fill_row(
             row_index=row_index,
             input_list=self._front_face.get_row(row_index=row_index)
@@ -123,91 +126,74 @@ class Cube:
         )
         self._back_face.fill_row(row_index=row_index, input_list=temp_row)
 
-    def shift_in_y_z(self, col_index: int):
-        # Rotate top face cubies if the most top layer selected.
-        if row_index == 0:
-            self._top_face.rotate_by_angle(angle=90)
+    def _shift_in_x_z(self, index: int):
+        """Shift the cube clockwise in x, z plane.
 
-        # Rotate down face cubies if the most down layer selected.
-        if row_index == self._side_length - 1:
-            self._down_face.rotate_by_angle(angle=270)
+        :param index: The index of the shifting column/row.
+        """
+        # Rotate back face cubies if the most back layer selected.
+        if index == 0:
+            self._back_face.rotate_by_angle(angle=90)
 
-# top -> back -> bottom -> front -> top
-#     temp_col = self._front_face.get_right_col()
-#     self._front_face.fill_right_col(self._bottom_face.get_right_col())
-#     self._bottom_face.fill_right_col(self._back_face.get_right_col())
-#     self._back_face.fill_right_col(self._top_face.get_right_col())
-#     self._top_face.fill_right_col(temp_col)
+        # Rotate front face cubies if the most right layer selected.
+        if index == self._cube_max_index:
+            self._front_face.rotate_by_angle(angle=90)
 
-    # def _shift_bottom(self):
-    #     """Shift the bottom layer clockwise by 90 degrees."""
-    #     # front -> right -> back -> left -> front
-    #        self._left_face.fill_bottom_row(self._back_face.get_bottom_row())
-    #     self._back_face.fill_bottom_row(self._right_face.get_bottom_row())
-    #     self._right_face.fill_bottom_row(self._front_face.get_bottom_row())
-    #     self._front_face.fill_bottom_row(temp_row)
-    #
-    # def _shift_front_center_row(self):
-    #     """Shift the central horizontal layer clockwise by 90 degrees."""
-    #     # Assume this shift is in the same direction as top shift.
-    #     temp_row = self._left_face.get_central_row()
-    #     self._left_face.fill_central_row(self._front_face.get_central_row())
-    #     self._front_face.fill_central_row(self._right_face.get_central_row())
-    #     self._right_face.fill_central_row(self._back_face.get_central_row())
-    #     self._back_face.fill_central_row(temp_row)
-    #
-    # def _shift_right(self):
-    #     """Shift the right layer clockwise by 90 degrees."""
-    #     # top -> back -> bottom -> front -> top
-    #     temp_col = self._front_face.get_right_col()
-    #     self._front_face.fill_right_col(self._bottom_face.get_right_col())
-    #     self._bottom_face.fill_right_col(self._back_face.get_right_col())
-    #     self._back_face.fill_right_col(self._top_face.get_right_col())
-    #     self._top_face.fill_right_col(temp_col)
-    #
-    # def _shift_left(self):
-    #     """Shift the left layer clockwise by 90 degrees."""
-    #     # bottom -> back -> top -> front -> bottom
-    #     temp_col = self._front_face.get_left_col()
-    #     self._front_face.fill_left_col(self._top_face.get_left_col())
-    #     self._top_face.fill_left_col(self._back_face.get_left_col())
-    #     self._back_face.fill_left_col(self._bottom_face.get_left_col())
-    #     self._bottom_face.fill_left_col(temp_col)
-    #
-    # def _shift_top_center_col(self):
-    #     """Shift the central vertical layer clockwise by 90 degrees."""
-    #     # Assume this shift is in the same direction as right shift.
-    #     temp_col = self._front_face.get_central_col()
-    #     self._front_face.fill_central_col(self._bottom_face.get_central_col())
-    #     self._bottom_face.fill_central_col(self._back_face.get_central_col())
-    #     self._back_face.fill_central_col(self._top_face.get_central_col())
-    #     self._top_face.fill_central_col(temp_col)
-    #
-    # def _shift_front(self):
-    #     """Shift the front layer clockwise by 90 degrees."""
-    #     temp_col = self._top_face.get_bottom_row()
-    #     self._top_face.fill_bottom_row(self._left_face.get_right_col())
-    #     self._left_face.fill_right_col(self._bottom_face.get_top_row())
-    #     self._bottom_face.fill_top_row(self._right_face.get_left_col())
-    #     self._right_face.fill_left_col(temp_col)
-    #
-    # def _shift_back(self):
-    #     """Shift the back layer clockwise by 90 degrees."""
-    #     temp_col = self._top_face.get_top_row()
-    #     self._top_face.fill_top_row(self._right_face.get_right_col())
-    #     self._right_face.fill_right_col(self._bottom_face.get_bottom_row())
-    #     self._bottom_face.fill_bottom_row(self._left_face.get_left_col())
-    #     self._left_face.fill_left_col(temp_col)
-    #
-    # def _shift_top_center_row(self):
-    #     """Shift the central horizontal layer clockwise by 90 degrees."""
-    #     # Assume this shift is in the same direction as front shift.
-    #     temp_col = self._top_face.get_central_row()
-    #     self._top_face.fill_central_row(self._left_face.get_central_col())
-    #     self._left_face.fill_central_col(self._bottom_face.get_central_row())
-    #     self._bottom_face.fill_central_row(self._right_face.get_central_col())
-    #     self._right_face.fill_central_col(temp_col)
-    #
+        # Save temp column.
+        temp_row = self._top_face.get_row(row_index=index)
+
+        # top -> right -> down -> left -> top
+        self._top_face.fill_row(
+            row_index=index,
+            input_list=self._left_face.get_col(col_index=index)
+        )
+        self._left_face.fill_col(
+            col_index=index,
+            input_list=self._down_face.get_row(
+                row_index=self._cube_max_index - index
+            )
+        )
+        self._down_face.fill_row(
+            row_index=self._cube_max_index - index,
+            input_list=self._right_face.get_col(
+                col_index=self._cube_max_index - index
+            )
+        )
+        self._right_face.fill_col(
+            col_index=self._cube_max_index - index, input_list=temp_row
+        )
+
+    def _shift_in_y_z(self, col_index: int):
+        """Shift the cube clockwise in y, z plane.
+
+        :param col_index: The index of the shifting column.
+        """
+        # Rotate left face cubies if the most left layer selected.
+        if col_index == 0:
+            self._left_face.rotate_by_angle(angle=90)
+
+        # Rotate right face cubies if the most right layer selected.
+        if col_index == self._cube_max_index:
+            self._right_face.rotate_by_angle(angle=90)
+
+        # Save temp column.
+        temp_col = self._front_face.get_col(col_index=col_index)
+
+        # down -> back -> top -> front -> down
+        self._front_face.fill_col(
+            col_index=col_index,
+            input_list=self._top_face.get_col(col_index=col_index)
+        )
+        self._top_face.fill_col(
+            col_index=col_index,
+            input_list=self._back_face.get_col(col_index=col_index)
+        )
+        self._back_face.fill_col(
+            col_index=col_index,
+            input_list=self._down_face.get_col(col_index=col_index)
+        )
+        self._down_face.fill_col(col_index=col_index, input_list=temp_col)
+
     # def shift(self, move: str, angle: int):
     #     """Shift the cube with a move in certain amount of angle.
     #
@@ -285,5 +271,3 @@ class Cube:
     #         f"       {self.bottom_face.get_top_row_str()}\n" \
     #         f"       {self.bottom_face.get_central_row_str()}\n" \
     #         f"       {self.bottom_face.get_bottom_row_str()}\n"
-
-
