@@ -35,10 +35,13 @@ class TestEncryptionOneCube:
 
     def test_key_gen(self):
         # Generate key and extract the only key.
-        key = self.protocol.generate_random_key(length=1)[0]
-        assert key.angle in MOVE_ANGLE
-        assert key.move in CUBE_MOVE
-        assert key.index < 4
+        key_list = self.protocol.generate_random_key(length=100)
+        key_angle = [key.angle for key in key_list]
+        key_move = [key.move for key in key_list]
+        key_index = [key.index for key in key_list]
+        assert set(key_angle).issubset(MOVE_ANGLE)
+        assert set(key_move).issubset(CUBE_MOVE)
+        assert set(key_index).issubset([0, 1, 2, 3])
 
     def test_encryption(self):
         self.protocol.encrypt(

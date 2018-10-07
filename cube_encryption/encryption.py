@@ -124,8 +124,8 @@ class Encryption:
         """
         def generate_one_key() -> Key:
             """Generate key with random move, angle and index based on move."""
-            move = np.random.choice(CUBE_MOVE, size=1)
-            angle = np.random.choice(MOVE_ANGLE, size=1)
+            move = np.random.choice(CUBE_MOVE, size=1)[0]
+            angle = np.random.choice(MOVE_ANGLE, size=1)[0]
             if move in ["right", "front", "back"]:
                 index = self._get_d_f_r_index()
             else:
