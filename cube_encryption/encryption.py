@@ -15,6 +15,21 @@ class Encryption:
         self._key = deque()
 
     @staticmethod
+    def string_to_binary(input_string: str) -> str:
+        string_to_byte = binascii.a2b_qp(input_string)
+        byte_to_binary = bin(int.from_bytes(string_to_byte, byteorder="big"))
+        return byte_to_binary.replace("b", "")
+
+    @staticmethod
+    def binary_to_string(input_binary: str) -> str:
+        string_to_binary = int(input_binary, 2)
+        binary_to_byte = string_to_binary.to_bytes(
+            length=(string_to_binary.bit_length() + 7) // 8,
+            byteorder="big"
+        )
+        return binary_to_byte.decode("utf-8")
+
+    @staticmethod
     def generate_random_key(length: int) -> List[Key]:
         """Generate a randomized key based on the input length.
 
