@@ -194,6 +194,35 @@ class Cube:
         )
         self._down_face.fill_col(col_index=col_index, input_list=temp_col)
 
+    def _shift_in_x_y_by_num_movement(self, num_movement: int, row_index: int):
+        """Shift the cube clockwise in x, y plane by number of movements.
+
+        :param num_movement: The number of movements should be done.
+        :param row_index: The index of the shifting row.
+        """
+        for _ in range(num_movement):
+            self._shift_in_x_y(row_index=row_index)
+
+    def _shift_in_x_z_by_num_movement(self, num_movement: int, index: int):
+        """Shift the cube clockwise in x, y plane by number of movements.
+
+        :param num_movement: The number of movements should be done.
+        :param index: The index of the shifting row/column.
+        """
+        for _ in range(num_movement):
+            self._shift_in_x_z(index=index)
+
+    def _shift_in_y_z_by_num_movement(self, num_movement: int, col_index: int):
+        """Shift the cube clockwise in x, y plane by number of movements.
+
+        :param num_movement: The number of movements should be done.
+        :param col_index: The index of the shifting column.
+        """
+        for _ in range(num_movement):
+            self._shift_in_y_z(col_index=col_index)
+
+
+
     # def shift(self, move: str, angle: int):
     #     """Shift the cube with a move in certain amount of angle.
     #
