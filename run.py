@@ -1,3 +1,5 @@
+"""Run function for user to access this protocol."""
+
 from cube_encryption.encryption import Encryption
 
 # Ask the user for a message to encrypt.

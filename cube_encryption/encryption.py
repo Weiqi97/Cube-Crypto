@@ -129,7 +129,7 @@ class Encryption:
         :param length: The desired key length.
         :return: A list of key object, each key contains move and angle.
         """
-
+        # Helper function for generating one key.
         def generate_one_key() -> Key:
             """Generate key with random move, angle and index based on move."""
             move = np.random.choice(CUBE_MOVE, size=1)[0]
