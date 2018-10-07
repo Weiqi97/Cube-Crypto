@@ -12,6 +12,7 @@ class CubeFace:
 
     def __init__(self, cube_face_input: list, cube_side_length):
         """Initialize one cube face.
+
         :param cube_face_input: The input needed to fill in the cube face.
         :param cube_side_length: The desired side length of the cube.
         """

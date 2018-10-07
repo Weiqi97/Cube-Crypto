@@ -10,7 +10,10 @@ class Cubie:
     """Create a cubie that holds 4 bits on the given input."""
 
     def __init__(self, cubie_input: List[str]):
-        """Create a queue to hold the input 4 bits."""
+        """Create a queue to hold the input 4 bits.
+
+        :param cubie_input: List of four single bit.
+        """
         # Error check. Each cubie should only hold 4 bits.
         assert len(cubie_input) == CUBIE_LENGTH, WRONG_CUBIE_INPUT
         # Fill in the input bits as a queue.
