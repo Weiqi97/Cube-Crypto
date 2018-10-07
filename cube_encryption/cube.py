@@ -1,21 +1,33 @@
-"""This file defines shifts of a cube."""
-from cube_encryption.constants import CubeMove, SIDE_LENGTH, WRONG_LENGTH, \
-    WRONG_CUBE_MOVE
+"""Define contents and operations of the entire cube."""
+
+import numpy as np
 from cube_encryption.cube_face import CubeFace
+from cube_encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
+    CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, Key
 
 
 class Cube:
-    """Define all possible shift of a cube."""
+    """Create a full cube with desired side length on inputs."""
 
-    def __init__(self, cube_input: str):
-        """Initialize entire cube with a string of desired length."""
+    def __init__(self, cube_input: str, cube_side_length: int):
+        """Initialize entire cube with a string of desired length.
+
+        :param cube_input: The binary representation of the plain text.
+        :param cube_side_length: The desired side length of the cube.
+        """
         # Check length of the input.
-        assert len(cube_input) == SIDE_LENGTH ** 2 * 6, WRONG_LENGTH
+        assert len(cube_input) == cube_side_length ** 2 * 6 * CUBIE_LENGTH, \
+            WRONG_CUBE_INPUT
+        assert cube_side_length > 1, WRONG_CUBE_SIDE_LENGTH
 
-        cube_input_list = [
-            cube_input[index: index + SIDE_LENGTH ** 2]
-            for index in range(0, len(cube_input), SIDE_LENGTH ** 2)
-        ]
+        # Save the cube side length and cube max index.
+        self._side_length = cube_side_length
+        self._cube_max_index = cube_side_length - 1
+
+        # Split the cube input into six arrays.
+        cube_input_list = np.array_split(
+            ary=list(cube_input), indices_or_sections=6
+        )
 
         # Assume that we fill the cube in the following order:
         #   - 1. Top face
@@ -23,181 +35,234 @@ class Cube:
         #   - 3. Right face
         #   - 4. Back face
         #   - 5. Left face
-        #   - 6. Bottom face
-        self.top_face = CubeFace(cube_input_list[0])
-        self.front_face = CubeFace(cube_input_list[1])
-        self.right_face = CubeFace(cube_input_list[2])
-        self.back_face = CubeFace(cube_input_list[3])
-        self.left_face = CubeFace(cube_input_list[4])
-        self.bottom_face = CubeFace(cube_input_list[5])
+        #   - 6. Down face
+        self._top_face = CubeFace(
+            cube_face_input=cube_input_list[0],
+            cube_side_length=cube_side_length
+        )
+        self._front_face = CubeFace(
+            cube_face_input=cube_input_list[1],
+            cube_side_length=cube_side_length
+        )
+        self._right_face = CubeFace(
+            cube_face_input=cube_input_list[2],
+            cube_side_length=cube_side_length
+        )
+        self._back_face = CubeFace(
+            cube_face_input=cube_input_list[3],
+            cube_side_length=cube_side_length
+        )
+        self._left_face = CubeFace(
+            cube_face_input=cube_input_list[4],
+            cube_side_length=cube_side_length
+        )
+        self._down_face = CubeFace(
+            cube_face_input=cube_input_list[5],
+            cube_side_length=cube_side_length
+        )
 
-    def _shift_top(self):
-        """Shift the top layer clockwise by 90 degrees."""
-        # back -> right -> front -> left -> back
-        temp_row = self.left_face.get_top_row()
-        self.left_face.fill_top_row(self.front_face.get_top_row())
-        self.front_face.fill_top_row(self.right_face.get_top_row())
-        self.right_face.fill_top_row(self.back_face.get_top_row())
-        self.back_face.fill_top_row(temp_row)
-
-    def _shift_bottom(self):
-        """Shift the bottom layer clockwise by 90 degrees."""
-        # front -> right -> back -> left -> front
-        temp_row = self.left_face.get_bottom_row()
-        self.left_face.fill_bottom_row(self.back_face.get_bottom_row())
-        self.back_face.fill_bottom_row(self.right_face.get_bottom_row())
-        self.right_face.fill_bottom_row(self.front_face.get_bottom_row())
-        self.front_face.fill_bottom_row(temp_row)
-
-    def _shift_front_center_row(self):
-        """Shift the central horizontal layer clockwise by 90 degrees."""
-        # Assume this shift is in the same direction as top shift.
-        temp_row = self.left_face.get_central_row()
-        self.left_face.fill_central_row(self.front_face.get_central_row())
-        self.front_face.fill_central_row(self.right_face.get_central_row())
-        self.right_face.fill_central_row(self.back_face.get_central_row())
-        self.back_face.fill_central_row(temp_row)
-
-    def _shift_right(self):
-        """Shift the right layer clockwise by 90 degrees."""
-        # top -> back -> bottom -> front -> top
-        temp_col = self.front_face.get_right_col()
-        self.front_face.fill_right_col(self.bottom_face.get_right_col())
-        self.bottom_face.fill_right_col(self.back_face.get_right_col())
-        self.back_face.fill_right_col(self.top_face.get_right_col())
-        self.top_face.fill_right_col(temp_col)
-
-    def _shift_left(self):
-        """Shift the left layer clockwise by 90 degrees."""
-        # bottom -> back -> top -> front -> bottom
-        temp_col = self.front_face.get_left_col()
-        self.front_face.fill_left_col(self.top_face.get_left_col())
-        self.top_face.fill_left_col(self.back_face.get_left_col())
-        self.back_face.fill_left_col(self.bottom_face.get_left_col())
-        self.bottom_face.fill_left_col(temp_col)
-
-    def _shift_top_center_col(self):
-        """Shift the central vertical layer clockwise by 90 degrees."""
-        # Assume this shift is in the same direction as right shift.
-        temp_col = self.front_face.get_central_col()
-        self.front_face.fill_central_col(self.bottom_face.get_central_col())
-        self.bottom_face.fill_central_col(self.back_face.get_central_col())
-        self.back_face.fill_central_col(self.top_face.get_central_col())
-        self.top_face.fill_central_col(temp_col)
-
-    def _shift_front(self):
-        """Shift the front layer clockwise by 90 degrees."""
-        temp_col = self.top_face.get_bottom_row()
-        self.top_face.fill_bottom_row(self.left_face.get_right_col())
-        self.left_face.fill_right_col(self.bottom_face.get_top_row())
-        self.bottom_face.fill_top_row(self.right_face.get_left_col())
-        self.right_face.fill_left_col(temp_col)
-
-    def _shift_back(self):
-        """Shift the back layer clockwise by 90 degrees."""
-        temp_col = self.top_face.get_top_row()
-        self.top_face.fill_top_row(self.right_face.get_right_col())
-        self.right_face.fill_right_col(self.bottom_face.get_bottom_row())
-        self.bottom_face.fill_bottom_row(self.left_face.get_left_col())
-        self.left_face.fill_left_col(temp_col)
-
-    def _shift_top_center_row(self):
-        """Shift the central horizontal layer clockwise by 90 degrees."""
-        # Assume this shift is in the same direction as front shift.
-        temp_col = self.top_face.get_central_row()
-        self.top_face.fill_central_row(self.left_face.get_central_col())
-        self.left_face.fill_central_col(self.bottom_face.get_central_row())
-        self.bottom_face.fill_central_row(self.right_face.get_central_col())
-        self.right_face.fill_central_col(temp_col)
-
-    def shift(self, move: str, angle: int):
-        """Shift the cube with a move in certain amount of angle.
-
-        :param move: The desired move the cube should shift.
-        :param angle: The desired angle the cube should shift.
-        """
-        # Find number of movements.
-        movements = int(angle / 90)
-
-        # Perform moves based on the inputs.
-        if move == CubeMove.right.value:
-            for __ in range(movements):
-                self._shift_right()
-
-        elif move == CubeMove.left.value:
-            for __ in range(movements):
-                self._shift_left()
-
-        elif move == CubeMove.top.value:
-            for __ in range(movements):
-                self._shift_top()
-
-        elif move == CubeMove.bottom.value:
-            for __ in range(movements):
-                self._shift_bottom()
-
-        elif move == CubeMove.front.value:
-            for __ in range(movements):
-                self._shift_front()
-
-        elif move == CubeMove.back.value:
-            for __ in range(movements):
-                self._shift_back()
-
-        elif move == CubeMove.front_center_row.value:
-            for __ in range(movements):
-                self._shift_front_center_row()
-
-        elif move == CubeMove.top_center_row.value:
-            for __ in range(movements):
-                self._shift_top_center_row()
-
-        elif move == CubeMove.top_center_col.value:
-            for __ in range(movements):
-                self._shift_top_center_col()
-
-        # If the input movement was not defined.
-        else:
-            raise ValueError(WRONG_CUBE_MOVE)
-
-    def get_cube_formatted(self) -> str:
-        """Format the cube into a pretty displayable string.
-
-        :return: The formatted cube as a string.
-        """
-        # Format cube to a string.
-        return \
-            f"       {self.top_face.get_top_row_str()}\n" \
-            f"       {self.top_face.get_central_row_str()}\n" \
-            f"       {self.top_face.get_bottom_row_str()}\n" \
-            f" - - -  - - -  - - -  - - -\n" \
-            f"{self.left_face.get_top_row_str()}" \
-            f"{self.front_face.get_top_row_str()}" \
-            f"{self.right_face.get_top_row_str()}" \
-            f"{self.back_face.get_top_row_str()}\n" \
-            f"{self.left_face.get_central_row_str()}" \
-            f"{self.front_face.get_central_row_str()}" \
-            f"{self.right_face.get_central_row_str()}" \
-            f"{self.back_face.get_central_row_str()}\n" \
-            f"{self.left_face.get_bottom_row_str()}" \
-            f"{self.front_face.get_bottom_row_str()}" \
-            f"{self.right_face.get_bottom_row_str()}" \
-            f"{self.back_face.get_bottom_row_str()}\n" \
-            f" - - -  - - -  - - -  - - -\n" \
-            f"       {self.bottom_face.get_top_row_str()}\n" \
-            f"       {self.bottom_face.get_central_row_str()}\n" \
-            f"       {self.bottom_face.get_bottom_row_str()}\n"
-
-    def get_cube_string(self) -> str:
+    @property
+    def content(self) -> str:
         """Format all cubies into a continuous string.
 
         :return: A string contains all cubies.
         """
         # Get all cube faces as string in the right order.
         return \
-            f"{self.top_face.get_face_str}" \
-            f"{self.front_face.get_face_str}" \
-            f"{self.right_face.get_face_str}" \
-            f"{self.back_face.get_face_str}" \
-            f"{self.left_face.get_face_str}" \
-            f"{self.bottom_face.get_face_str}"
+            f"{self._top_face.face_string}" \
+            f"{self._front_face.face_string}" \
+            f"{self._right_face.face_string}" \
+            f"{self._back_face.face_string}" \
+            f"{self._left_face.face_string}" \
+            f"{self._down_face.face_string}"
+
+    def shift_cubie_content(self):
+        """Shift the cube binary representation to right by one bit."""
+        # Obtain the shifted content by padding the last bit to the first.
+        shifted_binary_content = f"{self.content[-1]}" \
+                                 f"{self.content[:-1]}"
+        # Re-Init the class with new content.
+        self.__init__(
+            cube_input=shifted_binary_content,
+            cube_side_length=self._side_length
+        )
+
+    def shift_cubie_content_back(self):
+        """Shift the cube binary representation to left by one bit."""
+        # Obtain the shifted content by padding the first bit to the last.
+        shifted_content = f"{self.content[1:]}" \
+                          f"{self.content[0]}"
+        # Re-Init the class with new content.
+        self.__init__(
+            cube_input=shifted_content, cube_side_length=self._side_length
+        )
+
+    def _shift_in_x_y(self, row_index: int):
+        """Shift the cube clockwise in x, y plane. (0 is top).
+
+        :param row_index: The index of the shifting row.
+        """
+        # Rotate top face cubies if the most top layer selected.
+        if row_index == 0:
+            self._top_face.rotate_by_angle(angle=90)
+
+        # Rotate down face cubies if the most down layer selected.
+        if row_index == self._cube_max_index:
+            self._down_face.rotate_by_angle(angle=90)
+
+        # Save temp row.
+        temp_row = self._left_face.get_row(row_index=row_index)
+
+        # back -> right -> front -> left -> back
+        self._left_face.fill_row(
+            row_index=row_index,
+            input_list=self._front_face.get_row(row_index=row_index)
+        )
+        self._front_face.fill_row(
+            row_index=row_index,
+            input_list=self._right_face.get_row(row_index=row_index)
+        )
+        self._right_face.fill_row(
+            row_index=row_index,
+            input_list=self._back_face.get_row(row_index=row_index)
+        )
+        self._back_face.fill_row(row_index=row_index, input_list=temp_row)
+
+    def _shift_in_x_z(self, index: int):
+        """Shift the cube clockwise in x, z plane. (0 is back).
+
+        :param index: The index of the shifting column/row.
+        """
+        # Rotate back face cubies if the most back layer selected.
+        if index == 0:
+            self._back_face.rotate_by_angle(angle=90)
+
+        # Rotate front face cubies if the most right layer selected.
+        if index == self._cube_max_index:
+            self._front_face.rotate_by_angle(angle=90)
+
+        # Save temp column.
+        temp_row = self._top_face.get_row(row_index=index)
+
+        # top -> right -> down -> left -> top
+        self._top_face.fill_row(
+            row_index=index,
+            input_list=self._left_face.get_col(col_index=index)
+        )
+        self._left_face.fill_col(
+            col_index=index,
+            input_list=self._down_face.get_row(
+                row_index=self._cube_max_index - index
+            )
+        )
+        self._down_face.fill_row(
+            row_index=self._cube_max_index - index,
+            input_list=self._right_face.get_col(
+                col_index=self._cube_max_index - index
+            )
+        )
+        self._right_face.fill_col(
+            col_index=self._cube_max_index - index, input_list=temp_row
+        )
+
+    def _shift_in_y_z(self, col_index: int):
+        """Shift the cube clockwise in y, z plane. (0 is left).
+
+        :param col_index: The index of the shifting column.
+        """
+        # Rotate left face cubies if the most left layer selected.
+        if col_index == 0:
+            self._left_face.rotate_by_angle(angle=90)
+
+        # Rotate right face cubies if the most right layer selected.
+        if col_index == self._cube_max_index:
+            self._right_face.rotate_by_angle(angle=90)
+
+        # Save temp column.
+        temp_col = self._front_face.get_col(col_index=col_index)
+
+        # down -> back -> top -> front -> down
+        self._front_face.fill_col(
+            col_index=col_index,
+            input_list=self._top_face.get_col(col_index=col_index)
+        )
+        self._top_face.fill_col(
+            col_index=col_index,
+            input_list=self._back_face.get_col(col_index=col_index)
+        )
+        self._back_face.fill_col(
+            col_index=col_index,
+            input_list=self._down_face.get_col(col_index=col_index)
+        )
+        self._down_face.fill_col(col_index=col_index, input_list=temp_col)
+
+    def _shift_in_x_y_by_num_movement(self, num_movement: int, row_index: int):
+        """Shift the cube clockwise in x, y plane by number of movements.
+
+        :param num_movement: The number of movements should be done.
+        :param row_index: The index of the shifting row.
+        """
+        for _ in range(num_movement):
+            self._shift_in_x_y(row_index=row_index)
+
+    def _shift_in_x_z_by_num_movement(self, num_movement: int, index: int):
+        """Shift the cube clockwise in x, y plane by number of movements.
+
+        :param num_movement: The number of movements should be done.
+        :param index: The index of the shifting row/column.
+        """
+        for _ in range(num_movement):
+            self._shift_in_x_z(index=index)
+
+    def _shift_in_y_z_by_num_movement(self, num_movement: int, col_index: int):
+        """Shift the cube clockwise in x, y plane by number of movements.
+
+        :param num_movement: The number of movements should be done.
+        :param col_index: The index of the shifting column.
+        """
+        for _ in range(num_movement):
+            self._shift_in_y_z(col_index=col_index)
+
+    def shift(self, key: Key):
+        """Shift the cube with a move in certain amount of angle.
+
+        :param key: A named tuple that holds information for one shift.
+        """
+        # Perform moves based on the inputs.
+        if key.move == CubeMove.left.value:
+            self._shift_in_y_z_by_num_movement(
+                num_movement=int(key.angle / 90),
+                col_index=key.index
+            )
+        elif key.move == CubeMove.right.value:
+            self._shift_in_y_z_by_num_movement(
+                num_movement=int((360 - key.angle) / 90),
+                col_index=key.index
+            )
+        elif key.move == CubeMove.top.value:
+            self._shift_in_x_y_by_num_movement(
+                num_movement=int(key.angle / 90),
+                row_index=key.index
+            )
+
+        elif key.move == CubeMove.down.value:
+            self._shift_in_x_y_by_num_movement(
+                num_movement=int((360 - key.angle) / 90),
+                row_index=key.index
+            )
+
+        elif key.move == CubeMove.back.value:
+            self._shift_in_x_z_by_num_movement(
+                num_movement=int(key.angle / 90),
+                index=key.index
+            )
+
+        elif key.move == CubeMove.front.value:
+            self._shift_in_x_z_by_num_movement(
+                num_movement=int((360 - key.angle) / 90),
+                index=key.index
+            )
+
+        # If the input movement was not defined.
+        else:
+            raise ValueError(WRONG_CUBE_MOVE)
