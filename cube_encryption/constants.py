@@ -7,8 +7,7 @@ from typing import NamedTuple
 SIDE_LENGTH = 3
 CUBIE_LENGTH = 4
 MOVE_ANGLE = [90, 180, 270]
-CUBE_MOVE = ["right", "left", "top", "bottom", "front", "back",
-             "top_center_row", "top_center_col", "front_center_row"]
+CUBE_MOVE = ["right", "left", "top", "down", "front", "back"]
 
 
 class Key(NamedTuple):
@@ -25,12 +24,9 @@ class CubeMove(Enum):
     left = "left"
     right = "right"
     top = "top"
-    bottom = "bottom"
+    down = "down"
     front = "front"
     back = "back"
-    top_center_row = "top_center_row"
-    top_center_col = "top_center_col"
-    front_center_row = "front_center_row"
 
 
 # ---------------------------- Error Messages --------------------------------
