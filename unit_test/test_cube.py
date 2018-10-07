@@ -132,6 +132,21 @@ class TestCube:
                                "60602020606060606060202060606060" \
                                "60602020606060606060202060606060"
 
+    def test_x_y_shift_by_movement(self):
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
+        cube._shift_in_x_y_by_num_movement(num_movement=4, row_index=0)
+        assert cube.content == self.cube_input
+
+    def test_x_z_shift_by_movement(self):
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
+        cube._shift_in_x_z_by_num_movement(num_movement=4, index=0)
+        assert cube.content == self.cube_input
+
+    def test_y_z_shift_by_movement(self):
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
+        cube._shift_in_y_z_by_num_movement(num_movement=4, col_index=0)
+        assert cube.content == self.cube_input
+
 #
 #     def test_print_cube(self):
 #         cube = Cube(cube_input=self.CUBE_INPUT)
