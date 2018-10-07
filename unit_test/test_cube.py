@@ -1,7 +1,7 @@
 import copy
-
-from cube_encryption.constants import CubeMove, WRONG_CUBE_MOVE
 from cube_encryption.cube import Cube
+from cube_encryption.constants import CubeMove, WRONG_CUBE_MOVE, \
+    WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 
 class TestCubeOperations:
@@ -222,3 +222,19 @@ class TestCubeShift:
             raise AssertionError("Error message did not raise.")
         except ValueError as error:
             assert str(error) == WRONG_CUBE_MOVE
+
+
+class TestCubeErrorCheck:
+    def test_wrong_input_length(self):
+        try:
+            Cube(cube_input="abracadabra", cube_side_length=100)
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == WRONG_CUBE_INPUT
+
+    def test_wrong_cube_side_length(self):
+        try:
+            Cube(cube_input="1" * 24, cube_side_length=1)
+            raise AssertionError("Error message did not raise.")
+        except AssertionError as error:
+            assert str(error) == WRONG_CUBE_SIDE_LENGTH

@@ -3,7 +3,7 @@
 import numpy as np
 from cube_encryption.cube_face import CubeFace
 from cube_encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
-    CubeMove, WRONG_CUBE_MOVE
+    CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH
 
 
 class Cube:
@@ -18,6 +18,7 @@ class Cube:
         # Check length of the input.
         assert len(cube_input) == cube_side_length ** 2 * 6 * CUBIE_LENGTH, \
             WRONG_CUBE_INPUT
+        assert cube_side_length > 1, WRONG_CUBE_SIDE_LENGTH
 
         # Save the cube side length and cube max index.
         self._side_length = cube_side_length
