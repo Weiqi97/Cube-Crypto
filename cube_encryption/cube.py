@@ -1,30 +1,29 @@
 """Define contents and operations of the entire cube."""
 
-import binascii
 import numpy as np
-from cube_encryption.constants import CubeMove, SIDE_LENGTH, WRONG_LENGTH, \
-    WRONG_CUBE_MOVE, WRONG_CUBE_INPUT, CUBIE_LENGTH
 from cube_encryption.cube_face import CubeFace
+from cube_encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH
 
 
 class Cube:
     """Create a full cube with desired side length on inputs."""
 
     def __init__(self, cube_input: str, cube_side_length: int):
-        """Initialize entire cube with a string of desired length."""
+        """Initialize entire cube with a string of desired length.
+
+        :param cube_input: The binary representation of the plain text.
+        :param cube_side_length: The desired side length of the cube.
+        """
         # Check length of the input.
-        assert len(cube_input) == cube_side_length ** 2 * 3, WRONG_CUBE_INPUT
+        assert len(cube_input) == cube_side_length ** 2 * 6 * CUBIE_LENGTH, \
+            WRONG_CUBE_INPUT
 
         # Save the cube side length.
         self._side_length = cube_side_length
 
-        B = self.string_to_binary(input_string=cube_input)
-        C = len(B)
-
         # Split the cube input into six arrays.
         cube_input_list = np.array_split(
-            ary=list(self.string_to_binary(input_string=cube_input)),
-            indices_or_sections=6
+            ary=list(cube_input), indices_or_sections=6
         )
 
         # Assume that we fill the cube in the following order:
@@ -59,19 +58,8 @@ class Cube:
             cube_side_length=cube_side_length
         )
 
-    @staticmethod
-    def string_to_binary(input_string: str) -> str:
-        string_to_byte = binascii.a2b_qp(input_string)
-        byte_to_binary = bin(int.from_bytes(string_to_byte, byteorder="big"))
-        return byte_to_binary.replace("b", "")
-
-    @staticmethod
-    def binary_to_string(input_binary: str) -> str:
-        binary_to_byte = binascii.b2a_qp(input_binary)
-        return binary_to_byte.decode("utf-8")
-
     @property
-    def content_binary(self) -> str:
+    def content(self) -> str:
         """Format all cubies into a continuous string.
 
         :return: A string contains all cubies.
@@ -85,35 +73,39 @@ class Cube:
             f"{self._left_face.face_string}" \
             f"{self._down_face.face_string}"
 
-    @property
-    def content_string(self) -> str:
-        return self.binary_to_string(input_binary=self.content_binary)
-
     def shift_cubie_content(self):
+        """Shift the cube binary representation to right by one bit."""
         # Obtain the shifted content by padding the last bit to the first.
-        shifted_content = f"{self.content_binary[-1]}" \
-                          f"{self.content_binary[:-1]}"
+        shifted_binary_content = f"{self.content[-1]}" \
+                                 f"{self.content[:-1]}"
+        # Re-Init the class with new content.
         self.__init__(
-            cube_input=shifted_content, cube_side_length=self._side_length
+            cube_input=shifted_binary_content,
+            cube_side_length=self._side_length
         )
 
     def shift_cubie_content_back(self):
+        """Shift the cube binary representation to left by one bit."""
         # Obtain the shifted content by padding the first bit to the last.
-        shifted_content = f"{self.content_binary[1:]}" \
-                          f"{self.content_binary[0]}"
+        shifted_content = f"{self.content[1:]}" \
+                          f"{self.content[0]}"
+        # Re-Init the class with new content.
         self.__init__(
             cube_input=shifted_content, cube_side_length=self._side_length
         )
 
     def _shift_in_x_y(self, row_index: int):
-        """Shift the top layer clockwise by 90 degrees."""
+        """Shift the cube clockwise in x, y plane.
+
+        :param row_index: The index of the shifting row.
+        """
         # Rotate top face cubies if the most top layer selected.
         if row_index == 0:
             self._top_face.rotate_by_angle(angle=90)
 
         # Rotate down face cubies if the most down layer selected.
         if row_index == self._side_length - 1:
-            self._down_face.rotate_by_angle(angle=270)
+            self._down_face.rotate_by_angle(angle=90)
 
         # back -> right -> front -> left -> back
         temp_row = self._left_face.get_row(row_index=row_index)
@@ -130,6 +122,22 @@ class Cube:
             input_list=self._back_face.get_row(row_index=row_index)
         )
         self._back_face.fill_row(row_index=row_index, input_list=temp_row)
+
+    def shift_in_y_z(self, col_index: int):
+        # Rotate top face cubies if the most top layer selected.
+        if row_index == 0:
+            self._top_face.rotate_by_angle(angle=90)
+
+        # Rotate down face cubies if the most down layer selected.
+        if row_index == self._side_length - 1:
+            self._down_face.rotate_by_angle(angle=270)
+
+# top -> back -> bottom -> front -> top
+#     temp_col = self._front_face.get_right_col()
+#     self._front_face.fill_right_col(self._bottom_face.get_right_col())
+#     self._bottom_face.fill_right_col(self._back_face.get_right_col())
+#     self._back_face.fill_right_col(self._top_face.get_right_col())
+#     self._top_face.fill_right_col(temp_col)
 
     # def _shift_bottom(self):
     #     """Shift the bottom layer clockwise by 90 degrees."""
