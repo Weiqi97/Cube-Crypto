@@ -64,6 +64,40 @@ class TestCube:
                                "60606060606060606060606060606060" \
                                "60606060606060606060606060606060"
 
+    def test_back_shift(self):
+        # This is the case where the back face rotate. (4 by 4 by 4 cube)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
+        cube._shift_in_x_z(index=0)
+        assert cube.content == "50505050505050501010101010101010" \
+                               "10101010101010101010101010101010" \
+                               "20202020202020202020202020202020" \
+                               "20202020202020202020202020202020" \
+                               "30303030303010103030303030301010" \
+                               "30303030303010103030303030301010" \
+                               "04040404040404040404040404040404" \
+                               "04040404040404040404040404040404" \
+                               "60605050505050506060505050505050" \
+                               "60605050505050506060505050505050" \
+                               "60606060606060606060606060606060" \
+                               "60606060606060603030303030303030"
+
+    def test_normal_x_z_shift(self):
+        # This is the case for a normal y - z rotate. (4 by 4 by 4 cube)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
+        cube._shift_in_x_z(index=1)
+        assert cube.content == "10101010101010105050505050505050" \
+                               "10101010101010101010101010101010" \
+                               "20202020202020202020202020202020" \
+                               "20202020202020202020202020202020" \
+                               "30303030101030303030303010103030" \
+                               "30303030101030303030303010103030" \
+                               "40404040404040404040404040404040" \
+                               "40404040404040404040404040404040" \
+                               "50506060505050505050606050505050" \
+                               "50506060505050505050606050505050" \
+                               "60606060606060606060606060606060" \
+                               "30303030303030306060606060606060"
+
     def test_left_shift(self):
         # This is the case where the left face rotate. (4 by 4 by 4 cube)
         cube = Cube(cube_input=self.cube_input, cube_side_length=4)
@@ -98,77 +132,6 @@ class TestCube:
                                "60602020606060606060202060606060" \
                                "60602020606060606060202060606060"
 
-#     def test_right_shift(self):
-#         cube = Cube(cube_input=self.CUBE_INPUT)
-#         cube.shift(move="right", angle=90)
-#         np.testing.assert_array_equal(
-#             cube.top_face.get_right_col(),
-#             ["2", "2", "2"]
-#         )
-#
-#     def test_left_shift(self):
-#         cube = Cube(cube_input=self.CUBE_INPUT)
-#         cube.shift(move="left", angle=90)
-#         np.testing.assert_array_equal(
-#             cube.top_face.get_left_col(),
-#             ["4", "4", "4"]
-#         )
-#
-#     def test_top_shift(self):
-#         cube = Cube(cube_input=self.CUBE_INPUT)
-#         cube.shift(move="top", angle=180)
-#         np.testing.assert_array_equal(
-#             cube.front_face.get_top_row(),
-#             ["4", "4", "4"]
-#         )
-#
-#     def test_bottom_shift(self):
-#         cube = Cube(cube_input=self.CUBE_INPUT)
-#         cube.shift(move="bottom", angle=180)
-#         np.testing.assert_array_equal(
-#             cube.front_face.get_bottom_row(),
-#             ["4", "4", "4"]
-#         )
-#
-#     def test_front_shift(self):
-#         cube = Cube(cube_input=self.CUBE_INPUT)
-#         cube.shift(move="front", angle=270)
-#         np.testing.assert_array_equal(
-#             cube.top_face.get_bottom_row(),
-#             ["3", "3", "3"]
-#         )
-#
-#     def test_back_shift(self):
-#         cube = Cube(cube_input=self.CUBE_INPUT)
-#         cube.shift(move="back", angle=270)
-#         np.testing.assert_array_equal(
-#             cube.top_face.get_top_row(),
-#             ["5", "5", "5"]
-#         )
-#
-#     def test_top_center_row_shift(self):
-#         cube = Cube(cube_input=self.CUBE_INPUT)
-#         cube.shift(move="top_center_row", angle=90)
-#         np.testing.assert_array_equal(
-#             cube.left_face.get_top_row(),
-#             ["5", "6", "5"]
-#         )
-#
-#     def test_top_center_col_shift(self):
-#         cube = Cube(cube_input=self.CUBE_INPUT)
-#         cube.shift(move="top_center_col", angle=90)
-#         np.testing.assert_array_equal(
-#             cube.front_face.get_top_row(),
-#             ["2", "6", "2"]
-#         )
-#
-#     def test_front_center_row_shift(self):
-#         cube = Cube(cube_input=self.CUBE_INPUT)
-#         cube.shift(move="front_center_row", angle=90)
-#         np.testing.assert_array_equal(
-#             cube.front_face.get_central_row(),
-#             ["3", "3", "3"]
-#         )
 #
 #     def test_print_cube(self):
 #         cube = Cube(cube_input=self.CUBE_INPUT)

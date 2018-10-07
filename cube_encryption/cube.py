@@ -96,7 +96,7 @@ class Cube:
         )
 
     def _shift_in_x_y(self, row_index: int):
-        """Shift the cube clockwise in x, y plane.
+        """Shift the cube clockwise in x, y plane. (0 is top.)
 
         :param row_index: The index of the shifting row.
         """
@@ -127,7 +127,7 @@ class Cube:
         self._back_face.fill_row(row_index=row_index, input_list=temp_row)
 
     def _shift_in_x_z(self, index: int):
-        """Shift the cube clockwise in x, z plane.
+        """Shift the cube clockwise in x, z plane. (0 is back.)
 
         :param index: The index of the shifting column/row.
         """
@@ -164,7 +164,7 @@ class Cube:
         )
 
     def _shift_in_y_z(self, col_index: int):
-        """Shift the cube clockwise in y, z plane.
+        """Shift the cube clockwise in y, z plane. (0 is left.)
 
         :param col_index: The index of the shifting column.
         """
