@@ -182,7 +182,10 @@ class Encryption:
         cube_content = "".join([
             cube.content for cube in self._cubes
         ])
-        # Remove all the trailing 0's.
-        cube_content = cube_content.rstrip("0")
+
         # Remove the padded 01 and the decode to Ascii.
-        return self.binary_to_string(input_binary=cube_content[:-2])
+        return self.binary_to_string(
+            input_binary=self._un_pad_binary_str(
+                input_string=cube_content
+            )
+        )
