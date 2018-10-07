@@ -40,11 +40,8 @@ WRONG_CUBE_FACE_INPUT = "The input length does not match the desired length " \
                         "of a cube face"
 
 # Error messages for the Cube class.
+WRONG_CUBE_MOVE = "The input cube move is undefined."
 WRONG_CUBE_INPUT = "The input length does not match size of the entire cube."
 
 # Error messages for cross project usage.
 WRONG_ROTATION_ANGLE = "Wrong rotation angle for the cube."
-
-
-WRONG_LENGTH = "The input object length does not match the desired length."
-WRONG_CUBE_MOVE = "The input cube move is undefined."

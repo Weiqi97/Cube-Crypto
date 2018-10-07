@@ -2,7 +2,8 @@
 
 import numpy as np
 from cube_encryption.cube_face import CubeFace
-from cube_encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH
+from cube_encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
+    CubeMove, WRONG_CUBE_MOVE
 
 
 class Cube:
@@ -221,57 +222,55 @@ class Cube:
         for _ in range(num_movement):
             self._shift_in_y_z(col_index=col_index)
 
+    def shift(self, move: str, angle: int):
+        """Shift the cube with a move in certain amount of angle.
 
+        :param move: The desired move the cube should shift.
+        :param angle: The desired angle the cube should shift.
+        """
+        # Find number of movements.
+        movements = int(angle / 90)
 
-    # def shift(self, move: str, angle: int):
-    #     """Shift the cube with a move in certain amount of angle.
-    #
-    #     :param move: The desired move the cube should shift.
-    #     :param angle: The desired angle the cube should shift.
-    #     """
-    #     # Find number of movements.
-    #     movements = int(angle / 90)
-    #
-    #     # Perform moves based on the inputs.
-    #     if move == CubeMove.right.value:
-    #         for __ in range(movements):
-    #             self._shift_right()
-    #
-    #     elif move == CubeMove.left.value:
-    #         for __ in range(movements):
-    #             self._shift_left()
-    #
-    #     elif move == CubeMove.top.value:
-    #         for __ in range(movements):
-    #             self._shift_top()
-    #
-    #     elif move == CubeMove.bottom.value:
-    #         for __ in range(movements):
-    #             self._shift_bottom()
-    #
-    #     elif move == CubeMove.front.value:
-    #         for __ in range(movements):
-    #             self._shift_front()
-    #
-    #     elif move == CubeMove.back.value:
-    #         for __ in range(movements):
-    #             self._shift_back()
-    #
-    #     elif move == CubeMove.front_center_row.value:
-    #         for __ in range(movements):
-    #             self._shift_front_center_row()
-    #
-    #     elif move == CubeMove.top_center_row.value:
-    #         for __ in range(movements):
-    #             self._shift_top_center_row()
-    #
-    #     elif move == CubeMove.top_center_col.value:
-    #         for __ in range(movements):
-    #             self._shift_top_center_col()
-    #
-    #     # If the input movement was not defined.
-    #     else:
-    #         raise ValueError(WRONG_CUBE_MOVE)
+        # Perform moves based on the inputs.
+        if move == CubeMove.right.value:
+            for __ in range(movements):
+                self._shift_right()
+
+        elif move == CubeMove.left.value:
+            for __ in range(movements):
+                self._shift_left()
+
+        elif move == CubeMove.top.value:
+            for __ in range(movements):
+                self._shift_top()
+
+        elif move == CubeMove.bottom.value:
+            for __ in range(movements):
+                self._shift_bottom()
+
+        elif move == CubeMove.front.value:
+            for __ in range(movements):
+                self._shift_front()
+
+        elif move == CubeMove.back.value:
+            for __ in range(movements):
+                self._shift_back()
+
+        elif move == CubeMove.front_center_row.value:
+            for __ in range(movements):
+                self._shift_front_center_row()
+
+        elif move == CubeMove.top_center_row.value:
+            for __ in range(movements):
+                self._shift_top_center_row()
+
+        elif move == CubeMove.top_center_col.value:
+            for __ in range(movements):
+                self._shift_top_center_col()
+
+        # If the input movement was not defined.
+        else:
+            raise ValueError(WRONG_CUBE_MOVE)
     #
     # def get_cube_formatted(self) -> str:
     #     """Format the cube into a pretty displayable string.
