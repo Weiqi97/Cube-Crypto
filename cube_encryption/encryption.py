@@ -49,7 +49,6 @@ class Encryption:
         :param block_size: Number of bits each cube can hold.
         :return: The padded binary string.
         """
-        A = len(input_string)
         # Find the number of block required for the encryption.
         num_block_need = int(np.ceil(len(input_string) / block_size))
         # Find the number of extra zero needed.
