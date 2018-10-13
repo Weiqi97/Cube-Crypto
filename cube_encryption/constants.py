@@ -3,13 +3,17 @@ from enum import Enum
 from typing import NamedTuple
 
 # ------------------------------- Constants ----------------------------------
-# Set side length of the cube.
-SIDE_LENGTH = 3
+# Each cubie should hold four bits binary.
 CUBIE_LENGTH = 4
+# All possible rotations angles for one move.
 MOVE_ANGLE = [90, 180, 270]
+# All possible movements.
 CUBE_MOVE = ["right", "left", "top", "down", "front", "back"]
+# List of tuples, each tuple represent two movements that are commute.
+COMMUTE_MOVE = [("right", "left"), ("top", "down"), ("front", "back")]
 
 
+# The content of one key.
 class Key(NamedTuple):
     """Define the components of a legal key."""
 
