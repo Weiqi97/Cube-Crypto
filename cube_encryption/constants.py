@@ -10,7 +10,7 @@ MOVE_ANGLE = [90, 180, 270]
 # All possible movements.
 CUBE_MOVE = ["right", "left", "top", "down", "front", "back"]
 # List of tuples, each tuple represent two movements that are commute.
-COMMUTE_MOVE = [("right", "left"), ("top", "down"), ("front", "back")]
+COMMUTE_MOVE = [{"right", "left"}, {"top", "down"}, {"front", "back"}]
 
 
 # The content of one key.
