@@ -10,6 +10,7 @@ class TestKeyAnalyzer:
         Key(move="right", angle=270, index=2),
         Key(move="top", angle=90, index=0),
         Key(move="right", angle=90, index=2),
+        Key(move="right", angle=270, index=2),
         Key(move="down", angle=90, index=2),
         Key(move="top", angle=90, index=0),
         Key(move="left", angle=90, index=0),
@@ -38,7 +39,8 @@ class TestKeyAnalyzer:
                 Key(move="top", angle=90, index=0)
             ],
             [
-                Key(move="right", angle=90, index=2)
+                Key(move="right", angle=90, index=2),
+                Key(move="right", angle=270, index=2),
             ],
             [
                 Key(move="down", angle=90, index=2),
@@ -85,9 +87,19 @@ class TestKeyAnalyzer:
         assert self.analyzer._key == [
             Key(move="left", angle=90, index=0),
             Key(move="top", angle=90, index=0),
-            Key(move="right", angle=90, index=2),
             Key(move="down", angle=90, index=2),
             Key(move="top", angle=90, index=0),
+            Key(move="left", angle=90, index=0),
+            Key(move="front", angle=180, index=2),
+            Key(move="back", angle=90, index=0),
+            Key(move="right", angle=180, index=2)
+        ]
+
+    def test_analyze(self):
+        assert self.analyzer.analyze() == [
+            Key(move="left", angle=90, index=0),
+            Key(move="top", angle=180, index=0),
+            Key(move="down", angle=90, index=2),
             Key(move="left", angle=90, index=0),
             Key(move="front", angle=180, index=2),
             Key(move="back", angle=90, index=0),
