@@ -51,7 +51,7 @@ class KeyAnalyzer:
             for each_key in commute_key[start_index + 1:]:
                 # If the key share same index and move with the starting key.
                 if each_key.move == commute_key[start_index].move \
-                        and each_key.index == commute_key[start_index].index:
+                      and each_key.index == commute_key[start_index].index:
                     # Do the merge and replace start key.
                     commute_key[start_index] = Key(
                         move=commute_key[start_index].move,
@@ -65,7 +65,12 @@ class KeyAnalyzer:
 
         # Only return the keys whose move angle is not a multiple of 360.
         return [
-            each_key for each_key in commute_key if each_key.angle % 360 != 0
+            Key(
+                move=each_key.move,
+                index=each_key.index,
+                angle=each_key.angle % 360
+            )
+            for each_key in commute_key if each_key.angle % 360 != 0
         ]
 
     def _get_commute_key_list(self) -> List[List[Key]]:
