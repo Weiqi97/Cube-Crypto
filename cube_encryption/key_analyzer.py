@@ -1,4 +1,6 @@
 """Defines the key length analyzer."""
+import operator
+from functools import reduce
 from typing import List, Optional
 from collections import namedtuple
 from cube_encryption.constants import Key, CUBE_MOVE, COMMUTE_MOVE
@@ -100,15 +102,21 @@ class KeyAnalyzer:
         ]
 
         return commute_key_list
-    #
-    # def _merge_commute_key(self):
-    #     def key_merge_helper(commute_key: List[Key]):
-    #         # Set the starting index to 0 and initialize the key index list.
-    #         start_index = 0
-    #
-    #
-    #     commute_key_list = self._get_commute_key_list()
-    #     for commute_keys in commute_key_list:
+
+    def _merge_key(self):
+        merged_key_lists = [
+            self._merge_commute_key_list(commute_key=commute_key)
+            for commute_key in self._get_commute_key_list()
+        ]
+
+        merged_key = reduce(operator.concat, merged_key_lists)
+
+
+        if len(merged_key) != self._key:
+            self._key = merged_key
+            return True
+        else:
+            return False
 
     # def analyze(self):
     #     commutativity_list = [

@@ -7,7 +7,7 @@ class TestKeyAnalyzer:
     key = [
         Key(move="right", angle=90, index=2),
         Key(move="left", angle=90, index=0),
-        Key(move="right", angle=90, index=2),
+        Key(move="right", angle=270, index=2),
         Key(move="top", angle=90, index=0),
         Key(move="right", angle=90, index=2),
         Key(move="down", angle=90, index=2),
@@ -32,7 +32,7 @@ class TestKeyAnalyzer:
             [
                 Key(move="right", angle=90, index=2),
                 Key(move="left", angle=90, index=0),
-                Key(move="right", angle=90, index=2)
+                Key(move="right", angle=270, index=2)
             ],
             [
                 Key(move="top", angle=90, index=0)
@@ -79,3 +79,17 @@ class TestKeyAnalyzer:
         assert \
             self.analyzer._merge_commute_key_list(commute_key=test_key) == \
             test_key
+
+    def test_merge_key(self):
+        self.analyzer._merge_key()
+        assert self.analyzer._key == [
+            Key(move="left", angle=90, index=0),
+            Key(move="top", angle=90, index=0),
+            Key(move="right", angle=90, index=2),
+            Key(move="down", angle=90, index=2),
+            Key(move="top", angle=90, index=0),
+            Key(move="left", angle=90, index=0),
+            Key(move="front", angle=180, index=2),
+            Key(move="back", angle=90, index=0),
+            Key(move="right", angle=180, index=2)
+        ]
