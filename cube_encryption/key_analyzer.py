@@ -1,5 +1,5 @@
 """Defines the key length analyzer."""
-from typing import List
+from typing import List, Optional
 from collections import namedtuple
 from cube_encryption.constants import Key, CUBE_MOVE, COMMUTE_MOVE
 
@@ -32,6 +32,39 @@ class KeyAnalyzer:
         # Otherwise, return False.
         else:
             return False
+
+    @staticmethod
+    def _merge_commute_key_list(commute_key: List[Key]) -> Optional[List[Key]]:
+        """Given a list of commute keys, merge keys with same move and index.
+
+        :param commute_key: A list of commute keys.
+        :return: The reduced list of keys.
+        """
+        # Set the starting index to 0 and initialize the key index list.
+        start_index = 0
+
+        # Keep checking keys until all are checked.
+        while start_index < len(commute_key):
+            # Check all keys after the starting key.
+            for each_key in commute_key[start_index + 1:]:
+                # If the key share same index and move with the starting key.
+                if each_key.move == commute_key[start_index].move \
+                        and each_key.index == commute_key[start_index].index:
+                    # Do the merge and replace start key.
+                    commute_key[start_index] = Key(
+                        move=commute_key[start_index].move,
+                        index=commute_key[start_index].index,
+                        angle=commute_key[start_index].angle + each_key.angle
+                    )
+                    # Remove the merged key.
+                    commute_key.remove(each_key)
+            # Move to the next key.
+            start_index += 1
+
+        # Only return the keys whose move angle is not a multiple of 360.
+        return [
+            each_key for each_key in commute_key if each_key.angle % 360 != 0
+        ]
 
     def _get_commute_key_list(self) -> List[List[Key]]:
         """Split list of keys to list of lists of commute keys."""
@@ -67,12 +100,16 @@ class KeyAnalyzer:
         ]
 
         return commute_key_list
-
-    # def _merge_commute_keys(self):
+    #
+    # def _merge_commute_key(self):
+    #     def key_merge_helper(commute_key: List[Key]):
+    #         # Set the starting index to 0 and initialize the key index list.
+    #         start_index = 0
+    #
+    #
     #     commute_key_list = self._get_commute_key_list()
     #     for commute_keys in commute_key_list:
-    #
-    #
+
     # def analyze(self):
     #     commutativity_list = [
     #         self._commutative(move_one=move_one, move_two=move_two)
