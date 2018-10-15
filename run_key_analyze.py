@@ -1,3 +1,5 @@
+"""Analyze the reduced length of random generated keys."""
+
 import numpy as np
 from cube_encryption.encryption import Encryption
 from cube_encryption.key_analyzer import KeyAnalyzer
