@@ -57,3 +57,25 @@ class TestKeyAnalyzer:
                 Key(move="right", angle=90, index=2)
             ]
         ]
+
+    def test_merge_commute_key_list(self):
+        # This is the first test case.
+        test_key = [
+            Key(move="right", angle=90, index=2),
+            Key(move="left", angle=90, index=0),
+            Key(move="right", angle=180, index=2),
+            Key(move="right", angle=90, index=2)
+        ]
+        assert \
+            self.analyzer._merge_commute_key_list(commute_key=test_key) == \
+            [Key(move="left", angle=90, index=0)]
+
+        # This is the second test case.
+        test_key = [
+            Key(move="right", angle=90, index=2),
+            Key(move="right", angle=90, index=1),
+            Key(move="right", angle=90, index=0)
+        ]
+        assert \
+            self.analyzer._merge_commute_key_list(commute_key=test_key) == \
+            test_key
