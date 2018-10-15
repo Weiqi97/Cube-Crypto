@@ -1,6 +1,8 @@
 """Run function for user to access this protocol."""
 
 from cube_encryption.encryption import Encryption
+from cube_encryption.key_analyzer import KeyAnalyzer
+
 
 # Ask the user for a message to encrypt.
 message = input("Please type in the message you want to encrypt.\n")
@@ -12,6 +14,27 @@ protocol = Encryption(message=message, cube_side_length=cube_side_length)
 key_length = int(input("Please type in the desired key length.\n"))
 # Generate the desired key.
 key = protocol.generate_random_key(length=key_length)
+# Print the random generated key.
+print("\nThe random generated key is: ")
+for each_key in key:
+    print(f"The move is: {each_key.move}, "
+          f"the angle is: {each_key.angle} "
+          f"and the index is: {each_key.index}")
+
+# Print a separator.
+print("\n")
+
+key = KeyAnalyzer(key=key).analyze()
+# Print the random generated key.
+print(f"\nThe reduced key has length {len(key)}, and it is: ")
+for each_key in key:
+    print(f"The move is: {each_key.move}, "
+          f"the angle is: {each_key.angle} "
+          f"and the index is: {each_key.index}")
+
+# Print a separator.
+print("\n")
+
 # Show user the current un-encrypted binary.
 print(f"The plain-text in binary padded is: {protocol.get_pad_binary()}\n")
 # Encrypt the message based on the given key.
