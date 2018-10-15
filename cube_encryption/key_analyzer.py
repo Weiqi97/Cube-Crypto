@@ -103,25 +103,35 @@ class KeyAnalyzer:
 
         return commute_key_list
 
-    def _merge_key(self):
+    def _merge_key(self) -> bool:
+        """Merge the given list of keys once.
+
+        :return: If merge performed, return True, otherwise return False.
+        """
+        # Get the list of merged key lists.
         merged_key_lists = [
             self._merge_commute_key_list(commute_key=commute_key)
             for commute_key in self._get_commute_key_list()
         ]
 
+        # Flatten the list of lists to one list.
         merged_key = reduce(operator.concat, merged_key_lists)
 
-
-        if len(merged_key) != self._key:
+        # See if the number of keys were reduced, if yes return True.
+        if len(merged_key) != len(self._key):
             self._key = merged_key
             return True
+        # Otherwise, return false.
         else:
             return False
 
-    # def analyze(self):
-    #     commutativity_list = [
-    #         self._commutative(move_one=move_one, move_two=move_two)
-    #         for move_one, move_two in zip(self._key[:-1], self._key[1:])
-    #     ]
-    #
-    #     if True in commutativity_list:
+    def analyze(self):
+        """Keep reducing key size until no key can be merged."""
+        # Assume there are more key to be reduced.
+        while True:
+            # If no more key can be reduced, break the while loop.
+            if not self._merge_key():
+                break
+
+        # Return the reduced key.
+        return self._key
