@@ -108,12 +108,12 @@ class CubeFace:
 
         return index_queue
 
-    def get_row(self, row_name: int) -> List[Cubie]:
+    def get_row(self, row_name: str) -> List[Cubie]:
         """Get one row in the cube face by index as a list of cubies."""
         # Return a deep copy of the desired row.
         return self._face_cubie_frame[row_name].copy()
 
-    def fill_row(self, row_name: int, input_list: List[Cubie]):
+    def fill_row(self, row_name: str, input_list: List[Cubie]):
         """Fill one row in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
@@ -122,12 +122,12 @@ class CubeFace:
         # Fill the desired row.
         self._face_cubie_frame.loc[row_name] = input_list
 
-    def get_col(self, col_name: int) -> List[Cubie]:
+    def get_col(self, col_name: str) -> List[Cubie]:
         """Get one column in the cube face by index as a list of cubies."""
         # Return a deep copy of the desired row.
         return self._face_cubie_frame[col_name].copy()
 
-    def fill_col(self, col_name: int, input_list: List[Cubie]):
+    def fill_col(self, col_name: str, input_list: List[Cubie]):
         """Fill one column in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
@@ -136,7 +136,7 @@ class CubeFace:
         # Fill the desired column.
         self._face_cubie_frame[col_name] = input_list
 
-    def get_row_str(self, row_name: int) -> str:
+    def get_row_str(self, row_name: str) -> str:
         """Get one row in the cube face by index as a string."""
         # Get the desired cube row.
         cubie_row = self.get_row(row_name=row_name)
