@@ -80,7 +80,7 @@ class CubeFace:
             for move_index in range(1, int(np.ceil(cube_side_length / 2))):
                 column_queue.appendleft(f"L{move_index}")
                 column_queue.append(f"R{move_index}")
-                
+
         return column_queue
 
     @staticmethod
