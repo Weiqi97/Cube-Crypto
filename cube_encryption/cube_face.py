@@ -1,6 +1,8 @@
 """Define contents and operations of one cube face."""
+from collections import deque
 
 import numpy as np
+import pandas as pd
 from typing import List
 from cube_encryption.cubie import Cubie
 from cube_encryption.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
@@ -35,11 +37,13 @@ class CubeFace:
         ]
 
         # Fill in the cube face matrix with the cubies.
-        self._face_cubie_matrix = np.array(
-            np.array_split(
+        self._face_cubie_frame = pd.DataFrame(
+            data=np.array_split(
                 ary=face_input_cubie_list,
                 indices_or_sections=cube_side_length
-            )
+            ),
+            index=self.get_frame_index(cube_side_length=cube_side_length),
+            columns=self.get_frame_column(cube_side_length=cube_side_length)
         )
 
     @property
@@ -48,44 +52,94 @@ class CubeFace:
         # Convert each cubie to its string format.
         cubie_strings = [
             cubie.get_content_string()
-            for cubie in self._face_cubie_matrix.flat
+            for cubie in self._face_cubie_frame.values.flat
         ]
 
         # Concatenate the list to a string.
         return "".join(cubie_strings)
 
-    def get_row(self, row_index: int) -> List[Cubie]:
+    @staticmethod
+    def get_frame_column(cube_side_length: int) -> deque:
+        """Get column names for the cube face data frame.
+
+        :param cube_side_length: The desired side length of the cube.
+        :return: A deque object with the column names.
+        """
+        # If side length is even, start with empty queue.
+        if cube_side_length % 2 == 0:
+            column_queue = deque()
+            # Pad R on the right side and L on the left side.
+            for move_index in range(1, int(cube_side_length / 2) + 1):
+                column_queue.appendleft(f"L{move_index}")
+                column_queue.append(f"R{move_index}")
+        
+        # If side length is odd, start the queue with a "C" at the center.
+        else:
+            column_queue = deque("C")
+            # Pad R on the right side and L on the left side.
+            for move_index in range(1, int(np.ceil(cube_side_length / 2))):
+                column_queue.appendleft(f"L{move_index}")
+                column_queue.append(f"R{move_index}")
+                
+        return column_queue
+
+    @staticmethod
+    def get_frame_index(cube_side_length: int) -> deque:
+        """Get index names for the cube face data frame.
+
+        :param cube_side_length: The desired side length of the cube.
+        :return: A deque object with the index names.
+        """
+        # If side length is even, start with empty queue.
+        if cube_side_length % 2 == 0:
+            index_queue = deque()
+            # Pad D on the right side and T on the left side.
+            for move_index in range(1, int(cube_side_length / 2) + 1):
+                index_queue.appendleft(f"T{move_index}")
+                index_queue.append(f"D{move_index}")
+
+        # If side length is odd, start the queue with a "C" at the center.
+        else:
+            index_queue = deque("C")
+            # Pad D on the right side and T on the left side.
+            for move_index in range(1, int(np.ceil(cube_side_length / 2))):
+                index_queue.appendleft(f"T{move_index}")
+                index_queue.append(f"D{move_index}")
+
+        return index_queue
+
+    def get_row(self, row_name: int) -> List[Cubie]:
         """Get one row in the cube face by index as a list of cubies."""
         # Return a deep copy of the desired row.
-        return self._face_cubie_matrix[row_index].copy()
+        return self._face_cubie_frame[row_name].copy()
 
-    def fill_row(self, row_index: int, input_list: List[Cubie]):
+    def fill_row(self, row_name: int, input_list: List[Cubie]):
         """Fill one row in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         # Error check. The index is not out of the list.
-        assert row_index < self._side_length, INDEX_OUT_CUBE_LENGTH
+        assert row_name < self._side_length, INDEX_OUT_CUBE_LENGTH
         # Fill the desired row.
-        self._face_cubie_matrix[row_index] = input_list
+        self._face_cubie_frame.loc[row_name] = input_list
 
-    def get_col(self, col_index: int) -> List[Cubie]:
+    def get_col(self, col_name: int) -> List[Cubie]:
         """Get one column in the cube face by index as a list of cubies."""
         # Return a deep copy of the desired row.
-        return self._face_cubie_matrix[..., col_index].copy()
+        return self._face_cubie_frame[col_name].copy()
 
-    def fill_col(self, col_index: int, input_list: List[Cubie]):
+    def fill_col(self, col_name: int, input_list: List[Cubie]):
         """Fill one column in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         # Error check. The index is not out of the list.
-        assert col_index < self._side_length, INDEX_OUT_CUBE_LENGTH
+        assert col_name < self._side_length, INDEX_OUT_CUBE_LENGTH
         # Fill the desired column.
-        self._face_cubie_matrix[..., col_index] = input_list
+        self._face_cubie_frame[col_name] = input_list
 
-    def get_row_str(self, row_index: int) -> str:
+    def get_row_str(self, row_name: int) -> str:
         """Get one row in the cube face by index as a string."""
         # Get the desired cube row.
-        cubie_row = self.get_row(row_index=row_index)
+        cubie_row = self.get_row(row_name=row_name)
         # Convert each cubie to its string format.
         cubie_str_row = [cubie.get_content_string() for cubie in cubie_row]
         # Concatenate the list to a string.
@@ -94,5 +148,5 @@ class CubeFace:
     def rotate_by_angle(self, angle: int):
         """Rotate each cubie within a cube face by the desired angle."""
         # Iterate over and rotate each cubie in the cube face.
-        for cubie in self._face_cubie_matrix.flat:
+        for cubie in self._face_cubie_frame.flat:
             cubie.rotate_by_angle(angle=angle)
