@@ -40,7 +40,8 @@ WRONG_CUBIE_INPUT = "The input length does not match the length of a cubie."
 
 # Error messages for the CubeFace class.
 WRONG_SIDE_LENGTH = "The input length does not match the cube side length."
-INDEX_OUT_CUBE_LENGTH = "The given index is larger than the cube side length."
+WRONG_FRAME_INDEX_NAME = "The input index name is not in the frame index."
+WRONG_FRAME_COLUMN_NAME = "The input column name is not in the frame column."
 WRONG_CUBE_FACE_INPUT = "The input length does not match the desired length " \
                         "of a cube face"
 

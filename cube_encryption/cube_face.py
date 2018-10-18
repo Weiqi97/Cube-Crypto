@@ -6,7 +6,7 @@ import pandas as pd
 from typing import List
 from cube_encryption.cubie import Cubie
 from cube_encryption.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
-    WRONG_CUBE_FACE_INPUT, INDEX_OUT_CUBE_LENGTH
+    WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
 
 class CubeFace:
@@ -118,7 +118,7 @@ class CubeFace:
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         # Error check. The index is not out of the list.
-        assert row_name < self._side_length, INDEX_OUT_CUBE_LENGTH
+        assert row_name < self._side_length, WRONG_FRAME_INDEX_NAME
         # Fill the desired row.
         self._face_cubie_frame.loc[row_name] = input_list
 
@@ -132,7 +132,8 @@ class CubeFace:
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         # Error check. The index is not out of the list.
-        assert col_name < self._side_length, INDEX_OUT_CUBE_LENGTH
+        assert col_name in self._face_cubie_frame.columns, \
+            WRONG_FRAME_COLUMN_NAME
         # Fill the desired column.
         self._face_cubie_frame[col_name] = input_list
 
