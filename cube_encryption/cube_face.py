@@ -111,14 +111,14 @@ class CubeFace:
     def get_row(self, row_name: str) -> List[Cubie]:
         """Get one row in the cube face by index as a list of cubies."""
         # Return a deep copy of the desired row.
-        return self._face_cubie_frame[row_name].copy()
+        return self._face_cubie_frame.loc[row_name].copy()
 
     def fill_row(self, row_name: str, input_list: List[Cubie]):
         """Fill one row in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         # Error check. The index is not out of the list.
-        assert row_name < self._side_length, WRONG_FRAME_INDEX_NAME
+        assert row_name in self._face_cubie_frame.index, WRONG_FRAME_INDEX_NAME
         # Fill the desired row.
         self._face_cubie_frame.loc[row_name] = input_list
 
@@ -149,5 +149,5 @@ class CubeFace:
     def rotate_by_angle(self, angle: int):
         """Rotate each cubie within a cube face by the desired angle."""
         # Iterate over and rotate each cubie in the cube face.
-        for cubie in self._face_cubie_frame.flat:
+        for cubie in self._face_cubie_frame.values.flat:
             cubie.rotate_by_angle(angle=angle)
