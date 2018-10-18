@@ -3,7 +3,7 @@ from collections import deque
 from cube_encryption.cubie import Cubie
 from cube_encryption.cube_face import CubeFace
 from cube_encryption.constants import WRONG_CUBE_FACE_INPUT, \
-    WRONG_SIDE_LENGTH, INDEX_OUT_CUBE_LENGTH
+    WRONG_SIDE_LENGTH, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
 
 class TestCubeFace:
@@ -56,9 +56,9 @@ class TestCubeFace:
     def test_cube_col(self):
         # Get cols and check if they contain desired value.
         col_r1 = self.cube_face.get_col(col_name="R1")
-        assert col_r1[0].get_content_string() == "0001"
+        assert col_r1[0].get_content_string() == "0101"
         col_l1 = self.cube_face.get_col(col_name="L1")
-        assert col_l1[0].get_content_string() == "0101"
+        assert col_l1[0].get_content_string() == "0001"
 
     def test_cube_fill_col(self):
         # Create new testing cube face since the value get changed.
@@ -75,17 +75,17 @@ class TestCubeFace:
             ]
         )
         # Get cols and check if they contain desired value.
-        col_r1 = self.cube_face.get_col(col_name="R1")
+        col_r1 = cube_face.get_col(col_name="R1")
         assert col_r1[0].get_content_string() == "1111"
-        col_l1 = self.cube_face.get_col(col_name="L1")
-        assert col_l1[0].get_content_string() == "0101"
+        col_l1 = cube_face.get_col(col_name="L1")
+        assert col_l1[0].get_content_string() == "0001"
 
     def test_cube_row_str(self):
         # Get rows as strings and check if they equal to desired value.
-        row_r1_str = self.cube_face.get_row_str(row_name="R1")
-        row_l1_str = self.cube_face.get_row_str(row_name="L1")
-        assert row_r1_str == "|0001|0010|0101|"
-        assert row_l1_str == "|1010|1010|1010|"
+        row_t1_str = self.cube_face.get_row_str(row_name="T1")
+        row_d1_str = self.cube_face.get_row_str(row_name="D1")
+        assert row_t1_str == "|0001|0010|0101|"
+        assert row_d1_str == "|1010|1010|1010|"
 
     def test_cube_face_rotate(self):
         # Create new testing cube face since the value get changed.
@@ -132,7 +132,7 @@ class TestCubeFaceErrorCheck:
             )
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
-            assert str(error) == INDEX_OUT_CUBE_LENGTH
+            assert str(error) == WRONG_FRAME_INDEX_NAME
 
     def test_fill_col(self):
         try:
@@ -157,4 +157,4 @@ class TestCubeFaceErrorCheck:
             )
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
-            assert str(error) == INDEX_OUT_CUBE_LENGTH
+            assert str(error) == WRONG_FRAME_COLUMN_NAME
