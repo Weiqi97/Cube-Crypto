@@ -111,22 +111,22 @@ class Cube:
             self._down_face.rotate_by_angle(angle=90)
 
         # Save temp row.
-        temp_row = self._left_face.get_row(row_index=row_index)
+        temp_row = self._left_face.get_row(row_name=row_index)
 
         # back -> right -> front -> left -> back
         self._left_face.fill_row(
-            row_index=row_index,
-            input_list=self._front_face.get_row(row_index=row_index)
+            row_name=row_index,
+            input_list=self._front_face.get_row(row_name=row_index)
         )
         self._front_face.fill_row(
-            row_index=row_index,
-            input_list=self._right_face.get_row(row_index=row_index)
+            row_name=row_index,
+            input_list=self._right_face.get_row(row_name=row_index)
         )
         self._right_face.fill_row(
-            row_index=row_index,
-            input_list=self._back_face.get_row(row_index=row_index)
+            row_name=row_index,
+            input_list=self._back_face.get_row(row_name=row_index)
         )
-        self._back_face.fill_row(row_index=row_index, input_list=temp_row)
+        self._back_face.fill_row(row_name=row_index, input_list=temp_row)
 
     def _shift_in_x_z(self, index: int):
         """Shift the cube clockwise in x, z plane. (0 is back).
@@ -142,27 +142,27 @@ class Cube:
             self._front_face.rotate_by_angle(angle=90)
 
         # Save temp column.
-        temp_row = self._top_face.get_row(row_index=index)
+        temp_row = self._top_face.get_row(row_name=index)
 
         # top -> right -> down -> left -> top
         self._top_face.fill_row(
-            row_index=index,
-            input_list=self._left_face.get_col(col_index=index)
+            row_name=index,
+            input_list=self._left_face.get_col(col_name=index)
         )
         self._left_face.fill_col(
-            col_index=index,
+            col_name=index,
             input_list=self._down_face.get_row(
-                row_index=self._cube_max_index - index
+                row_name=self._cube_max_index - index
             )
         )
         self._down_face.fill_row(
-            row_index=self._cube_max_index - index,
+            row_name=self._cube_max_index - index,
             input_list=self._right_face.get_col(
-                col_index=self._cube_max_index - index
+                col_name=self._cube_max_index - index
             )
         )
         self._right_face.fill_col(
-            col_index=self._cube_max_index - index, input_list=temp_row
+            col_name=self._cube_max_index - index, input_list=temp_row
         )
 
     def _shift_in_y_z(self, col_index: int):
@@ -179,22 +179,22 @@ class Cube:
             self._right_face.rotate_by_angle(angle=90)
 
         # Save temp column.
-        temp_col = self._front_face.get_col(col_index=col_index)
+        temp_col = self._front_face.get_col(col_name=col_index)
 
         # down -> back -> top -> front -> down
         self._front_face.fill_col(
-            col_index=col_index,
-            input_list=self._top_face.get_col(col_index=col_index)
+            col_name=col_index,
+            input_list=self._top_face.get_col(col_name=col_index)
         )
         self._top_face.fill_col(
-            col_index=col_index,
-            input_list=self._back_face.get_col(col_index=col_index)
+            col_name=col_index,
+            input_list=self._back_face.get_col(col_name=col_index)
         )
         self._back_face.fill_col(
-            col_index=col_index,
-            input_list=self._down_face.get_col(col_index=col_index)
+            col_name=col_index,
+            input_list=self._down_face.get_col(col_name=col_index)
         )
-        self._down_face.fill_col(col_index=col_index, input_list=temp_col)
+        self._down_face.fill_col(col_name=col_index, input_list=temp_col)
 
     def _shift_in_x_y_by_num_movement(self, num_movement: int, row_index: int):
         """Shift the cube clockwise in x, y plane by number of movements.
