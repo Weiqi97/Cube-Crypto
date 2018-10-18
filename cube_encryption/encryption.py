@@ -18,7 +18,7 @@ class Encryption:
         :param cube_side_length: The desired length of cube side.
         """
         # Store the cube max index.
-        self._cube_max_index = cube_side_length - 1
+        self._cube_max_index = int(np.floor(cube_side_length / 2))
         # Find the size of each block.
         block_size = cube_side_length ** 2 * 6 * CUBIE_LENGTH
         # Convert the string to binary numbers.
@@ -107,22 +107,6 @@ class Encryption:
         """Return current un-padded Ascii string."""
         return self.binary_to_string(input_binary=self.get_un_pad_binary())
 
-    def _get_t_b_l_index(self) -> int:
-        """Get the index for movements: top, back and left."""
-        # Find index upper bound. Note: for odd side, center is exclusive.
-        upper_bound = np.ceil(self._cube_max_index / 2)
-        # Return the random selected index.
-        return np.random.randint(low=0, high=upper_bound)
-
-    def _get_d_f_r_index(self) -> int:
-        """Get the index for movements: down, front and right."""
-        # Find index lower bound. Note: for odd side, center is exclusive.
-        lower_bound = np.floor(self._cube_max_index / 2) + 1
-        # Return the random selected index.
-        return np.random.randint(
-            low=lower_bound, high=self._cube_max_index + 1
-        )
-
     def generate_random_key(self, length: int) -> List[Key]:
         """Generate a randomized key based on the input length.
 
@@ -132,13 +116,11 @@ class Encryption:
         # Helper function for generating one key.
         def generate_one_key() -> Key:
             """Generate key with random move, angle and index based on move."""
-            move = np.random.choice(CUBE_MOVE, size=1)[0]
-            angle = np.random.choice(MOVE_ANGLE, size=1)[0]
-            if move in ["right", "front", "back"]:
-                index = self._get_d_f_r_index()
-            else:
-                index = self._get_t_b_l_index()
-            return Key(move=move, angle=angle, index=index)
+            return Key(
+                move=np.random.choice(CUBE_MOVE, size=1)[0],
+                angle=np.random.choice(MOVE_ANGLE, size=1)[0],
+                index=np.random.randint(low=1, high=self._cube_max_index + 1)
+            )
 
         return [generate_one_key() for __ in range(length)]
 

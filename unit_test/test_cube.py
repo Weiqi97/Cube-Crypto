@@ -35,7 +35,7 @@ class TestCubeOperations:
     def test_top_shift(self):
         # This is the case where the top face rotate. (4 by 4 by 4 cube)
         cube = Cube(cube_input=self.cube_input, cube_side_length=4)
-        cube._shift_in_x_y(row_index=0)
+        cube._shift_t(index=2)
         assert cube.content == "01010101010101010101010101010101" \
                                "01010101010101010101010101010101" \
                                "30303030303030302020202020202020" \
@@ -49,61 +49,44 @@ class TestCubeOperations:
                                "60606060606060606060606060606060" \
                                "60606060606060606060606060606060"
 
-    def test_normal_x_y_shift(self):
-        # This is the case for a normal x - y rotate. (4 by 4 by 4 cube)
+    def test_down_shift(self):
+        # This is the case where the down face rotate. (4 by 4 by 4 cube)
         cube = Cube(cube_input=self.cube_input, cube_side_length=4)
-        cube._shift_in_x_y(row_index=1)
+        cube._shift_d(index=2)
         assert cube.content == "10101010101010101010101010101010" \
                                "10101010101010101010101010101010" \
-                               "20202020202020203030303030303030" \
                                "20202020202020202020202020202020" \
-                               "30303030303030304040404040404040" \
+                               "20202020202020205050505050505050" \
                                "30303030303030303030303030303030" \
-                               "40404040404040405050505050505050" \
+                               "30303030303030302020202020202020" \
                                "40404040404040404040404040404040" \
-                               "50505050505050502020202020202020" \
+                               "40404040404040403030303030303030" \
                                "50505050505050505050505050505050" \
-                               "60606060606060606060606060606060" \
-                               "60606060606060606060606060606060"
+                               "50505050505050504040404040404040" \
+                               "06060606060606060606060606060606" \
+                               "06060606060606060606060606060606"
 
-    def test_back_shift(self):
-        # This is the case where the back face rotate. (4 by 4 by 4 cube)
+    def test_right_shift(self):
+        # This is the case where the right face rotate. (4 by 4 by 4 cube)
         cube = Cube(cube_input=self.cube_input, cube_side_length=4)
-        cube._shift_in_x_z(index=0)
-        assert cube.content == "50505050505050501010101010101010" \
-                               "10101010101010101010101010101010" \
-                               "20202020202020202020202020202020" \
-                               "20202020202020202020202020202020" \
-                               "30303030303010103030303030301010" \
-                               "30303030303010103030303030301010" \
-                               "04040404040404040404040404040404" \
-                               "04040404040404040404040404040404" \
-                               "60605050505050506060505050505050" \
-                               "60605050505050506060505050505050" \
-                               "60606060606060606060606060606060" \
-                               "60606060606060603030303030303030"
-
-    def test_normal_x_z_shift(self):
-        # This is the case for a normal y - z rotate. (4 by 4 by 4 cube)
-        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
-        cube._shift_in_x_z(index=1)
-        assert cube.content == "10101010101010105050505050505050" \
-                               "10101010101010101010101010101010" \
-                               "20202020202020202020202020202020" \
-                               "20202020202020202020202020202020" \
-                               "30303030101030303030303010103030" \
-                               "30303030101030303030303010103030" \
-                               "40404040404040404040404040404040" \
-                               "40404040404040404040404040404040" \
-                               "50506060505050505050606050505050" \
-                               "50506060505050505050606050505050" \
-                               "60606060606060606060606060606060" \
-                               "30303030303030306060606060606060"
+        cube._shift_r(index=2)
+        assert cube.content == "10101010101020201010101010102020" \
+                               "10101010101020201010101010102020" \
+                               "20202020202060602020202020206060" \
+                               "20202020202060602020202020206060" \
+                               "03030303030303030303030303030303" \
+                               "03030303030303030303030303030303" \
+                               "40404040404010104040404040401010" \
+                               "40404040404010104040404040401010" \
+                               "50505050505050505050505050505050" \
+                               "50505050505050505050505050505050" \
+                               "60606060606040406060606060604040" \
+                               "60606060606040406060606060604040"
 
     def test_left_shift(self):
         # This is the case where the left face rotate. (4 by 4 by 4 cube)
         cube = Cube(cube_input=self.cube_input, cube_side_length=4)
-        cube._shift_in_y_z(col_index=0)
+        cube._shift_l(index=2)
         assert cube.content == "40401010101010104040101010101010" \
                                "40401010101010104040101010101010" \
                                "10102020202020201010202020202020" \
@@ -117,37 +100,56 @@ class TestCubeOperations:
                                "20206060606060602020606060606060" \
                                "20206060606060602020606060606060"
 
-    def test_normal_y_z_shift(self):
-        # This is the case for a normal y - z rotate. (4 by 4 by 4 cube)
+    def test_front_shift(self):
+        # This is the case where the front face rotate. (4 by 4 by 4 cube)
         cube = Cube(cube_input=self.cube_input, cube_side_length=4)
-        cube._shift_in_y_z(col_index=1)
-        assert cube.content == "10104040101010101010404010101010" \
-                               "10104040101010101010404010101010" \
-                               "20201010202020202020101020202020" \
-                               "20201010202020202020101020202020" \
+        cube._shift_f(index=2)
+        assert cube.content == "10101010101010101010101010101010" \
+                               "10101010101010105050505050505050" \
+                               "02020202020202020202020202020202" \
+                               "02020202020202020202020202020202" \
+                               "10103030303030301010303030303030" \
+                               "10103030303030301010303030303030" \
+                               "40404040404040404040404040404040" \
+                               "40404040404040404040404040404040" \
+                               "50505050505060605050505050506060" \
+                               "50505050505060605050505050506060" \
+                               "30303030303030306060606060606060" \
+                               "60606060606060606060606060606060"
+
+    def test_back_shift(self):
+        # This is the case where the back face rotate. (4 by 4 by 4 cube)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
+        cube._shift_b(index=2)
+        assert cube.content == "30303030303030301010101010101010" \
+                               "10101010101010101010101010101010" \
+                               "20202020202020202020202020202020" \
+                               "20202020202020202020202020202020" \
+                               "60603030303030306060303030303030" \
+                               "60603030303030306060303030303030" \
+                               "04040404040404040404040404040404" \
+                               "04040404040404040404040404040404" \
+                               "50505050505010105050505050501010" \
+                               "50505050505010105050505050501010" \
+                               "60606060606060606060606060606060" \
+                               "60606060606060605050505050505050"
+
+    def test_middle_shift(self):
+        # This is the case where the back face rotate. (4 by 4 by 4 cube)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
+        cube._shift_r(index=1)
+        assert cube.content == "10101010202010101010101020201010" \
+                               "10101010202010101010101020201010" \
+                               "20202020606020202020202060602020" \
+                               "20202020606020202020202060602020" \
                                "30303030303030303030303030303030" \
                                "30303030303030303030303030303030" \
-                               "40406060404040404040606040404040" \
-                               "40406060404040404040606040404040" \
+                               "40404040101040404040404010104040" \
+                               "40404040101040404040404010104040" \
                                "50505050505050505050505050505050" \
                                "50505050505050505050505050505050" \
-                               "60602020606060606060202060606060" \
-                               "60602020606060606060202060606060"
-
-    def test_x_y_shift_by_movement(self):
-        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
-        cube._shift_in_x_y_by_num_movement(num_movement=4, row_index=0)
-        assert cube.content == self.cube_input
-
-    def test_x_z_shift_by_movement(self):
-        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
-        cube._shift_in_x_z_by_num_movement(num_movement=4, index=0)
-        assert cube.content == self.cube_input
-
-    def test_y_z_shift_by_movement(self):
-        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
-        cube._shift_in_y_z_by_num_movement(num_movement=4, col_index=0)
-        assert cube.content == self.cube_input
+                               "60606060404060606060606040406060" \
+                               "60606060404060606060606040406060"
 
 
 class TestCubeShift:
@@ -167,7 +169,7 @@ class TestCubeShift:
     def test_left_90(self):
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
-        cube.shift(Key(move=CubeMove.left.value, angle=90, index=0))
+        cube.shift(Key(move=CubeMove.left.value, angle=90, index=1))
         assert cube.content == \
             "404010104040101010102020101020203030303030303030" \
             "606040406060404005050505050505052020606020206060"
@@ -177,21 +179,21 @@ class TestCubeShift:
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.front.value, angle=90, index=1))
         assert cube.content == \
-            "101010103030303002020202020202026060303060603030" \
-            "404040404040404050501010505010105050505060606060"
+            "101010105050505002020202020202021010303010103030" \
+            "404040404040404050506060505060603030303060606060"
 
     def test_back_90(self):
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
-        cube.shift(Key(move=CubeMove.back.value, angle=90, index=0))
+        cube.shift(Key(move=CubeMove.back.value, angle=90, index=1))
         assert cube.content == \
-            "505050501010101020202020202020203030101030301010" \
-            "040404040404040460605050606050506060606030303030"
+            "303030301010101020202020202020206060303060603030" \
+            "040404040404040450501010505010106060606050505050"
 
     def test_top_90(self):
         # Create the cube.
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
-        cube.shift(Key(move=CubeMove.top.value, angle=90, index=0))
+        cube.shift(Key(move=CubeMove.top.value, angle=90, index=1))
         assert cube.content == \
             "010101010101010130303030202020204040404030303030" \
             "505050504040404020202020505050506060606060606060"

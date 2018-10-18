@@ -22,7 +22,7 @@ class Cube:
 
         # Save the cube side length and cube max index.
         self._side_length = cube_side_length
-        self._cube_max_index = cube_side_length - 1
+        self._cube_max_index = int(np.floor(cube_side_length / 2))
 
         # Split the cube input into six arrays.
         cube_input_list = np.array_split(
@@ -97,171 +97,199 @@ class Cube:
             cube_input=shifted_content, cube_side_length=self._side_length
         )
 
-    def _shift_in_x_y(self, row_index: int):
-        """Shift the cube clockwise in x, y plane. (0 is top).
+    def _shift_t(self, index: int):
+        """Shift the top layer with the index clockwise by 90 degrees.
 
-        :param row_index: The index of the shifting row.
+        :param index: The layer selected for the move.
         """
-        # Rotate top face cubies if the most top layer selected.
-        if row_index == 0:
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
             self._top_face.rotate_by_angle(angle=90)
 
-        # Rotate down face cubies if the most down layer selected.
-        if row_index == self._cube_max_index:
-            self._down_face.rotate_by_angle(angle=90)
-
         # Save temp row.
-        temp_row = self._left_face.get_row(row_index=row_index)
+        temp_row = self._left_face.get_row(row_name=f"T{index}")
 
         # back -> right -> front -> left -> back
         self._left_face.fill_row(
-            row_index=row_index,
-            input_list=self._front_face.get_row(row_index=row_index)
+            row_name=f"T{index}",
+            input_list=self._front_face.get_row(row_name=f"T{index}")
         )
         self._front_face.fill_row(
-            row_index=row_index,
-            input_list=self._right_face.get_row(row_index=row_index)
+            row_name=f"T{index}",
+            input_list=self._right_face.get_row(row_name=f"T{index}")
         )
         self._right_face.fill_row(
-            row_index=row_index,
-            input_list=self._back_face.get_row(row_index=row_index)
+            row_name=f"T{index}",
+            input_list=self._back_face.get_row(row_name=f"T{index}")
         )
-        self._back_face.fill_row(row_index=row_index, input_list=temp_row)
+        self._back_face.fill_row(row_name=f"T{index}", input_list=temp_row)
 
-    def _shift_in_x_z(self, index: int):
-        """Shift the cube clockwise in x, z plane. (0 is back).
+    def _shift_d(self, index: int):
+        """Shift the down layer with the index clockwise by 90 degrees.
 
-        :param index: The index of the shifting column/row.
+        :param index: The layer selected for the move.
         """
-        # Rotate back face cubies if the most back layer selected.
-        if index == 0:
-            self._back_face.rotate_by_angle(angle=90)
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
+            self._down_face.rotate_by_angle(angle=90)
 
-        # Rotate front face cubies if the most right layer selected.
+        # Save temp row.
+        temp_row = self._left_face.get_row(row_name=f"D{index}")
+
+        # back -> left -> front -> right -> back
+        self._left_face.fill_row(
+            row_name=f"D{index}",
+            input_list=self._back_face.get_row(row_name=f"D{index}")
+        )
+        self._back_face.fill_row(
+            row_name=f"D{index}",
+            input_list=self._right_face.get_row(row_name=f"D{index}")
+        )
+        self._right_face.fill_row(
+            row_name=f"D{index}",
+            input_list=self._front_face.get_row(row_name=f"D{index}")
+        )
+        self._front_face.fill_row(row_name=f"D{index}", input_list=temp_row)
+
+    def _shift_f(self, index: int):
+        """Shift the front layer with the index clockwise by 90 degrees.
+
+        :param index: The layer selected for the move.
+        """
+        # If the most outer layer was selected, rotate the corresponding face.
         if index == self._cube_max_index:
             self._front_face.rotate_by_angle(angle=90)
 
-        # Save temp column.
-        temp_row = self._top_face.get_row(row_index=index)
+        # Save temp row.
+        temp_row = list(self._top_face.get_row(row_name=f"D{index}"))
 
         # top -> right -> down -> left -> top
         self._top_face.fill_row(
-            row_index=index,
-            input_list=self._left_face.get_col(col_index=index)
+            row_name=f"D{index}",
+            input_list=list(self._left_face.get_col(col_name=f"R{index}"))
         )
         self._left_face.fill_col(
-            col_index=index,
-            input_list=self._down_face.get_row(
-                row_index=self._cube_max_index - index
-            )
+            col_name=f"R{index}",
+            input_list=list(self._down_face.get_row(row_name=f"T{index}"))
         )
         self._down_face.fill_row(
-            row_index=self._cube_max_index - index,
-            input_list=self._right_face.get_col(
-                col_index=self._cube_max_index - index
-            )
+            row_name=f"T{index}",
+            input_list=list(self._right_face.get_col(col_name=f"L{index}"))
+        )
+        self._right_face.fill_col(col_name=f"L{index}", input_list=temp_row)
+
+    def _shift_b(self, index: int):
+        """Shift the back layer with the index clockwise by 90 degrees.
+
+        :param index: The layer selected for the move.
+        """
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
+            self._back_face.rotate_by_angle(angle=90)
+
+        # Save temp row.
+        temp_row = list(self._top_face.get_row(row_name=f"T{index}"))
+
+        # top -> left -> down -> right -> top
+        self._top_face.fill_row(
+            row_name=f"T{index}",
+            input_list=list(self._right_face.get_col(col_name=f"L{index}"))
         )
         self._right_face.fill_col(
-            col_index=self._cube_max_index - index, input_list=temp_row
+            col_name=f"L{index}",
+            input_list=list(self._down_face.get_row(row_name=f"D{index}"))
         )
+        self._down_face.fill_row(
+            row_name=f"D{index}",
+            input_list=list(self._left_face.get_col(col_name=f"R{index}"))
+        )
+        self._left_face.fill_col(col_name=f"R{index}", input_list=temp_row)
 
-    def _shift_in_y_z(self, col_index: int):
-        """Shift the cube clockwise in y, z plane. (0 is left).
+    def _shift_r(self, index: int):
+        """Shift the right layer with the index clockwise by 90 degrees.
 
-        :param col_index: The index of the shifting column.
+        :param index: The layer selected for the move.
         """
-        # Rotate left face cubies if the most left layer selected.
-        if col_index == 0:
-            self._left_face.rotate_by_angle(angle=90)
-
-        # Rotate right face cubies if the most right layer selected.
-        if col_index == self._cube_max_index:
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
             self._right_face.rotate_by_angle(angle=90)
 
         # Save temp column.
-        temp_col = self._front_face.get_col(col_index=col_index)
+        temp_col = self._front_face.get_col(col_name=f"R{index}")
 
-        # down -> back -> top -> front -> down
+        # top -> back -> down -> front -> top
         self._front_face.fill_col(
-            col_index=col_index,
-            input_list=self._top_face.get_col(col_index=col_index)
+            col_name=f"R{index}",
+            input_list=self._down_face.get_col(col_name=f"R{index}")
         )
-        self._top_face.fill_col(
-            col_index=col_index,
-            input_list=self._back_face.get_col(col_index=col_index)
+        self._down_face.fill_col(
+            col_name=f"R{index}",
+            input_list=self._back_face.get_col(col_name=f"R{index}")
         )
         self._back_face.fill_col(
-            col_index=col_index,
-            input_list=self._down_face.get_col(col_index=col_index)
+            col_name=f"R{index}",
+            input_list=self._top_face.get_col(col_name=f"R{index}")
         )
-        self._down_face.fill_col(col_index=col_index, input_list=temp_col)
+        self._top_face.fill_col(col_name=f"R{index}", input_list=temp_col)
 
-    def _shift_in_x_y_by_num_movement(self, num_movement: int, row_index: int):
-        """Shift the cube clockwise in x, y plane by number of movements.
+    def _shift_l(self, index: int):
+        """Shift the left layer with the index clockwise by 90 degrees.
 
-        :param num_movement: The number of movements should be done.
-        :param row_index: The index of the shifting row.
+        :param index: The layer selected for the move.
         """
-        for _ in range(num_movement):
-            self._shift_in_x_y(row_index=row_index)
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
+            self._left_face.rotate_by_angle(angle=90)
 
-    def _shift_in_x_z_by_num_movement(self, num_movement: int, index: int):
-        """Shift the cube clockwise in x, y plane by number of movements.
+        # Save temp column.
+        temp_col = self._front_face.get_col(col_name=f"L{index}")
 
-        :param num_movement: The number of movements should be done.
-        :param index: The index of the shifting row/column.
-        """
-        for _ in range(num_movement):
-            self._shift_in_x_z(index=index)
-
-    def _shift_in_y_z_by_num_movement(self, num_movement: int, col_index: int):
-        """Shift the cube clockwise in x, y plane by number of movements.
-
-        :param num_movement: The number of movements should be done.
-        :param col_index: The index of the shifting column.
-        """
-        for _ in range(num_movement):
-            self._shift_in_y_z(col_index=col_index)
+        # top -> front -> down -> back -> top
+        self._front_face.fill_col(
+            col_name=f"L{index}",
+            input_list=self._top_face.get_col(col_name=f"L{index}")
+        )
+        self._top_face.fill_col(
+            col_name=f"L{index}",
+            input_list=self._back_face.get_col(col_name=f"L{index}")
+        )
+        self._back_face.fill_col(
+            col_name=f"L{index}",
+            input_list=self._down_face.get_col(col_name=f"L{index}")
+        )
+        self._down_face.fill_col(col_name=f"L{index}", input_list=temp_col)
 
     def shift(self, key: Key):
         """Shift the cube with a move in certain amount of angle.
 
         :param key: A named tuple that holds information for one shift.
         """
+        # Calculate the number of movements.
+        number_of_movements = int(key.angle / 90)
         # Perform moves based on the inputs.
         if key.move == CubeMove.left.value:
-            self._shift_in_y_z_by_num_movement(
-                num_movement=int(key.angle / 90),
-                col_index=key.index
-            )
+            for _ in range(number_of_movements):
+                self._shift_l(index=key.index)
+
         elif key.move == CubeMove.right.value:
-            self._shift_in_y_z_by_num_movement(
-                num_movement=int((360 - key.angle) / 90),
-                col_index=key.index
-            )
+            for _ in range(number_of_movements):
+                self._shift_r(index=key.index)
+
         elif key.move == CubeMove.top.value:
-            self._shift_in_x_y_by_num_movement(
-                num_movement=int(key.angle / 90),
-                row_index=key.index
-            )
+            for _ in range(number_of_movements):
+                self._shift_t(index=key.index)
 
         elif key.move == CubeMove.down.value:
-            self._shift_in_x_y_by_num_movement(
-                num_movement=int((360 - key.angle) / 90),
-                row_index=key.index
-            )
+            for _ in range(number_of_movements):
+                self._shift_d(index=key.index)
 
         elif key.move == CubeMove.back.value:
-            self._shift_in_x_z_by_num_movement(
-                num_movement=int(key.angle / 90),
-                index=key.index
-            )
+            for _ in range(number_of_movements):
+                self._shift_b(index=key.index)
 
         elif key.move == CubeMove.front.value:
-            self._shift_in_x_z_by_num_movement(
-                num_movement=int((360 - key.angle) / 90),
-                index=key.index
-            )
+            for _ in range(number_of_movements):
+                self._shift_f(index=key.index)
 
         # If the input movement was not defined.
         else:
