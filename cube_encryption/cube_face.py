@@ -72,7 +72,7 @@ class CubeFace:
             for move_index in range(1, int(cube_side_length / 2) + 1):
                 column_queue.appendleft(f"L{move_index}")
                 column_queue.append(f"R{move_index}")
-        
+
         # If side length is odd, start the queue with a "C" at the center.
         else:
             column_queue = deque("C")
