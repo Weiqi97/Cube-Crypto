@@ -1,9 +1,9 @@
 """Define contents and operations of one cube face."""
-from collections import deque
 
 import numpy as np
 import pandas as pd
 from typing import List
+from collections import deque
 from cube_encryption.cubie import Cubie
 from cube_encryption.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
     WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
