@@ -1,7 +1,7 @@
 from collections import deque
 
 from cube_encryption.cubie import Cubie
-from cube_encryption.cube_face import CubeFace
+from cube_encryption.cube_face_for_cubie import CubeFace
 from cube_encryption.constants import WRONG_CUBE_FACE_INPUT, \
     WRONG_SIDE_LENGTH, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
