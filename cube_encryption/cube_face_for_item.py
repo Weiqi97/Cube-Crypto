@@ -1,4 +1,4 @@
-"""Define contents and operations of one cube face."""
+"""Define contents and operations of one cube face that contains items."""
 
 import numpy as np
 import pandas as pd
@@ -96,12 +96,12 @@ class CubeFace:
         return index_queue
 
     def get_row(self, row_name: str) -> list:
-        """Get one row in the cube face by index as a list of cubies."""
+        """Get one row in the cube face by index as a list."""
         # Return a deep copy of the desired row.
         return self._face_item_frame.loc[row_name].copy()
 
     def fill_row(self, row_name: str, input_list: list):
-        """Fill one row in the cube face by index with a list of cubies."""
+        """Fill one row in the cube face by index with a list."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         # Error check. The index is not out of the list.
@@ -110,12 +110,12 @@ class CubeFace:
         self._face_item_frame.loc[row_name] = input_list
 
     def get_col(self, col_name: str) -> list:
-        """Get one column in the cube face by index as a list of cubies."""
+        """Get one column in the cube face by index as a list."""
         # Return a deep copy of the desired row.
         return self._face_item_frame[col_name].copy()
 
     def fill_col(self, col_name: str, input_list: list):
-        """Fill one column in the cube face by index with a list of cubies."""
+        """Fill one column in the cube face by index with a list."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         # Error check. The index is not out of the list.

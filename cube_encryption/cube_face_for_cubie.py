@@ -1,4 +1,4 @@
-"""Define contents and operations of one cube face."""
+"""Define contents and operations of one cube face that contains cubies."""
 
 import numpy as np
 import pandas as pd
