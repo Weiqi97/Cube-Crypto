@@ -147,7 +147,18 @@ class CubeFaceForCubie:
         return "".join(["|", "|".join(cubie_str_row), "|"])
 
     def rotate_by_angle(self, angle: int):
-        """Rotate each cubie within a cube face by the desired angle."""
+        """Rotate the cube face and its cubies by the desired angle."""
         # Iterate over and rotate each cubie in the cube face.
         for cubie in self._face_cubie_frame.values.flat:
             cubie.rotate_by_angle(angle=angle)
+
+        # Rotate the face itself.
+        self._face_cubie_frame.update(
+            pd.DataFrame(
+                data=np.rot90(
+                    self._face_cubie_frame.values, int(4 - angle / 90)
+                ),
+                index=self._face_cubie_frame.index,
+                columns=self._face_cubie_frame.columns
+            )
+        )

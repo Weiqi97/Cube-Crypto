@@ -96,7 +96,7 @@ class TestCubeFace:
             cube_side_length=3
         )
         cube_face.rotate_by_angle(angle=90)
-        assert cube_face.face_string == "100000011010010101010101010101010101"
+        assert cube_face.face_string == "010101011000010101010001010101011010"
 
 
 class TestCubeFaceErrorCheck:

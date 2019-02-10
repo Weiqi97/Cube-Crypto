@@ -73,19 +73,19 @@ class CubeForItem:
             self._left_face.get_item_list + \
             self._down_face.get_item_list
 
-    def shift_cubie_content(self):
+    def shift_content(self):
         """Shift the cube binary representation to right by one bit."""
         # Obtain the shifted content by padding the last bit to the first.
-        shifted_content = self.content[-1] + self.content[:-1]
+        shifted_content = [self.content[-1]] + self.content[:-1]
         # Re-Init the class with new content.
         self.__init__(
             cube_input=shifted_content, cube_side_length=self._side_length
         )
 
-    def shift_cubie_content_back(self):
+    def shift_content_back(self):
         """Shift the cube binary representation to left by one bit."""
         # Obtain the shifted content by padding the first bit to the last.
-        shifted_content = self.content[1:] + self.content[0]
+        shifted_content = self.content[1:] + [self.content[0]]
         # Re-Init the class with new content.
         self.__init__(
             cube_input=shifted_content, cube_side_length=self._side_length
@@ -96,6 +96,10 @@ class CubeForItem:
 
         :param index: The layer selected for the move.
         """
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
+            self._top_face.rotate_by_angle(angle=90)
+
         # Save temp row.
         temp_row = self._left_face.get_row(row_name=f"T{index}")
 
@@ -119,6 +123,10 @@ class CubeForItem:
 
         :param index: The layer selected for the move.
         """
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
+            self._down_face.rotate_by_angle(angle=90)
+
         # Save temp row.
         temp_row = self._left_face.get_row(row_name=f"D{index}")
 
@@ -142,6 +150,10 @@ class CubeForItem:
 
         :param index: The layer selected for the move.
         """
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
+            self._front_face.rotate_by_angle(angle=90)
+
         # Save temp row.
         temp_row = list(self._top_face.get_row(row_name=f"D{index}"))
 
@@ -165,6 +177,10 @@ class CubeForItem:
 
         :param index: The layer selected for the move.
         """
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
+            self._back_face.rotate_by_angle(angle=90)
+
         # Save temp row.
         temp_row = list(self._top_face.get_row(row_name=f"T{index}"))
 
@@ -188,6 +204,10 @@ class CubeForItem:
 
         :param index: The layer selected for the move.
         """
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
+            self._right_face.rotate_by_angle(angle=90)
+
         # Save temp column.
         temp_col = self._front_face.get_col(col_name=f"R{index}")
 
@@ -211,6 +231,10 @@ class CubeForItem:
 
         :param index: The layer selected for the move.
         """
+        # If the most outer layer was selected, rotate the corresponding face.
+        if index == self._cube_max_index:
+            self._left_face.rotate_by_angle(angle=90)
+
         # Save temp column.
         temp_col = self._front_face.get_col(col_name=f"L{index}")
 

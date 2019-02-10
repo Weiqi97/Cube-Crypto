@@ -39,7 +39,7 @@ class TestCubeFace:
             cube_side_length=3
         )
         cube_face.fill_row(row_name="T1", input_list=[100, 200, 300])
-        # Get rows and check if they contain desired value.
+        # Get row and check if it contains desired value.
         row_t1 = cube_face.get_row(row_name="T1")
         assert row_t1[0] == 100
 
@@ -57,9 +57,22 @@ class TestCubeFace:
             cube_side_length=3
         )
         cube_face.fill_col(col_name="R1", input_list=[100, 200, 300])
-        # Get cols and check if they contain desired value.
+        # Get col and check if it contains desired value.
         col_r1 = cube_face.get_col(col_name="R1")
         assert col_r1[1] == 200
+
+    def test_cube_rotate(self):
+        # Create new testing cube face since the value get changed.
+        cube_face = CubeFaceForItem(
+            cube_face_input=self.face_input,
+            cube_side_length=3
+        )
+        # Rotate the face and check if it contains desired value.
+        cube_face.rotate_by_angle(angle=90)
+        assert np.array_equal(
+            cube_face.get_item_list,
+            [6, 3, 0, 7, 4, 1, 8, 5, 2]
+        )
 
 
 class TestCubeFaceErrorCheck:

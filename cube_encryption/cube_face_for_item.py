@@ -37,7 +37,7 @@ class CubeFaceForItem:
     def get_item_list(self) -> list:
         """Get the entire cube face as a list."""
         # Concatenate the list to a string.
-        return self._face_item_frame.values.flat
+        return list(self._face_item_frame.values.flat)
 
     @staticmethod
     def get_frame_column(cube_side_length: int) -> deque:
@@ -117,3 +117,16 @@ class CubeFaceForItem:
             WRONG_FRAME_COLUMN_NAME
         # Fill the desired column.
         self._face_item_frame[col_name] = input_list
+
+    def rotate_by_angle(self, angle: int):
+        """Rotate the cube face by the desired angle."""
+        # Rotate the face itself.
+        self._face_item_frame.update(
+            pd.DataFrame(
+                data=np.rot90(
+                    self._face_item_frame.values, int(4 - angle / 90)
+                ),
+                index=self._face_item_frame.index,
+                columns=self._face_item_frame.columns
+            )
+        )

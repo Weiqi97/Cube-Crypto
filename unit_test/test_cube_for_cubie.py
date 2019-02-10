@@ -156,56 +156,56 @@ class TestCubeOperations:
 class TestCubeShift:
     # Setup testing inputs.
     cube_input = \
-        "101010101010101020202020202020203030303030303030" \
-        "404040404040404050505050505050506060606060606060"
+        "123456789012345678901234567890123456789012345678" \
+        "123456789012345678901234567890123456789012345678"
 
     def test_right_90(self):
         # Create the cube.
         cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.right.value, angle=90, index=1))
         assert cube.content == \
-            "101020201010202020206060202060600303030303030303" \
-            "404010104040101050505050505050506060404060604040"
+            "123412349012901278907890567856784123634585670789" \
+            "123456789012345678901234567890123456567812343456"
 
     def test_left_90(self):
         # Create the cube.
         cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.left.value, angle=90, index=1))
         assert cube.content == \
-            "404010104040101010102020101020203030303030303030" \
-            "606040406060404005050505050505052020606020206060"
+            "123456789012345612341234901290123456789012345678" \
+            "345656781234345685670789290141237890789056785678"
 
     def test_front_90(self):
         # Create the cube.
         cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.front.value, angle=90, index=1))
         assert cube.content == \
-            "101010105050505002020202020202021010303010103030" \
-            "404040404040404050506060505060603030303060606060"
+            "123456781234901285670789290141239012789034565678" \
+            "123456789012345678903456567878903456123412345678"
 
     def test_back_90(self):
         # Create the cube.
         cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.back.value, angle=90, index=1))
         assert cube.content == \
-            "303030301010101020202020202020206060303060603030" \
-            "040404040404040450501010505010106060606050505050"
+            "345612349012345678901234567890121234789056785678" \
+            "290141236345856778901234567856783456789012349012"
 
     def test_top_90(self):
         # Create the cube.
         cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.top.value, angle=90, index=1))
         assert cube.content == \
-            "010101010101010130303030202020204040404030303030" \
-            "505050504040404020202020505050506060606060606060"
+            "290141236345856734567890567890121234567812345678" \
+            "789012349012345678901234567890123456789012345678"
 
     def test_down_90(self):
         # Create the cube.
         cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.down.value, angle=90, index=1))
         assert cube.content == \
-            "101010101010101020202020505050503030303020202020" \
-            "404040403030303050505050404040400606060606060606"
+            "123456789012345678901234567890123456789056789012" \
+            "123456781234567878901234901234564123634585670789"
 
     def test_special(self):
         # Create the cube.
