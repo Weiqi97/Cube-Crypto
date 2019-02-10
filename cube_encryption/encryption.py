@@ -4,7 +4,7 @@ import binascii
 import numpy as np
 from typing import List
 from collections import deque
-from cube_encryption.cube import Cube
+from cube_encryption.cube_for_cubie import CubeForCubie
 from cube_encryption.constants import CUBE_MOVE, MOVE_ANGLE, CUBIE_LENGTH, Key
 
 
@@ -32,7 +32,7 @@ class Encryption:
 
         # Create the cube object.
         self._cubes = [
-            Cube(
+            CubeForCubie(
                 cube_input=message_chunk, cube_side_length=cube_side_length
             )
             for message_chunk in np.array_split(

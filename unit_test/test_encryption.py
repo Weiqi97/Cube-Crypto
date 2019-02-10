@@ -9,6 +9,7 @@ class TestEncryptionOneCube:
     # Set the testing protocol.
     protocol = Encryption(message=message, cube_side_length=4)
 
+    # noinspection PyProtectedMember
     def test_init(self):
         # Check initialization.
         assert len(self.protocol._key) == 0

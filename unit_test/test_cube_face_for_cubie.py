@@ -1,7 +1,6 @@
 from collections import deque
-
 from cube_encryption.cubie import Cubie
-from cube_encryption.cube_face import CubeFace
+from cube_encryption.cube_face_for_cubie import CubeFaceForCubie
 from cube_encryption.constants import WRONG_CUBE_FACE_INPUT, \
     WRONG_SIDE_LENGTH, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
@@ -9,7 +8,10 @@ from cube_encryption.constants import WRONG_CUBE_FACE_INPUT, \
 class TestCubeFace:
     # Setup testing input.
     face_input = list("000100100101101010101010101010101010")
-    cube_face = CubeFace(cube_face_input=face_input, cube_side_length=3)
+    cube_face = CubeFaceForCubie(
+        cube_face_input=face_input,
+        cube_side_length=3
+    )
 
     def test_cube_face(self):
         assert self.cube_face.face_string == "".join(self.face_input)
@@ -35,7 +37,7 @@ class TestCubeFace:
 
     def test_cube_fill_row(self):
         # Create new testing cube face since the value get changed.
-        cube_face = CubeFace(
+        cube_face = CubeFaceForCubie(
             cube_face_input=self.face_input,
             cube_side_length=3
         )
@@ -62,7 +64,7 @@ class TestCubeFace:
 
     def test_cube_fill_col(self):
         # Create new testing cube face since the value get changed.
-        cube_face = CubeFace(
+        cube_face = CubeFaceForCubie(
             cube_face_input=self.face_input,
             cube_side_length=3
         )
@@ -89,22 +91,28 @@ class TestCubeFace:
 
     def test_cube_face_rotate(self):
         # Create new testing cube face since the value get changed.
-        cube_face = CubeFace(
+        cube_face = CubeFaceForCubie(
             cube_face_input=self.face_input,
             cube_side_length=3
         )
         cube_face.rotate_by_angle(angle=90)
-        assert cube_face.face_string == "100000011010010101010101010101010101"
+        assert cube_face.face_string == "010101011000010101010001010101011010"
 
 
 class TestCubeFaceErrorCheck:
     # Setup testing input.
     face_input = list("000100100101101010101010101010101010")
-    cube_face = CubeFace(cube_face_input=face_input, cube_side_length=3)
+    cube_face = CubeFaceForCubie(
+        cube_face_input=face_input,
+        cube_side_length=3
+    )
 
     def test_init(self):
         try:
-            CubeFace(cube_face_input=list("abracadabra"), cube_side_length=3)
+            CubeFaceForCubie(
+                cube_face_input=list("abracadabra"),
+                cube_side_length=3
+            )
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_CUBE_FACE_INPUT

@@ -1,23 +1,22 @@
 """Define contents and operations of the entire cube."""
 
 import numpy as np
-from cube_encryption.cube_face import CubeFace
-from cube_encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
-    CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, Key
+from cube_encryption.cube_face_for_item import CubeFaceForItem
+from cube_encryption.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
+    WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 
-class Cube:
+class CubeForItem:
     """Create a full cube with desired side length on inputs."""
 
-    def __init__(self, cube_input: str, cube_side_length: int):
+    def __init__(self, cube_input: list, cube_side_length: int):
         """Initialize entire cube with a string of desired length.
 
         :param cube_input: The binary representation of the plain text.
         :param cube_side_length: The desired side length of the cube.
         """
         # Check length of the input.
-        assert len(cube_input) == cube_side_length ** 2 * 6 * CUBIE_LENGTH, \
-            WRONG_CUBE_INPUT
+        assert len(cube_input) == cube_side_length ** 2 * 6, WRONG_CUBE_INPUT
         assert cube_side_length > 1, WRONG_CUBE_SIDE_LENGTH
 
         # Save the cube side length and cube max index.
@@ -25,9 +24,7 @@ class Cube:
         self._cube_max_index = int(np.floor(cube_side_length / 2))
 
         # Split the cube input into six arrays.
-        cube_input_list = np.array_split(
-            ary=list(cube_input), indices_or_sections=6
-        )
+        cube_input_list = np.array_split(ary=cube_input, indices_or_sections=6)
 
         # Assume that we fill the cube in the following order:
         #   - 1. Top face
@@ -36,62 +33,59 @@ class Cube:
         #   - 4. Back face
         #   - 5. Left face
         #   - 6. Down face
-        self._top_face = CubeFace(
+        self._top_face = CubeFaceForItem(
             cube_face_input=cube_input_list[0],
             cube_side_length=cube_side_length
         )
-        self._front_face = CubeFace(
+        self._front_face = CubeFaceForItem(
             cube_face_input=cube_input_list[1],
             cube_side_length=cube_side_length
         )
-        self._right_face = CubeFace(
+        self._right_face = CubeFaceForItem(
             cube_face_input=cube_input_list[2],
             cube_side_length=cube_side_length
         )
-        self._back_face = CubeFace(
+        self._back_face = CubeFaceForItem(
             cube_face_input=cube_input_list[3],
             cube_side_length=cube_side_length
         )
-        self._left_face = CubeFace(
+        self._left_face = CubeFaceForItem(
             cube_face_input=cube_input_list[4],
             cube_side_length=cube_side_length
         )
-        self._down_face = CubeFace(
+        self._down_face = CubeFaceForItem(
             cube_face_input=cube_input_list[5],
             cube_side_length=cube_side_length
         )
 
     @property
-    def content(self) -> str:
-        """Format all cubies into a continuous string.
+    def content(self) -> list:
+        """Put all face contents in to a list.
 
-        :return: A string contains all cubies.
+        :return: A list with all items in the correct order.
         """
         # Get all cube faces as string in the right order.
         return \
-            f"{self._top_face.face_string}" \
-            f"{self._front_face.face_string}" \
-            f"{self._right_face.face_string}" \
-            f"{self._back_face.face_string}" \
-            f"{self._left_face.face_string}" \
-            f"{self._down_face.face_string}"
+            self._top_face.get_item_list + \
+            self._front_face.get_item_list + \
+            self._right_face.get_item_list + \
+            self._back_face.get_item_list + \
+            self._left_face.get_item_list + \
+            self._down_face.get_item_list
 
-    def shift_cubie_content(self):
+    def shift_content(self):
         """Shift the cube binary representation to right by one bit."""
         # Obtain the shifted content by padding the last bit to the first.
-        shifted_binary_content = f"{self.content[-1]}" \
-                                 f"{self.content[:-1]}"
+        shifted_content = [self.content[-1]] + self.content[:-1]
         # Re-Init the class with new content.
         self.__init__(
-            cube_input=shifted_binary_content,
-            cube_side_length=self._side_length
+            cube_input=shifted_content, cube_side_length=self._side_length
         )
 
-    def shift_cubie_content_back(self):
+    def shift_content_back(self):
         """Shift the cube binary representation to left by one bit."""
         # Obtain the shifted content by padding the first bit to the last.
-        shifted_content = f"{self.content[1:]}" \
-                          f"{self.content[0]}"
+        shifted_content = self.content[1:] + [self.content[0]]
         # Re-Init the class with new content.
         self.__init__(
             cube_input=shifted_content, cube_side_length=self._side_length

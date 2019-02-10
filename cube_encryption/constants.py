@@ -38,14 +38,14 @@ class CubeMove(Enum):
 # Error messages for the Cubie class.
 WRONG_CUBIE_INPUT = "The input length does not match the length of a cubie."
 
-# Error messages for the CubeFace class.
+# Error messages for the CubeFaceForItem class.
 WRONG_SIDE_LENGTH = "The input length does not match the cube side length."
 WRONG_FRAME_INDEX_NAME = "The input index name is not in the frame index."
 WRONG_FRAME_COLUMN_NAME = "The input column name is not in the frame column."
 WRONG_CUBE_FACE_INPUT = "The input length does not match the desired length " \
                         "of a cube face"
 
-# Error messages for the Cube class.
+# Error messages for the CubeForCubie class.
 WRONG_CUBE_MOVE = "The input cube move is undefined."
 WRONG_CUBE_SIDE_LENGTH = "The input cube side length is too short."
 WRONG_CUBE_INPUT = "The input length does not match size of the entire cube."

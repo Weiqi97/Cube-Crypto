@@ -1,15 +1,13 @@
-"""Define contents and operations of one cube face."""
+"""Define contents and operations of one cube face that contains items."""
 
 import numpy as np
 import pandas as pd
-from typing import List
 from collections import deque
-from cube_encryption.cubie import Cubie
-from cube_encryption.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
+from cube_encryption.constants import WRONG_SIDE_LENGTH, \
     WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
 
-class CubeFace:
+class CubeFaceForItem:
     """Create a cube face with desired side length on inputs."""
 
     def __init__(self, cube_face_input: list, cube_side_length):
@@ -19,27 +17,16 @@ class CubeFace:
         :param cube_side_length: The desired side length of the cube.
         """
         # Error check. The input length should be cube face size times 4.
-        assert len(cube_face_input) == cube_side_length ** 2 * CUBIE_LENGTH, \
+        assert len(cube_face_input) == cube_side_length ** 2, \
             WRONG_CUBE_FACE_INPUT
 
         # Save the cube side length.
         self._side_length = cube_side_length
 
-        # Split the cube face input to chunks with length of 4.
-        face_input_list = np.array_split(
-            ary=cube_face_input,
-            indices_or_sections=cube_side_length ** 2
-        )
-
-        # Create a list of cubies.
-        face_input_cubie_list = [
-            Cubie(cubie_input=cubie_input) for cubie_input in face_input_list
-        ]
-
         # Fill in the cube face matrix with the cubies.
-        self._face_cubie_frame = pd.DataFrame(
+        self._face_item_frame = pd.DataFrame(
             data=np.array_split(
-                ary=face_input_cubie_list,
+                ary=cube_face_input,
                 indices_or_sections=cube_side_length
             ),
             index=self.get_frame_index(cube_side_length=cube_side_length),
@@ -47,16 +34,10 @@ class CubeFace:
         )
 
     @property
-    def face_string(self) -> str:
-        """Get the entire cube face as a concatenated string."""
-        # Convert each cubie to its string format.
-        cubie_strings = [
-            cubie.get_content_string()
-            for cubie in self._face_cubie_frame.values.flat
-        ]
-
+    def get_item_list(self) -> list:
+        """Get the entire cube face as a list."""
         # Concatenate the list to a string.
-        return "".join(cubie_strings)
+        return list(self._face_item_frame.values.flat)
 
     @staticmethod
     def get_frame_column(cube_side_length: int) -> deque:
@@ -108,46 +89,44 @@ class CubeFace:
 
         return index_queue
 
-    def get_row(self, row_name: str) -> List[Cubie]:
-        """Get one row in the cube face by index as a list of cubies."""
+    def get_row(self, row_name: str) -> list:
+        """Get one row in the cube face by index as a list."""
         # Return a deep copy of the desired row.
-        return self._face_cubie_frame.loc[row_name].copy()
+        return self._face_item_frame.loc[row_name].copy()
 
-    def fill_row(self, row_name: str, input_list: List[Cubie]):
-        """Fill one row in the cube face by index with a list of cubies."""
+    def fill_row(self, row_name: str, input_list: list):
+        """Fill one row in the cube face by index with a list."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         # Error check. The index is not out of the list.
-        assert row_name in self._face_cubie_frame.index, WRONG_FRAME_INDEX_NAME
+        assert row_name in self._face_item_frame.index, WRONG_FRAME_INDEX_NAME
         # Fill the desired row.
-        self._face_cubie_frame.loc[row_name] = input_list
+        self._face_item_frame.loc[row_name] = input_list
 
-    def get_col(self, col_name: str) -> List[Cubie]:
-        """Get one column in the cube face by index as a list of cubies."""
+    def get_col(self, col_name: str) -> list:
+        """Get one column in the cube face by index as a list."""
         # Return a deep copy of the desired row.
-        return self._face_cubie_frame[col_name].copy()
+        return self._face_item_frame[col_name].copy()
 
-    def fill_col(self, col_name: str, input_list: List[Cubie]):
-        """Fill one column in the cube face by index with a list of cubies."""
+    def fill_col(self, col_name: str, input_list: list):
+        """Fill one column in the cube face by index with a list."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
         # Error check. The index is not out of the list.
-        assert col_name in self._face_cubie_frame.columns, \
+        assert col_name in self._face_item_frame.columns, \
             WRONG_FRAME_COLUMN_NAME
         # Fill the desired column.
-        self._face_cubie_frame[col_name] = input_list
-
-    def get_row_str(self, row_name: str) -> str:
-        """Get one row in the cube face by index as a string."""
-        # Get the desired cube row.
-        cubie_row = self.get_row(row_name=row_name)
-        # Convert each cubie to its string format.
-        cubie_str_row = [cubie.get_content_string() for cubie in cubie_row]
-        # Concatenate the list to a string.
-        return "".join(["|", "|".join(cubie_str_row), "|"])
+        self._face_item_frame[col_name] = input_list
 
     def rotate_by_angle(self, angle: int):
-        """Rotate each cubie within a cube face by the desired angle."""
-        # Iterate over and rotate each cubie in the cube face.
-        for cubie in self._face_cubie_frame.values.flat:
-            cubie.rotate_by_angle(angle=angle)
+        """Rotate the cube face by the desired angle."""
+        # Rotate the face itself.
+        self._face_item_frame.update(
+            pd.DataFrame(
+                data=np.rot90(
+                    self._face_item_frame.values, int(4 - angle / 90)
+                ),
+                index=self._face_item_frame.index,
+                columns=self._face_item_frame.columns
+            )
+        )
