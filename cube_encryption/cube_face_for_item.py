@@ -7,7 +7,7 @@ from cube_encryption.constants import WRONG_SIDE_LENGTH, \
     WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
 
-class CubeFace:
+class CubeFaceForItem:
     """Create a cube face with desired side length on inputs."""
 
     def __init__(self, cube_face_input: list, cube_side_length):

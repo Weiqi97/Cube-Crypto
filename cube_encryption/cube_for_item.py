@@ -1,12 +1,12 @@
 """Define contents and operations of the entire cube."""
 
 import numpy as np
-from cube_encryption.cube_face_for_item import CubeFace
+from cube_encryption.cube_face_for_item import CubeFaceForItem
 from cube_encryption.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 
-class Cube:
+class CubeForItem:
     """Create a full cube with desired side length on inputs."""
 
     def __init__(self, cube_input: list, cube_side_length: int):
@@ -33,27 +33,27 @@ class Cube:
         #   - 4. Back face
         #   - 5. Left face
         #   - 6. Down face
-        self._top_face = CubeFace(
+        self._top_face = CubeFaceForItem(
             cube_face_input=cube_input_list[0],
             cube_side_length=cube_side_length
         )
-        self._front_face = CubeFace(
+        self._front_face = CubeFaceForItem(
             cube_face_input=cube_input_list[1],
             cube_side_length=cube_side_length
         )
-        self._right_face = CubeFace(
+        self._right_face = CubeFaceForItem(
             cube_face_input=cube_input_list[2],
             cube_side_length=cube_side_length
         )
-        self._back_face = CubeFace(
+        self._back_face = CubeFaceForItem(
             cube_face_input=cube_input_list[3],
             cube_side_length=cube_side_length
         )
-        self._left_face = CubeFace(
+        self._left_face = CubeFaceForItem(
             cube_face_input=cube_input_list[4],
             cube_side_length=cube_side_length
         )
-        self._down_face = CubeFace(
+        self._down_face = CubeFaceForItem(
             cube_face_input=cube_input_list[5],
             cube_side_length=cube_side_length
         )
