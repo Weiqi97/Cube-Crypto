@@ -8,7 +8,10 @@ from cube_encryption.constants import WRONG_CUBE_FACE_INPUT, \
 class TestCubeFace:
     # Setup testing input.
     face_input = list("000100100101101010101010101010101010")
-    cube_face = CubeFaceForCubie(cube_face_input=face_input, cube_side_length=3)
+    cube_face = CubeFaceForCubie(
+        cube_face_input=face_input,
+        cube_side_length=3
+    )
 
     def test_cube_face(self):
         assert self.cube_face.face_string == "".join(self.face_input)
@@ -99,11 +102,17 @@ class TestCubeFace:
 class TestCubeFaceErrorCheck:
     # Setup testing input.
     face_input = list("000100100101101010101010101010101010")
-    cube_face = CubeFaceForCubie(cube_face_input=face_input, cube_side_length=3)
+    cube_face = CubeFaceForCubie(
+        cube_face_input=face_input,
+        cube_side_length=3
+    )
 
     def test_init(self):
         try:
-            CubeFaceForCubie(cube_face_input=list("abracadabra"), cube_side_length=3)
+            CubeFaceForCubie(
+                cube_face_input=list("abracadabra"),
+                cube_side_length=3
+            )
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_CUBE_FACE_INPUT

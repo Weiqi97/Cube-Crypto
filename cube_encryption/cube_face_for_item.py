@@ -23,16 +23,10 @@ class CubeFaceForItem:
         # Save the cube side length.
         self._side_length = cube_side_length
 
-        # Split the cube face input to chunks with length of 4.
-        face_input_list = np.array_split(
-            ary=cube_face_input,
-            indices_or_sections=cube_side_length ** 2
-        )
-
         # Fill in the cube face matrix with the cubies.
         self._face_item_frame = pd.DataFrame(
             data=np.array_split(
-                ary=face_input_list,
+                ary=cube_face_input,
                 indices_or_sections=cube_side_length
             ),
             index=self.get_frame_index(cube_side_length=cube_side_length),

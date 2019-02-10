@@ -79,8 +79,8 @@ class CubeForCubie:
     def shift_cubie_content(self):
         """Shift the cube binary representation to right by one bit."""
         # Obtain the shifted content by padding the last bit to the first.
-        shifted_content = f"{self.content[-1]}" \
-                                 f"{self.content[:-1]}"
+        shifted_content = f"{self.content[-1]}{self.content[:-1]}"
+
         # Re-Init the class with new content.
         self.__init__(
             cube_input=shifted_content, cube_side_length=self._side_length
@@ -89,8 +89,8 @@ class CubeForCubie:
     def shift_cubie_content_back(self):
         """Shift the cube binary representation to left by one bit."""
         # Obtain the shifted content by padding the first bit to the last.
-        shifted_content = f"{self.content[1:]}" \
-                          f"{self.content[0]}"
+        shifted_content = f"{self.content[1:]}{self.content[0]}"
+
         # Re-Init the class with new content.
         self.__init__(
             cube_input=shifted_content, cube_side_length=self._side_length

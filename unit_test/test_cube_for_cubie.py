@@ -4,6 +4,7 @@ from cube_encryption.constants import CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH, Key
 
 
+# noinspection PyProtectedMember
 class TestCubeOperations:
     # Setup testing inputs.
     cube_input = \
