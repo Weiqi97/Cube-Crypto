@@ -1,9 +1,12 @@
-# Set the language to be python.
+# Set the language to be python and adjust environment.
 language: python
+sudo: required
+dist: xenial
 
 # Set the version of python to be the latest version.
-python:
-  - "3.7"
+python: "3.7"
+
+
 
 # Installations.
 install:
