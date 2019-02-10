@@ -3,8 +3,7 @@ language: python
 
 # Set the version of python to be the latest version.
 python:
-  - "3.6"
-  # - "3.7" This can be enabled after https://github.com/travis-ci/travis-ci/issues/9815 is solved.
+  - "3.7"
 
 # Installations.
 install:
