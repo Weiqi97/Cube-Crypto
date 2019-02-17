@@ -27,6 +27,6 @@ test_script:
 
   # Test for unit test.
   - python -m pytest --cov=cube_encryption/ unit_test/
-  - python -m pytest --cov=key_analyzer/ unit_test/
+  - python -m pytest --cov=analyzers/ unit_test/
 
 build: off
