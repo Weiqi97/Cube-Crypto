@@ -15,6 +15,8 @@ COMMUTE_MOVE = [{"right", "left"}, {"top", "down"}, {"front", "back"}]
 
 # The item we want to fill in the cubie.
 class CubieItem(NamedTuple):
+    """Define the item that each cubie holds."""
+
     content: str
     marked: bool
 
