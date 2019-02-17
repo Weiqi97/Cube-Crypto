@@ -101,20 +101,20 @@ class CubeForItem:
             self._top_face.rotate_by_angle(angle=90)
 
         # Save temp row.
-        temp_row = self._left_face.get_row(row_name=f"T{index}")
+        temp_row = self._left_face.get_row(row_name=f"T{index}").values
 
         # back -> right -> front -> left -> back
         self._left_face.fill_row(
             row_name=f"T{index}",
-            input_list=self._front_face.get_row(row_name=f"T{index}")
+            input_list=self._front_face.get_row(row_name=f"T{index}").values
         )
         self._front_face.fill_row(
             row_name=f"T{index}",
-            input_list=self._right_face.get_row(row_name=f"T{index}")
+            input_list=self._right_face.get_row(row_name=f"T{index}").values
         )
         self._right_face.fill_row(
             row_name=f"T{index}",
-            input_list=self._back_face.get_row(row_name=f"T{index}")
+            input_list=self._back_face.get_row(row_name=f"T{index}").values
         )
         self._back_face.fill_row(row_name=f"T{index}", input_list=temp_row)
 
@@ -128,20 +128,20 @@ class CubeForItem:
             self._down_face.rotate_by_angle(angle=90)
 
         # Save temp row.
-        temp_row = self._left_face.get_row(row_name=f"D{index}")
+        temp_row = self._left_face.get_row(row_name=f"D{index}").values
 
         # back -> left -> front -> right -> back
         self._left_face.fill_row(
             row_name=f"D{index}",
-            input_list=self._back_face.get_row(row_name=f"D{index}")
+            input_list=self._back_face.get_row(row_name=f"D{index}").values
         )
         self._back_face.fill_row(
             row_name=f"D{index}",
-            input_list=self._right_face.get_row(row_name=f"D{index}")
+            input_list=self._right_face.get_row(row_name=f"D{index}").values
         )
         self._right_face.fill_row(
             row_name=f"D{index}",
-            input_list=self._front_face.get_row(row_name=f"D{index}")
+            input_list=self._front_face.get_row(row_name=f"D{index}").values
         )
         self._front_face.fill_row(row_name=f"D{index}", input_list=temp_row)
 
@@ -155,20 +155,20 @@ class CubeForItem:
             self._front_face.rotate_by_angle(angle=90)
 
         # Save temp row.
-        temp_row = list(self._top_face.get_row(row_name=f"D{index}"))
+        temp_row = self._top_face.get_row(row_name=f"D{index}").values
 
         # top -> right -> down -> left -> top
         self._top_face.fill_row(
             row_name=f"D{index}",
-            input_list=list(self._left_face.get_col(col_name=f"R{index}"))
+            input_list=self._left_face.get_col(col_name=f"R{index}").values
         )
         self._left_face.fill_col(
             col_name=f"R{index}",
-            input_list=list(self._down_face.get_row(row_name=f"T{index}"))
+            input_list=self._down_face.get_row(row_name=f"T{index}").values
         )
         self._down_face.fill_row(
             row_name=f"T{index}",
-            input_list=list(self._right_face.get_col(col_name=f"L{index}"))
+            input_list=self._right_face.get_col(col_name=f"L{index}").values
         )
         self._right_face.fill_col(col_name=f"L{index}", input_list=temp_row)
 
@@ -182,20 +182,20 @@ class CubeForItem:
             self._back_face.rotate_by_angle(angle=90)
 
         # Save temp row.
-        temp_row = list(self._top_face.get_row(row_name=f"T{index}"))
+        temp_row = self._top_face.get_row(row_name=f"T{index}").values
 
         # top -> left -> down -> right -> top
         self._top_face.fill_row(
             row_name=f"T{index}",
-            input_list=list(self._right_face.get_col(col_name=f"L{index}"))
+            input_list=self._right_face.get_col(col_name=f"L{index}").values
         )
         self._right_face.fill_col(
             col_name=f"L{index}",
-            input_list=list(self._down_face.get_row(row_name=f"D{index}"))
+            input_list=self._down_face.get_row(row_name=f"D{index}").values
         )
         self._down_face.fill_row(
             row_name=f"D{index}",
-            input_list=list(self._left_face.get_col(col_name=f"R{index}"))
+            input_list=self._left_face.get_col(col_name=f"R{index}").values
         )
         self._left_face.fill_col(col_name=f"R{index}", input_list=temp_row)
 
@@ -209,20 +209,20 @@ class CubeForItem:
             self._right_face.rotate_by_angle(angle=90)
 
         # Save temp column.
-        temp_col = self._front_face.get_col(col_name=f"R{index}")
+        temp_col = self._front_face.get_col(col_name=f"R{index}").values
 
         # top -> back -> down -> front -> top
         self._front_face.fill_col(
             col_name=f"R{index}",
-            input_list=self._down_face.get_col(col_name=f"R{index}")
+            input_list=self._down_face.get_col(col_name=f"R{index}").values
         )
         self._down_face.fill_col(
             col_name=f"R{index}",
-            input_list=self._back_face.get_col(col_name=f"R{index}")
+            input_list=self._back_face.get_col(col_name=f"R{index}").values
         )
         self._back_face.fill_col(
             col_name=f"R{index}",
-            input_list=self._top_face.get_col(col_name=f"R{index}")
+            input_list=self._top_face.get_col(col_name=f"R{index}").values
         )
         self._top_face.fill_col(col_name=f"R{index}", input_list=temp_col)
 
@@ -236,20 +236,20 @@ class CubeForItem:
             self._left_face.rotate_by_angle(angle=90)
 
         # Save temp column.
-        temp_col = self._front_face.get_col(col_name=f"L{index}")
+        temp_col = self._front_face.get_col(col_name=f"L{index}").values
 
         # top -> front -> down -> back -> top
         self._front_face.fill_col(
             col_name=f"L{index}",
-            input_list=self._top_face.get_col(col_name=f"L{index}")
+            input_list=self._top_face.get_col(col_name=f"L{index}").values
         )
         self._top_face.fill_col(
             col_name=f"L{index}",
-            input_list=self._back_face.get_col(col_name=f"L{index}")
+            input_list=self._back_face.get_col(col_name=f"L{index}").values
         )
         self._back_face.fill_col(
             col_name=f"L{index}",
-            input_list=self._down_face.get_col(col_name=f"L{index}")
+            input_list=self._down_face.get_col(col_name=f"L{index}").values
         )
         self._down_face.fill_col(col_name=f"L{index}", input_list=temp_col)
 

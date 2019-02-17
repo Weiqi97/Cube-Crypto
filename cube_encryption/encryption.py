@@ -27,6 +27,7 @@ class Encryption:
         binary_str_padded = self._pad_binary_str(
             input_string=binary_str, block_size=block_size
         )
+
         # Find number of blocks required.
         cube_required = len(binary_str_padded) / block_size
 
@@ -122,7 +123,7 @@ class Encryption:
                 index=np.random.randint(low=1, high=self._cube_max_index + 1)
             )
 
-        return [generate_one_key() for __ in range(length)]
+        return [generate_one_key() for _ in range(length)]
 
     def encrypt(self, key: List[Key]):
         """Encrypt the message based on a given key.
