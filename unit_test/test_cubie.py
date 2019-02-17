@@ -1,14 +1,21 @@
-from collections import deque
-from cube_encryption.cubie import Cubie
-from cube_encryption.constants import WRONG_CUBIE_INPUT, WRONG_ROTATION_ANGLE
+from content.encryption.cubie import Cubie
+from content.encryption.constants import CubieItem, WRONG_CUBIE_INPUT, \
+    WRONG_ROTATION_ANGLE
 
 
 class TestCubie:
     # Setup testing input.
-    cubie = Cubie(cubie_input=["1", "0", "1", "0"])
+    CubieItem(content="0", marked=False)
+    cubie = Cubie(
+        cubie_input=[
+            CubieItem(content=content, marked=False) for content in "1010"
+        ]
+    )
 
     def test_get_content(self):
-        assert self.cubie.get_content() == deque("1010")
+        assert self.cubie.get_content() == [
+            CubieItem(content=content, marked=False) for content in "1010"
+        ]
 
     def test_get_content_string(self):
         assert self.cubie.get_content_string() == "1010"
@@ -31,7 +38,12 @@ class TestCubieErrorCheck:
 
     def test_rotate(self):
         try:
-            Cubie(cubie_input=["1", "0", "1", "0"]).rotate_by_angle(angle=123)
+            Cubie(
+                cubie_input=[
+                    CubieItem(content=content, marked=False)
+                    for content in "1010"
+                ]
+            ).rotate_by_angle(angle=123)
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_ROTATION_ANGLE

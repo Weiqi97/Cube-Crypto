@@ -1,8 +1,8 @@
-"""Define contents and operations of the entire cube."""
+"""Define contents and operations of the entire cube that holds any item."""
 
 import numpy as np
-from cube_encryption.cube_face_for_item import CubeFaceForItem
-from cube_encryption.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
+from content.encryption.cube_face_for_item import CubeFaceForItem
+from content.encryption.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 
@@ -10,9 +10,9 @@ class CubeForItem:
     """Create a full cube with desired side length on inputs."""
 
     def __init__(self, cube_input: list, cube_side_length: int):
-        """Initialize entire cube with a string of desired length.
+        """Initialize entire cube with a list of items.
 
-        :param cube_input: The binary representation of the plain text.
+        :param cube_input: A list of any type of inputs.
         :param cube_side_length: The desired side length of the cube.
         """
         # Check length of the input.
@@ -66,12 +66,9 @@ class CubeForItem:
         """
         # Get all cube faces as string in the right order.
         return \
-            self._top_face.get_item_list + \
-            self._front_face.get_item_list + \
-            self._right_face.get_item_list + \
-            self._back_face.get_item_list + \
-            self._left_face.get_item_list + \
-            self._down_face.get_item_list
+            self._top_face.get_item_list + self._front_face.get_item_list + \
+            self._right_face.get_item_list + self._back_face.get_item_list + \
+            self._left_face.get_item_list + self._down_face.get_item_list
 
     def shift_content(self):
         """Shift the cube binary representation to right by one bit."""
@@ -160,7 +157,8 @@ class CubeForItem:
         # top -> right -> down -> left -> top
         self._top_face.fill_row(
             row_name=f"D{index}",
-            input_list=self._left_face.get_col(col_name=f"R{index}").values
+            input_list=self._left_face.get_col(
+                col_name=f"R{index}").values[::-1]
         )
         self._left_face.fill_col(
             col_name=f"R{index}",
@@ -168,7 +166,8 @@ class CubeForItem:
         )
         self._down_face.fill_row(
             row_name=f"T{index}",
-            input_list=self._right_face.get_col(col_name=f"L{index}").values
+            input_list=self._right_face.get_col(
+                col_name=f"L{index}").values[::-1]
         )
         self._right_face.fill_col(col_name=f"L{index}", input_list=temp_row)
 
@@ -187,17 +186,20 @@ class CubeForItem:
         # top -> left -> down -> right -> top
         self._top_face.fill_row(
             row_name=f"T{index}",
-            input_list=self._right_face.get_col(col_name=f"L{index}").values
+            input_list=self._right_face.get_col(col_name=f"R{index}").values
         )
         self._right_face.fill_col(
-            col_name=f"L{index}",
-            input_list=self._down_face.get_row(row_name=f"D{index}").values
+            col_name=f"R{index}",
+            input_list=self._down_face.get_row(
+                row_name=f"D{index}").values[::-1]
         )
         self._down_face.fill_row(
             row_name=f"D{index}",
-            input_list=self._left_face.get_col(col_name=f"R{index}").values
+            input_list=self._left_face.get_col(col_name=f"L{index}").values
         )
-        self._left_face.fill_col(col_name=f"R{index}", input_list=temp_row)
+        self._left_face.fill_col(
+            col_name=f"L{index}", input_list=temp_row[::-1]
+        )
 
     def _shift_r(self, index: int):
         """Shift the right layer with the index clockwise by 90 degrees.
@@ -218,11 +220,13 @@ class CubeForItem:
         )
         self._down_face.fill_col(
             col_name=f"R{index}",
-            input_list=self._back_face.get_col(col_name=f"R{index}").values
+            input_list=self._back_face.get_col(
+                col_name=f"L{index}").values[::-1]
         )
         self._back_face.fill_col(
-            col_name=f"R{index}",
-            input_list=self._top_face.get_col(col_name=f"R{index}").values
+            col_name=f"L{index}",
+            input_list=self._top_face.get_col(
+                col_name=f"R{index}").values[::-1]
         )
         self._top_face.fill_col(col_name=f"R{index}", input_list=temp_col)
 
@@ -245,11 +249,13 @@ class CubeForItem:
         )
         self._top_face.fill_col(
             col_name=f"L{index}",
-            input_list=self._back_face.get_col(col_name=f"L{index}").values
+            input_list=self._back_face.get_col(
+                col_name=f"R{index}").values[::-1]
         )
         self._back_face.fill_col(
-            col_name=f"L{index}",
-            input_list=self._down_face.get_col(col_name=f"L{index}").values
+            col_name=f"R{index}",
+            input_list=self._down_face.get_col(
+                col_name=f"L{index}").values[::-1]
         )
         self._down_face.fill_col(col_name=f"L{index}", input_list=temp_col)
 

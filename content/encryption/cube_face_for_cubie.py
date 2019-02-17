@@ -1,18 +1,22 @@
 """Define contents and operations of one cube face that contains cubies."""
 
+import itertools
 import numpy as np
 import pandas as pd
 from typing import List
 from collections import deque
-from cube_encryption.cubie import Cubie
-from cube_encryption.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
-    WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
+from content.encryption.cubie import Cubie
+from content.encryption.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
+    WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME, \
+    CubieItem
 
 
 class CubeFaceForCubie:
     """Create a cube face with desired side length on inputs."""
 
-    def __init__(self, cube_face_input: list, cube_side_length):
+    def __init__(self,
+                 cube_face_input: List[CubieItem],
+                 cube_side_length: int):
         """Initialize one cube face.
 
         :param cube_face_input: The input needed to fill in the cube face.
@@ -26,10 +30,10 @@ class CubeFaceForCubie:
         self._side_length = cube_side_length
 
         # Split the cube face input to chunks with length of 4.
-        face_input_list = np.array_split(
-            ary=cube_face_input,
-            indices_or_sections=cube_side_length ** 2
-        )
+        face_input_list = [
+            cube_face_input[index: index + 4]
+            for index in range(0, len(cube_face_input), 4)
+        ]
 
         # Create a list of cubies.
         face_input_cubie_list = [
@@ -57,6 +61,17 @@ class CubeFaceForCubie:
 
         # Concatenate the list to a string.
         return "".join(cubie_strings)
+
+    @property
+    def face_content(self) -> List[CubieItem]:
+        """Get the entire cube face as a concatenated list."""
+        # Get each cubie as a list and concatenate the lists.
+        return list(itertools.chain.from_iterable(
+            [
+                cubie.get_content()
+                for cubie in self._face_cubie_frame.values.flat
+            ]
+        ))
 
     @staticmethod
     def get_frame_column(cube_side_length: int) -> deque:

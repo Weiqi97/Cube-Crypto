@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 from collections import deque
-from cube_encryption.constants import WRONG_SIDE_LENGTH, \
+from content.encryption.constants import WRONG_SIDE_LENGTH, \
     WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
 
@@ -16,7 +16,7 @@ class CubeFaceForItem:
         :param cube_face_input: The input needed to fill in the cube face.
         :param cube_side_length: The desired side length of the cube.
         """
-        # Error check. The input length should be cube face size times 4.
+        # Error check. The input length should be side length squared.
         assert len(cube_face_input) == cube_side_length ** 2, \
             WRONG_CUBE_FACE_INPUT
 
