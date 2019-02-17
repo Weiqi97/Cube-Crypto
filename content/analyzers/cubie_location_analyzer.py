@@ -1,7 +1,7 @@
 """Defines the CubieItem location analyzer."""
 
 from typing import List
-from cube_encryption.cube_for_cubie import CubeForCubie
+from content.encryption.cube_for_cubie import CubeForCubie
 
 
 class CubieLocationAnalyzer:

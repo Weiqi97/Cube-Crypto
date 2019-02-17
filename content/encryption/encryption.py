@@ -4,8 +4,9 @@ import binascii
 import numpy as np
 from typing import List
 from collections import deque
-from cube_encryption.cube_for_cubie import CubeForCubie
-from cube_encryption.constants import CUBE_MOVE, MOVE_ANGLE, CUBIE_LENGTH, Key
+from content.encryption.cube_for_cubie import CubeForCubie
+from content.encryption.constants import CUBE_MOVE, MOVE_ANGLE, CUBIE_LENGTH, \
+    Key
 
 
 class Encryption:

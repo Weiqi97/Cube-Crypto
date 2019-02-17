@@ -1,8 +1,8 @@
 """Define contents and operations of the entire cube that holds any item."""
 
 import numpy as np
-from cube_encryption.cube_face_for_item import CubeFaceForItem
-from cube_encryption.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
+from content.encryption.cube_face_for_item import CubeFaceForItem
+from content.encryption.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 

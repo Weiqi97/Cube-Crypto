@@ -1,6 +1,6 @@
 import numpy as np
-from cube_encryption.cube_for_item import CubeForItem
-from cube_encryption.constants import CubeMove, WRONG_CUBE_MOVE, \
+from content.encryption.cube_for_item import CubeForItem
+from content.encryption.constants import CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH, Key
 
 

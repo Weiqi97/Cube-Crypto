@@ -1,5 +1,5 @@
-from cube_encryption.constants import Key
-from analyzers.key_analyzer import KeyAnalyzer
+from content.encryption.constants import Key
+from content.analyzers.key_analyzer import KeyAnalyzer
 
 
 class TestKeyAnalyzer:

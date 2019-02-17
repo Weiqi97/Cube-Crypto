@@ -1,7 +1,7 @@
 import numpy as np
 from collections import deque
-from cube_encryption.cube_face_for_item import CubeFaceForItem
-from cube_encryption.constants import WRONG_CUBE_FACE_INPUT, \
+from content.encryption.cube_face_for_item import CubeFaceForItem
+from content.encryption.constants import WRONG_CUBE_FACE_INPUT, \
     WRONG_SIDE_LENGTH, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
 
