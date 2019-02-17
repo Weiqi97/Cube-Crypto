@@ -50,8 +50,8 @@ class TestCubeOperations:
         cube.shift(Key(move=CubeMove.right.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
-            [0, 5, 2, 7, 4, 21, 6, 23, 10, 8, 11, 9, 12, 1, 14, 3, 16, 17, 18,
-             19, 20, 13, 22, 15]
+            [0, 5, 2, 7, 4, 21, 6, 23, 10, 8, 11, 9, 3, 13, 1, 15, 16, 17, 18,
+             19, 20, 14, 22, 12]
         )
 
     def test_left_shift(self):
@@ -60,7 +60,7 @@ class TestCubeOperations:
         cube.shift(Key(move=CubeMove.left.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
-            [12, 1, 14, 3, 0, 5, 2, 7, 8, 9, 10, 11, 20, 13, 22, 15, 18, 16,
+            [15, 1, 13, 3, 0, 5, 2, 7, 8, 9, 10, 11, 12, 22, 14, 20, 18, 16,
              19, 17, 4, 21, 6, 23]
         )
 
@@ -70,8 +70,8 @@ class TestCubeOperations:
         cube.shift(Key(move=CubeMove.front.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
-            [0, 1, 17, 19, 6, 4, 7, 5, 2, 9, 3, 11, 12, 13, 14, 15, 16, 20, 18,
-             21, 8, 10, 22, 23]
+            [0, 1, 19, 17, 6, 4, 7, 5, 2, 9, 3, 11, 12, 13, 14, 15, 16, 20, 18,
+             21, 10, 8, 22, 23]
         )
 
     def test_back_shift(self):
@@ -80,8 +80,8 @@ class TestCubeOperations:
         cube.shift(Key(move=CubeMove.back.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
-            [8, 10, 2, 3, 4, 5, 6, 7, 22, 9, 23, 11, 14, 12, 15, 13, 16, 0, 18,
-             1, 20, 21, 17, 19]
+            [9, 11, 2, 3, 4, 5, 6, 7, 8, 23, 10, 22, 14, 12, 15, 13, 1, 17, 0,
+             19, 20, 21, 16, 18]
         )
 
     def test_special(self):
