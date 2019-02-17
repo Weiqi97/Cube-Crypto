@@ -2,14 +2,14 @@
 
 from typing import List
 from collections import deque
-from cube_encryption.constants import MOVE_ANGLE, CUBIE_LENGTH, \
+from cube_encryption.constants import CubieItem, MOVE_ANGLE, CUBIE_LENGTH, \
     WRONG_CUBIE_INPUT, WRONG_ROTATION_ANGLE
 
 
 class Cubie:
     """Create a cubie that holds 4 bits on the given input."""
 
-    def __init__(self, cubie_input: List[str]):
+    def __init__(self, cubie_input: List[CubieItem]):
         """Create a queue to hold the input 4 bits.
 
         :param cubie_input: List of four single bit.
@@ -19,13 +19,13 @@ class Cubie:
         # Fill in the input bits as a queue.
         self._content = deque(cubie_input)
 
-    def get_content(self) -> deque:
-        """Return the content as a deque object."""
-        return self._content
+    def get_content(self) -> list:
+        """Return the content as a list object."""
+        return list(self._content)
 
     def get_content_string(self) -> str:
         """Return the content as a string."""
-        return "".join(map(str, self._content))
+        return "".join(map(lambda item: str(item.content), self._content))
 
     def rotate_by_angle(self, angle: int):
         """Rotate the cubie content by desired angle.
