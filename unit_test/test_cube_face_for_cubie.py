@@ -2,19 +2,27 @@ from collections import deque
 from cube_encryption.cubie import Cubie
 from cube_encryption.cube_face_for_cubie import CubeFaceForCubie
 from cube_encryption.constants import WRONG_CUBE_FACE_INPUT, \
-    WRONG_SIDE_LENGTH, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
+    WRONG_SIDE_LENGTH, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME, \
+    CubieItem
 
 
 class TestCubeFace:
     # Setup testing input.
-    face_input = list("000100100101101010101010101010101010")
+    face_input_contents = "000100100101101010101010101010101010"
+    face_input = [
+        CubieItem(content=content, marked=False)
+        for content in face_input_contents
+    ]
     cube_face = CubeFaceForCubie(
         cube_face_input=face_input,
         cube_side_length=3
     )
 
-    def test_cube_face(self):
-        assert self.cube_face.face_string == "".join(self.face_input)
+    def test_cube_face_string(self):
+        assert self.cube_face.face_string == "".join(self.face_input_contents)
+
+    def test_cube_face_content(self):
+        assert self.cube_face.face_content == self.face_input
 
     def test_cube_frame_column(self):
         assert self.cube_face.get_frame_column(cube_side_length=4) == \
@@ -44,9 +52,15 @@ class TestCubeFace:
         cube_face.fill_row(
             row_name="T1",
             input_list=[
-                Cubie(list("1111")),
-                Cubie(list("1111")),
-                Cubie(list("1111"))
+                Cubie(
+                    [CubieItem(content="1", marked=False) for _ in range(4)]
+                ),
+                Cubie(
+                    [CubieItem(content="1", marked=False) for _ in range(4)]
+                ),
+                Cubie(
+                    [CubieItem(content="1", marked=False) for _ in range(4)]
+                )
             ]
         )
         # Get rows and check if they contain desired value.
@@ -71,9 +85,15 @@ class TestCubeFace:
         cube_face.fill_col(
             col_name="R1",
             input_list=[
-                Cubie(list("1111")),
-                Cubie(list("1111")),
-                Cubie(list("1111"))
+                Cubie(
+                    [CubieItem(content="1", marked=False) for _ in range(4)]
+                ),
+                Cubie(
+                    [CubieItem(content="1", marked=False) for _ in range(4)]
+                ),
+                Cubie(
+                    [CubieItem(content="1", marked=False) for _ in range(4)]
+                )
             ]
         )
         # Get cols and check if they contain desired value.
@@ -101,7 +121,11 @@ class TestCubeFace:
 
 class TestCubeFaceErrorCheck:
     # Setup testing input.
-    face_input = list("000100100101101010101010101010101010")
+    face_input_contents = "000100100101101010101010101010101010"
+    face_input = [
+        CubieItem(content=content, marked=False)
+        for content in face_input_contents
+    ]
     cube_face = CubeFaceForCubie(
         cube_face_input=face_input,
         cube_side_length=3

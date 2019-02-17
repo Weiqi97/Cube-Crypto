@@ -13,6 +13,12 @@ CUBE_MOVE = ["right", "left", "top", "down", "front", "back"]
 COMMUTE_MOVE = [{"right", "left"}, {"top", "down"}, {"front", "back"}]
 
 
+# The item we want to fill in the cubie.
+class CubieItem(NamedTuple):
+    content: str
+    marked: bool
+
+
 # The content of one key.
 class Key(NamedTuple):
     """Define the components of a legal key."""
