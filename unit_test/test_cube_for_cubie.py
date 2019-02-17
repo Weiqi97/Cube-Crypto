@@ -19,7 +19,7 @@ class TestCubeOperations:
     cube = CubeForCubie(
         cube_input=copy.deepcopy(cube_input),
         cube_side_length=4,
-        track_cubie_location=[10, 20]
+        track_item_location=[10, 20]
     )
 
     def test_cube_content(self):

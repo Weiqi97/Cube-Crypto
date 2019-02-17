@@ -13,11 +13,12 @@ class CubeForCubie:
     def __init__(self,
                  cube_input: str,
                  cube_side_length: int,
-                 track_cubie_location: List[int] = None):
+                 track_item_location: List[int] = None):
         """Initialize entire cube with a string of desired length.
 
         :param cube_input: The binary representation of the plain text.
         :param cube_side_length: The desired side length of the cube.
+        :param track_item_location: The desired item locations to keep track.
         """
         # Check length of the input.
         assert len(cube_input) == cube_side_length ** 2 * 6 * CUBIE_LENGTH, \
@@ -34,8 +35,8 @@ class CubeForCubie:
         ]
 
         # Update the marked location, if any.
-        if track_cubie_location is not None:
-            for location in track_cubie_location:
+        if track_item_location is not None:
+            for location in track_item_location:
                 cubie_list[location] = cubie_list[location].\
                     _replace(marked=True)
 
