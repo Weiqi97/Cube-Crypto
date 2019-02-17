@@ -1,5 +1,6 @@
 """Define contents and operations of one cubie."""
 
+from __future__ import annotations
 from typing import List
 from collections import deque
 from cube_encryption.constants import CubieItem, MOVE_ANGLE, CUBIE_LENGTH, \
@@ -7,24 +8,24 @@ from cube_encryption.constants import CubieItem, MOVE_ANGLE, CUBIE_LENGTH, \
 
 
 class Cubie:
-    """Create a cubie that holds 4 bits on the given input."""
+    """Create a cubie that holds four CubieItems based on the given input."""
 
     def __init__(self, cubie_input: List[CubieItem]):
-        """Create a queue to hold the input 4 bits.
+        """Create a queue to hold the input four CubieItems.
 
-        :param cubie_input: List of four single bit.
+        :param cubie_input: List of four CubieItem.
         """
-        # Error check. Each cubie should only hold 4 bits.
+        # Error check. Each cubie should only hold four values.
         assert len(cubie_input) == CUBIE_LENGTH, WRONG_CUBIE_INPUT
-        # Fill in the input bits as a queue.
+        # Convert the input list object as a deque object.
         self._content = deque(cubie_input)
 
-    def get_content(self) -> list:
-        """Return the content as a list object."""
+    def get_content(self) -> List[CubieItem]:
+        """Return the Cubie as a list of CubieItems."""
         return list(self._content)
 
     def get_content_string(self) -> str:
-        """Return the content as a string."""
+        """Return the Cubie content as a string."""
         return "".join(map(lambda item: str(item.content), self._content))
 
     def rotate_by_angle(self, angle: int):
@@ -39,7 +40,7 @@ class Cubie:
         # Do the desired amount of rotations.
         self._content.rotate(rotate_step)
 
-    def get_rotate_by_angle(self, angle: int):
+    def get_rotate_by_angle(self, angle: int) -> Cubie:
         """Rotate the cubie content by desired angle and return the result.
 
         :param angle: The angle of desired rotation.
@@ -50,4 +51,5 @@ class Cubie:
         rotate_step = int(angle / 90)
         # Do the desired amount of rotations.
         self._content.rotate(rotate_step)
+        # Return the desired result.
         return self

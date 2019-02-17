@@ -1,15 +1,19 @@
-"""Define contents and operations of the entire cube."""
+"""Define contents and operations of the entire cube that holds cubies."""
 
 import numpy as np
+from typing import List
 from cube_encryption.cube_face_for_cubie import CubeFaceForCubie
 from cube_encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
-    CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, Key
+    CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, CubieItem, Key
 
 
 class CubeForCubie:
     """Create a full cube with desired side length on inputs."""
 
-    def __init__(self, cube_input: str, cube_side_length: int):
+    def __init__(self,
+                 cube_input: str,
+                 cube_side_length: int,
+                 track_cubie_location: List[int] = None):
         """Initialize entire cube with a string of desired length.
 
         :param cube_input: The binary representation of the plain text.
@@ -24,10 +28,22 @@ class CubeForCubie:
         self._side_length = cube_side_length
         self._cube_max_index = int(np.floor(cube_side_length / 2))
 
+        # Create the list of cubie items.
+        cubie_list = [
+            CubieItem(content=content, marked=False) for content in cube_input
+        ]
+
+        # Update the marked location, if any.
+        if track_cubie_location is not None:
+            for location in track_cubie_location:
+                cubie_list[location] = cubie_list[location].\
+                    _replace(marked=True)
+
         # Split the cube input into six arrays.
-        cube_input_list = np.array_split(
-            ary=list(cube_input), indices_or_sections=6
-        )
+        cubie_input_list = [
+            cubie_list[index: index + cube_side_length ** 2 * 4]
+            for index in range(0, len(cubie_list), cube_side_length ** 2 * 4)
+        ]
 
         # Assume that we fill the cube in the following order:
         #   - 1. Top face
@@ -37,27 +53,27 @@ class CubeForCubie:
         #   - 5. Left face
         #   - 6. Down face
         self._top_face = CubeFaceForCubie(
-            cube_face_input=cube_input_list[0],
+            cube_face_input=cubie_input_list[0],
             cube_side_length=cube_side_length
         )
         self._front_face = CubeFaceForCubie(
-            cube_face_input=cube_input_list[1],
+            cube_face_input=cubie_input_list[1],
             cube_side_length=cube_side_length
         )
         self._right_face = CubeFaceForCubie(
-            cube_face_input=cube_input_list[2],
+            cube_face_input=cubie_input_list[2],
             cube_side_length=cube_side_length
         )
         self._back_face = CubeFaceForCubie(
-            cube_face_input=cube_input_list[3],
+            cube_face_input=cubie_input_list[3],
             cube_side_length=cube_side_length
         )
         self._left_face = CubeFaceForCubie(
-            cube_face_input=cube_input_list[4],
+            cube_face_input=cubie_input_list[4],
             cube_side_length=cube_side_length
         )
         self._down_face = CubeFaceForCubie(
-            cube_face_input=cube_input_list[5],
+            cube_face_input=cubie_input_list[5],
             cube_side_length=cube_side_length
         )
 
@@ -75,6 +91,23 @@ class CubeForCubie:
             f"{self._back_face.face_string}" \
             f"{self._left_face.face_string}" \
             f"{self._down_face.face_string}"
+
+    def get_tracked_location(self) -> List[int]:
+        """Get all locations for the tracked cubies.
+
+        :return: A list with integer indexes.
+        """
+        # Get all cubie items as a list.
+        all_cubie_item = \
+            self._top_face.face_content + self._front_face.face_content + \
+            self._right_face.face_content + self._back_face.face_content + \
+            self._left_face.face_content + self._down_face.face_content
+
+        # Return the tracked locations.
+        return [
+            location
+            for location, cubie in enumerate(all_cubie_item) if cubie.marked
+        ]
 
     def shift_cubie_content(self):
         """Shift the cube binary representation to right by one bit."""

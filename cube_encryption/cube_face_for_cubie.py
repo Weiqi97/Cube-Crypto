@@ -63,7 +63,7 @@ class CubeFaceForCubie:
         return "".join(cubie_strings)
 
     @property
-    def face_content(self) -> list:
+    def face_content(self) -> List[CubieItem]:
         """Get the entire cube face as a concatenated list."""
         # Get each cubie as a list and concatenate the lists.
         return list(itertools.chain.from_iterable(

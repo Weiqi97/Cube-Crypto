@@ -18,11 +18,15 @@ class TestCubeOperations:
     # Create the cube.
     cube = CubeForCubie(
         cube_input=copy.deepcopy(cube_input),
-        cube_side_length=4
+        cube_side_length=4,
+        track_cubie_location=[10, 20]
     )
 
     def test_cube_content(self):
         assert self.cube.content == self.cube_input
+
+    def test_cube_location_tracker(self):
+        assert self.cube.get_tracked_location() == [10, 20]
 
     def test_cube_shift_cubie_content(self):
         self.cube.shift_cubie_content()

@@ -1,4 +1,4 @@
-"""Define contents and operations of the entire cube."""
+"""Define contents and operations of the entire cube that holds any item."""
 
 import numpy as np
 from cube_encryption.cube_face_for_item import CubeFaceForItem
@@ -10,9 +10,9 @@ class CubeForItem:
     """Create a full cube with desired side length on inputs."""
 
     def __init__(self, cube_input: list, cube_side_length: int):
-        """Initialize entire cube with a string of desired length.
+        """Initialize entire cube with a list of items.
 
-        :param cube_input: The binary representation of the plain text.
+        :param cube_input: A list of any type of inputs.
         :param cube_side_length: The desired side length of the cube.
         """
         # Check length of the input.
@@ -66,12 +66,9 @@ class CubeForItem:
         """
         # Get all cube faces as string in the right order.
         return \
-            self._top_face.get_item_list + \
-            self._front_face.get_item_list + \
-            self._right_face.get_item_list + \
-            self._back_face.get_item_list + \
-            self._left_face.get_item_list + \
-            self._down_face.get_item_list
+            self._top_face.get_item_list + self._front_face.get_item_list + \
+            self._right_face.get_item_list + self._back_face.get_item_list + \
+            self._left_face.get_item_list + self._down_face.get_item_list
 
     def shift_content(self):
         """Shift the cube binary representation to right by one bit."""
