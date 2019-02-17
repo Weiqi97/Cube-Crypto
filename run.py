@@ -1,7 +1,7 @@
 """Run function for user to access this protocol."""
 
+from analyzers.key_analyzer import KeyAnalyzer
 from cube_encryption.encryption import Encryption
-from cube_encryption.key_analyzer import KeyAnalyzer
 
 
 # Ask the user for a message to encrypt.
