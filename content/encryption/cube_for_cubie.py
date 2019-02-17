@@ -1,7 +1,6 @@
 """Define contents and operations of the entire cube that holds cubies."""
 
 import numpy as np
-from typing import List
 from content.encryption.cube_face_for_cubie import CubeFaceForCubie
 from content.encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
     CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, CubieItem, Key
@@ -13,21 +12,22 @@ class CubeForCubie:
     def __init__(self,
                  cube_input: str,
                  cube_side_length: int,
-                 track_item_location: List[int] = None):
+                 track_location: int = None):
         """Initialize entire cube with a string of desired length.
 
         :param cube_input: The binary representation of the plain text.
         :param cube_side_length: The desired side length of the cube.
-        :param track_item_location: The desired item locations to keep track.
+        :param track_location: The desired item locations to keep track.
         """
         # Check length of the input.
         assert len(cube_input) == cube_side_length ** 2 * 6 * CUBIE_LENGTH, \
             WRONG_CUBE_INPUT
         assert cube_side_length > 1, WRONG_CUBE_SIDE_LENGTH
 
-        # Save the cube side length and cube max index.
+        # Save the cube side length, cube max index and the tracked location.
         self._side_length = cube_side_length
         self._cube_max_index = int(np.floor(cube_side_length / 2))
+        self._track_location = track_location
 
         # Create the list of cubie items.
         cubie_list = [
@@ -35,10 +35,9 @@ class CubeForCubie:
         ]
 
         # Update the marked location, if any.
-        if track_item_location is not None:
-            for location in track_item_location:
-                cubie_list[location] = cubie_list[location].\
-                    _replace(marked=True)
+        if track_location is not None:
+            cubie_list[track_location] = \
+                cubie_list[track_location]._replace(marked=True)
 
         # Split the cube input into six arrays.
         cubie_input_list = [
@@ -93,10 +92,10 @@ class CubeForCubie:
             f"{self._left_face.face_string}" \
             f"{self._down_face.face_string}"
 
-    def get_tracked_location(self) -> List[int]:
-        """Get all locations for the tracked cubies.
+    def get_tracked_location(self) -> int:
+        """Get location for the tracked cubie.
 
-        :return: A list with integer indexes.
+        :return: The integer index.
         """
         # Get all cubie items as a list.
         all_cubie_item = \
@@ -108,16 +107,22 @@ class CubeForCubie:
         return [
             location
             for location, cubie in enumerate(all_cubie_item) if cubie.marked
-        ]
+        ][0]
 
     def shift_cubie_content(self):
         """Shift the cube binary representation to right by one bit."""
         # Obtain the shifted content by padding the last bit to the first.
         shifted_content = f"{self.content[-1]}{self.content[:-1]}"
 
+        # Find the the track location.
+        track_location = None if self._track_location is None else \
+            self.get_tracked_location() + 1
+
         # Re-Init the class with new content.
         self.__init__(
-            cube_input=shifted_content, cube_side_length=self._side_length
+            cube_input=shifted_content,
+            cube_side_length=self._side_length,
+            track_location=track_location
         )
 
     def shift_cubie_content_back(self):
@@ -125,9 +130,15 @@ class CubeForCubie:
         # Obtain the shifted content by padding the first bit to the last.
         shifted_content = f"{self.content[1:]}{self.content[0]}"
 
+        # Find the the track location.
+        track_location = None if self._track_location is None else \
+            self.get_tracked_location() - 1
+
         # Re-Init the class with new content.
         self.__init__(
-            cube_input=shifted_content, cube_side_length=self._side_length
+            cube_input=shifted_content,
+            cube_side_length=self._side_length,
+            track_location=track_location
         )
 
     def _shift_t(self, index: int):
@@ -202,7 +213,7 @@ class CubeForCubie:
             input_list=[
                 cubie.get_rotate_by_angle(angle=90)
                 for cubie in
-                self._left_face.get_col(col_name=f"R{index}").values
+                self._left_face.get_col(col_name=f"R{index}").values[::-1]
             ]
         )
         self._left_face.fill_col(
@@ -218,7 +229,7 @@ class CubeForCubie:
             input_list=[
                 cubie.get_rotate_by_angle(angle=90)
                 for cubie in
-                self._right_face.get_col(col_name=f"L{index}").values
+                self._right_face.get_col(col_name=f"L{index}").values[::-1]
             ]
         )
         self._right_face.fill_col(
@@ -246,15 +257,15 @@ class CubeForCubie:
             input_list=[
                 cubie.get_rotate_by_angle(angle=270)
                 for cubie in
-                self._right_face.get_col(col_name=f"L{index}").values
+                self._right_face.get_col(col_name=f"R{index}").values
             ]
         )
         self._right_face.fill_col(
-            col_name=f"L{index}",
+            col_name=f"R{index}",
             input_list=[
                 cubie.get_rotate_by_angle(angle=270)
                 for cubie in
-                self._down_face.get_row(row_name=f"D{index}").values
+                self._down_face.get_row(row_name=f"D{index}").values[::-1]
             ]
         )
         self._down_face.fill_row(
@@ -262,13 +273,14 @@ class CubeForCubie:
             input_list=[
                 cubie.get_rotate_by_angle(angle=270)
                 for cubie in
-                self._left_face.get_col(col_name=f"R{index}").values
+                self._left_face.get_col(col_name=f"L{index}").values
             ]
         )
         self._left_face.fill_col(
-            col_name=f"R{index}",
+            col_name=f"L{index}",
             input_list=[
-                cubie.get_rotate_by_angle(angle=270) for cubie in temp_row
+                cubie.get_rotate_by_angle(angle=270)
+                for cubie in temp_row[::-1]
             ]
         )
 
@@ -298,15 +310,15 @@ class CubeForCubie:
             input_list=[
                 cubie.get_rotate_by_angle(angle=180)
                 for cubie in
-                self._back_face.get_col(col_name=f"R{index}").values
+                self._back_face.get_col(col_name=f"L{index}").values[::-1]
             ]
         )
         self._back_face.fill_col(
-            col_name=f"R{index}",
+            col_name=f"L{index}",
             input_list=[
                 cubie.get_rotate_by_angle(angle=180)
                 for cubie in
-                self._top_face.get_col(col_name=f"R{index}").values
+                self._top_face.get_col(col_name=f"R{index}").values[::-1]
             ]
         )
         self._top_face.fill_col(col_name=f"R{index}", input_list=temp_col)
@@ -337,15 +349,15 @@ class CubeForCubie:
             input_list=[
                 cubie.get_rotate_by_angle(angle=180)
                 for cubie in
-                self._back_face.get_col(col_name=f"L{index}").values
+                self._back_face.get_col(col_name=f"R{index}").values[::-1]
             ]
         )
         self._back_face.fill_col(
-            col_name=f"L{index}",
+            col_name=f"R{index}",
             input_list=[
                 cubie.get_rotate_by_angle(angle=180)
                 for cubie in
-                self._down_face.get_col(col_name=f"L{index}").values
+                self._down_face.get_col(col_name=f"L{index}").values[::-1]
             ]
         )
         self._down_face.fill_col(col_name=f"L{index}", input_list=temp_col)
