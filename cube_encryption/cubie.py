@@ -38,3 +38,16 @@ class Cubie:
         rotate_step = int(angle / 90)
         # Do the desired amount of rotations.
         self._content.rotate(rotate_step)
+
+    def get_rotate_by_angle(self, angle: int):
+        """Rotate the cubie content by desired angle and return the result.
+
+        :param angle: The angle of desired rotation.
+        """
+        # Error check. Only possible angles are 90, 180 and 270 degrees.
+        assert angle in MOVE_ANGLE, WRONG_ROTATION_ANGLE
+        # Find how many clockwise 90 degree is needed.
+        rotate_step = int(angle / 90)
+        # Do the desired amount of rotations.
+        self._content.rotate(rotate_step)
+        return self

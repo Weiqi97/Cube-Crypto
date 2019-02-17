@@ -17,6 +17,9 @@ class TestCubie:
         self.cubie.rotate_by_angle(angle=90)
         assert self.cubie.get_content_string() == "0101"
 
+    def test_get_rotation(self):
+        assert self.cubie == self.cubie.get_rotate_by_angle(angle=90)
+
 
 class TestCubieErrorCheck:
     def test_init(self):

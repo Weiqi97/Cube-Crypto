@@ -89,7 +89,7 @@ class CubeFaceForItem:
 
         return index_queue
 
-    def get_row(self, row_name: str) -> list:
+    def get_row(self, row_name: str) -> pd.Series:
         """Get one row in the cube face by index as a list."""
         # Return a deep copy of the desired row.
         return self._face_item_frame.loc[row_name].copy()
@@ -103,7 +103,7 @@ class CubeFaceForItem:
         # Fill the desired row.
         self._face_item_frame.loc[row_name] = input_list
 
-    def get_col(self, col_name: str) -> list:
+    def get_col(self, col_name: str) -> pd.Series:
         """Get one column in the cube face by index as a list."""
         # Return a deep copy of the desired row.
         return self._face_item_frame[col_name].copy()

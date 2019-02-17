@@ -108,7 +108,7 @@ class CubeFaceForCubie:
 
         return index_queue
 
-    def get_row(self, row_name: str) -> List[Cubie]:
+    def get_row(self, row_name: str) -> pd.Series:
         """Get one row in the cube face by index as a list of cubies."""
         # Return a deep copy of the desired row.
         return self._face_cubie_frame.loc[row_name].copy()
@@ -122,7 +122,7 @@ class CubeFaceForCubie:
         # Fill the desired row.
         self._face_cubie_frame.loc[row_name] = input_list
 
-    def get_col(self, col_name: str) -> List[Cubie]:
+    def get_col(self, col_name: str) -> pd.Series:
         """Get one column in the cube face by index as a list of cubies."""
         # Return a deep copy of the desired row.
         return self._face_cubie_frame[col_name].copy()
