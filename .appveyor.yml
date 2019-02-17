@@ -26,6 +26,6 @@ test_script:
   - pydocstyle
 
   # Test for unit test.
-  - pytest --cov=./content
+  - pytest --cov=content
 
 build: off

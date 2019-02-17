@@ -20,7 +20,7 @@ script:
   - pydocstyle
 
   # Test for unit test.
-  - pytest --cov=./content
+  - pytest --cov=content
 
 # Find code coverage.
 after_success: codecov
