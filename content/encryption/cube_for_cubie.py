@@ -24,7 +24,8 @@ class CubeForCubie:
             WRONG_CUBE_INPUT
         assert cube_side_length > 1, WRONG_CUBE_SIDE_LENGTH
 
-        # Save the cube side length, cube max index and the tracked location.
+        # Save the cube size, side length, max index and the tracked location.
+        self._cube_size = len(cube_input)
         self._side_length = cube_side_length
         self._cube_max_index = int(np.floor(cube_side_length / 2))
         self._track_location = track_location
@@ -116,7 +117,7 @@ class CubeForCubie:
 
         # Find the the track location.
         track_location = None if self._track_location is None else \
-            self.get_tracked_location() + 1
+            (self.get_tracked_location() + 1) % self._cube_size
 
         # Re-Init the class with new content.
         self.__init__(
@@ -132,7 +133,7 @@ class CubeForCubie:
 
         # Find the the track location.
         track_location = None if self._track_location is None else \
-            self.get_tracked_location() - 1
+            (self.get_tracked_location() - 1) % self._cube_size
 
         # Re-Init the class with new content.
         self.__init__(

@@ -16,7 +16,9 @@ class CubieLocationAnalyzer:
         :param track_item_location: Locations of item interested.
         """
         # Store the cube side length.
-        self.cube_side_length = cube_side_length
+        self.side_length = cube_side_length
+        # Store the total cube size.
+        self.cube_size = cube_side_length ** 2 * 24
         # Store the location of the tracked item.
         self.track_item_location = track_item_location
 
@@ -28,7 +30,7 @@ class CubieLocationAnalyzer:
         return [
             Key(move=move, angle=90, index=index)
             for move in CUBE_MOVE
-            for index in range(1, math.floor(self.cube_side_length / 2) + 1)
+            for index in range(1, math.floor(self.side_length / 2) + 1)
         ]
 
     def check_effective_key(self, key: Key) -> bool:
@@ -39,8 +41,8 @@ class CubieLocationAnalyzer:
         """
         # Make a new copy of the cube.
         temp_cube = CubeForCubie(
-            cube_input="_" * self.cube_side_length ** 2 * 24,
-            cube_side_length=self.cube_side_length,
+            cube_input="_" * self.cube_size,
+            cube_side_length=self.side_length,
             track_location=self.track_item_location
         )
         # Perform the desired shift.
@@ -77,8 +79,8 @@ class CubieLocationAnalyzer:
         """
         # Make a new copy of the cube.
         temp_cube = CubeForCubie(
-            cube_input="_" * self.cube_side_length ** 2 * 24,
-            cube_side_length=self.cube_side_length,
+            cube_input="_" * self.cube_size,
+            cube_side_length=self.side_length,
             track_location=self.track_item_location
         )
         # Perform the desired shift and shift the content.
@@ -93,6 +95,6 @@ class CubieLocationAnalyzer:
 
         :return: A list of possible locations of the tracked item.
         """
-        return [self.track_item_location + 1] + [
+        return [(self.track_item_location + 1) % self.cube_size] + [
             self.get_location(key=key) for key in self.get_all_effective_key()
         ]
