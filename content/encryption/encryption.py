@@ -1,12 +1,12 @@
 """Defines the encryption protocol."""
 
+import math
 import binascii
 import numpy as np
 from typing import List
 from collections import deque
 from content.encryption.cube_for_cubie import CubeForCubie
-from content.encryption.constants import CUBE_MOVE, MOVE_ANGLE, CUBIE_LENGTH, \
-    Key
+from content.helper.constants import CUBE_MOVE, MOVE_ANGLE, CUBIE_LENGTH, Key
 
 
 class Encryption:
@@ -19,9 +19,10 @@ class Encryption:
         :param cube_side_length: The desired length of cube side.
         """
         # Store the cube max index.
-        self._cube_max_index = int(np.floor(cube_side_length / 2))
-        # Find the size of each block.
-        block_size = cube_side_length ** 2 * 6 * CUBIE_LENGTH
+        self._side_length = cube_side_length
+        self._max_index = math.floor(cube_side_length / 2)
+        # Find the size of each block, leave one space for generator.
+        block_size = (cube_side_length ** 2 - 1) * 6 * CUBIE_LENGTH
         # Convert the string to binary numbers.
         binary_str = self.string_to_binary(message)
         # Pad the binary string for the encryption.
@@ -30,7 +31,7 @@ class Encryption:
         )
 
         # Find number of blocks required.
-        cube_required = len(binary_str_padded) / block_size
+        self._cube_required = len(binary_str_padded) / block_size
 
         # Create the cube object.
         self._cubes = [
@@ -38,10 +39,19 @@ class Encryption:
                 cube_input=message_chunk, cube_side_length=cube_side_length
             )
             for message_chunk in np.array_split(
-                ary=list(binary_str_padded), indices_or_sections=cube_required
+                ary=list(binary_str_padded),
+                indices_or_sections=self._cube_required
             )
         ]
         self._key = deque()
+
+    @property
+    def _random_cubie(self):
+
+        return [
+            bin(np.random.randint(low=0, high=16))
+            for _ in range(self._cube_required * 6)
+        ]
 
     @staticmethod
     def _pad_binary_str(input_string: str, block_size: int) -> str:
@@ -52,7 +62,7 @@ class Encryption:
         :return: The padded binary string.
         """
         # Find the number of block required for the encryption.
-        num_block_need = int(np.ceil(len(input_string) / block_size))
+        num_block_need = math.ceil(len(input_string) / block_size)
         # Find the number of extra zero needed.
         extra_zero_need = num_block_need * block_size - len(input_string) - 2
         # Deal with special case.
@@ -108,23 +118,6 @@ class Encryption:
     def get_un_pad_string(self):
         """Return current un-padded Ascii string."""
         return self.binary_to_string(input_binary=self.get_un_pad_binary())
-
-    def generate_random_key(self, length: int) -> List[Key]:
-        """Generate a randomized key based on the input length.
-
-        :param length: The desired key length.
-        :return: A list of key object, each key contains move and angle.
-        """
-        # Helper function for generating one key.
-        def generate_one_key() -> Key:
-            """Generate key with random move, angle and index based on move."""
-            return Key(
-                move=np.random.choice(CUBE_MOVE, size=1)[0],
-                angle=np.random.choice(MOVE_ANGLE, size=1)[0],
-                index=np.random.randint(low=1, high=self._cube_max_index + 1)
-            )
-
-        return [generate_one_key() for _ in range(length)]
 
     def encrypt(self, key: List[Key]):
         """Encrypt the message based on a given key.

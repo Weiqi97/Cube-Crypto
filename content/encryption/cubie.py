@@ -3,7 +3,7 @@
 from __future__ import annotations
 from typing import List
 from collections import deque
-from content.encryption.constants import CubieItem, MOVE_ANGLE, CUBIE_LENGTH, \
+from content.helper.constants import CubieItem, MOVE_ANGLE, CUBIE_LENGTH, \
     WRONG_CUBIE_INPUT, WRONG_ROTATION_ANGLE
 
 

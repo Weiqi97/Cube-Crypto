@@ -1,6 +1,6 @@
 import copy
 from content.encryption.cube_for_cubie import CubeForCubie
-from content.encryption.constants import CubeMove, WRONG_CUBE_MOVE, \
+from content.helper.constants import CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH, Key
 
 

@@ -1,5 +1,5 @@
 from content.encryption.encryption import Encryption
-from content.encryption.constants import MOVE_ANGLE, CUBE_MOVE, Key
+from content.helper.constants import MOVE_ANGLE, CUBE_MOVE, Key
 
 
 class TestEncryptionOneCube:

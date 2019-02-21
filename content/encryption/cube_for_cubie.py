@@ -1,8 +1,8 @@
 """Define contents and operations of the entire cube that holds cubies."""
 
-import numpy as np
+import math
 from content.encryption.cube_face_for_cubie import CubeFaceForCubie
-from content.encryption.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
+from content.helper.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
     CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, CubieItem, Key
 
 
@@ -27,7 +27,7 @@ class CubeForCubie:
         # Save the cube size, side length, max index and the tracked location.
         self._cube_size = len(cube_input)
         self._side_length = cube_side_length
-        self._cube_max_index = int(np.floor(cube_side_length / 2))
+        self._cube_max_index = math.floor(cube_side_length / 2)
         self._track_location = track_location
 
         # Create the list of cubie items.
