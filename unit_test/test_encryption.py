@@ -24,16 +24,6 @@ class TestEncryptionOneCube:
         # See if the un-pad works correctly.
         assert self.protocol.get_un_pad_string() == self.message
 
-    def test_key_gen(self):
-        # Generate key and extract the only key.
-        key_list = self.protocol.generate_random_key(length=100)
-        key_angle = [key.angle for key in key_list]
-        key_move = [key.move for key in key_list]
-        key_index = [key.index for key in key_list]
-        assert set(key_angle).issubset(MOVE_ANGLE)
-        assert set(key_move).issubset(CUBE_MOVE)
-        assert set(key_index).issubset([1, 2])
-
     def test_encryption(self):
         self.protocol.encrypt(
             key=[

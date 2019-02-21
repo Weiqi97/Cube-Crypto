@@ -49,7 +49,7 @@ class Encryption:
     def _random_cubie(self):
 
         return [
-            bin(np.random.randint(low=0, high=16))
+            "".join([str(np.random.randint(min=0, max=2)) for _ in range(4)])
             for _ in range(self._cube_required * 6)
         ]
 
@@ -96,8 +96,7 @@ class Encryption:
         """
         string_to_binary = int(input_binary, 2)
         binary_to_byte = string_to_binary.to_bytes(
-            length=(string_to_binary.bit_length() + 7) // 8,
-            byteorder="big"
+            length=(string_to_binary.bit_length() + 7) // 8, byteorder="big"
         )
         return binary_to_byte.decode("utf-8")
 
