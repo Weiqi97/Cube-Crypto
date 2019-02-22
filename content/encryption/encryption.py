@@ -5,8 +5,9 @@ import binascii
 import numpy as np
 from typing import List
 from collections import deque
+from content.helper.helper import xor
+from content.helper.constants import Key, CUBIE_LENGTH
 from content.encryption.cube_for_cubie import CubeForCubie
-from content.helper.constants import CUBE_MOVE, MOVE_ANGLE, CUBIE_LENGTH, Key
 
 
 class Encryption:
@@ -20,9 +21,9 @@ class Encryption:
         """
         # Store the cube max index.
         self._side_length = cube_side_length
-        self._max_index = math.floor(cube_side_length / 2)
+        self._max_index = math.floor(self._side_length / 2)
         # Find the size of each block, leave one space for generator.
-        block_size = (cube_side_length ** 2 - 1) * 6 * CUBIE_LENGTH
+        block_size = (self._side_length ** 2 - 1) * 6 * CUBIE_LENGTH
         # Convert the string to binary numbers.
         binary_str = self.string_to_binary(message)
         # Pad the binary string for the encryption.
@@ -33,16 +34,18 @@ class Encryption:
         # Find number of blocks required.
         self._cube_required = len(binary_str_padded) / block_size
 
-        # Create the cube object.
+        self._str_chunks = np.array_split(
+            ary=list(binary_str_padded),
+            indices_or_sections=self._cube_required
+        )
+
         self._cubes = [
             CubeForCubie(
-                cube_input=message_chunk, cube_side_length=cube_side_length
+                cube_input=randomized_str, cube_side_length=self._side_length
             )
-            for message_chunk in np.array_split(
-                ary=list(binary_str_padded),
-                indices_or_sections=self._cube_required
-            )
+            for randomized_str in self._randomize_str()
         ]
+
         self._key = deque()
 
     @property
@@ -51,6 +54,20 @@ class Encryption:
         return [
             "".join([str(np.random.randint(min=0, max=2)) for _ in range(4)])
             for _ in range(self._cube_required * 6)
+        ]
+
+    def _randomize_str(self):
+        return [
+            xor(str_one=self._str_chunks[index],
+                str_two=cubie * (self._side_length ** 2 - 1)) + cubie
+            for index, cubie in enumerate(self._random_cubie)
+        ]
+
+    def _undo_randomize_str(self):
+        return [
+            xor(str_one=self._str_chunks[index][:-4],
+                str_two=cubie * (self._side_length ** 2 - 1))
+            for index, cubie in enumerate(self._random_cubie)
         ]
 
     @staticmethod

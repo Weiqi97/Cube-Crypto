@@ -22,6 +22,12 @@ class CubieLocationAnalyzer:
         # Store the location of the tracked item.
         self._track_item_location = track_item_location
 
+    @staticmethod
+    def _get_location_after_key(key: Key, cube: CubeForCubie) -> int:
+        cube.shift(key=key)
+        cube.shift_cubie_content()
+        return cube.get_tracked_location()
+
     def _get_basic_key(self) -> List[Key]:
         """Get all the possible keys with fixed 90 degrees.
 
@@ -60,7 +66,7 @@ class CubieLocationAnalyzer:
             if self._check_effective_key(key=key)
         ]
 
-    def get_all_effective_key(self) -> List[Key]:
+    def _get_all_effective_key(self) -> List[Key]:
         """Get all the keys that moves the tracked item with any angles.
 
         :return: A list of effective keys with any degree.
@@ -96,5 +102,16 @@ class CubieLocationAnalyzer:
         :return: A list of possible locations of the tracked item.
         """
         return [(self._track_item_location + 1) % self._cube_size] + [
-            self._get_location(key=key) for key in self.get_all_effective_key()
+            self._get_location(key=key) for key in self._get_all_effective_key()
+        ]
+
+    def location_tracker(self, keys: List[Key]) -> List[int]:
+        cube = CubeForCubie(
+            cube_input="_" * self._cube_size,
+            cube_side_length=self._side_length,
+            track_location=self._track_item_location
+        )
+
+        return [self._track_item_location] + [
+            self._get_location_after_key(key=key, cube=cube) for key in keys
         ]

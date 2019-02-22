@@ -26,7 +26,7 @@ class TestCubieLocationAnalyzer:
         ]
 
     def test_get_all_effective_key(self):
-        assert self.analyzer.get_all_effective_key() == [
+        assert self.analyzer._get_all_effective_key() == [
             Key(move=move, angle=angle, index=1)
             for move in ["left", "top", "back"]
             for angle in MOVE_ANGLE
