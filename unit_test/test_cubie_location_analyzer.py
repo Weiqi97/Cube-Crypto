@@ -41,3 +41,18 @@ class TestCubieLocationAnalyzer:
             self.analyzer.get_all_location(),
             [1, 37, 145, 215, 10, 35, 28, 136, 179, 82]
         )
+
+    def test_location_tracker(self):
+        # Set up analyzer and the key to perform checking.
+        analyzer = CubieLocationAnalyzer(
+            cube_side_length=3, track_item_location=0
+        )
+        keys = [
+            Key(move="left", angle=90, index=1),
+            Key(move="top", angle=90, index=1),
+            Key(move="down", angle=90, index=1)
+        ]
+
+        np.testing.assert_array_equal(
+            analyzer.location_tracker(keys=keys), [0, 37, 110, 183]
+        )
