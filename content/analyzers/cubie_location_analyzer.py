@@ -102,7 +102,8 @@ class CubieLocationAnalyzer:
         :return: A list of possible locations of the tracked item.
         """
         return [(self._track_item_location + 1) % self._cube_size] + [
-            self._get_location(key=key) for key in self._get_all_effective_key()
+            self._get_location(key=key)
+            for key in self._get_all_effective_key()
         ]
 
     def location_tracker(self, keys: List[Key]) -> List[int]:
