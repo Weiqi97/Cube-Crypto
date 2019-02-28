@@ -1,47 +1,48 @@
+from copy import deepcopy
+from content.helper.constants import Key
 from content.encryption.encryption import Encryption
-from content.helper.constants import MOVE_ANGLE, CUBE_MOVE, Key
+from content.helper.helper import xor, string_to_binary
 
 
+# noinspection PyProtectedMember
 class TestEncryptionOneCube:
     # Set the test plain message.
     message = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwX"
-
     # Set the testing protocol.
     protocol = Encryption(message=message, cube_side_length=4)
 
-    # noinspection PyProtectedMember
+    # Set the padded binary string.
+    binary_chunk = [cube.content for cube in protocol._cubes]
+
     def test_init(self):
         # Check initialization.
         assert len(self.protocol._key) == 0
-        assert len(self.protocol._cubes) == 1
+        assert len(self.protocol._cubes) == 2
 
-    def test_pad_string(self):
-        # See if the padding works correctly.
-        assert self.protocol.get_pad_string() == \
-            "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwX@"
-
-    def test_un_pad_string(self):
-        # See if the un-pad works correctly.
-        assert self.protocol.get_un_pad_string() == self.message
+    def test_current_string(self):
+        assert self.protocol.get_current_binary() == "".join(self.binary_chunk)
 
     def test_encryption(self):
         self.protocol.encrypt(
             key=[
                 Key(move="right", angle=360, index=1),
-                Key(move="left", angle=360, index=1),
                 Key(move="top", angle=360, index=1),
-                Key(move="down", angle=360, index=1),
                 Key(move="front", angle=360, index=1),
+                Key(move="left", angle=360, index=1),
+                Key(move="down", angle=360, index=1),
                 Key(move="back", angle=360, index=1)
             ]
         )
-        assert self.protocol.get_un_pad_string() == self.message
+
+        assert self.protocol.get_current_binary() == "".join(
+            chunk[-6:] + chunk[:-6] for chunk in self.binary_chunk
+        )
 
     def test_decrypt(self):
         self.protocol.encrypt(
             key=[
-                Key(move="right", angle=90, index=1)
+                Key(move="left", angle=90, index=1)
             ]
         )
-        self.protocol.decrypt()
-        assert self.protocol.get_un_pad_string() == self.message
+
+        assert self.protocol.get_decrypted_str() == self.message
