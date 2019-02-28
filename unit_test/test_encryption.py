@@ -1,7 +1,5 @@
-from copy import deepcopy
 from content.helper.constants import Key
 from content.encryption.encryption import Encryption
-from content.helper.helper import xor, string_to_binary
 
 
 # noinspection PyProtectedMember
