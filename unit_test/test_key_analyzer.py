@@ -2,6 +2,7 @@ from content.helper.constants import Key
 from content.analyzers.key_analyzer import KeyAnalyzer
 
 
+# noinspection PyProtectedMember
 class TestKeyAnalyzer:
     # Set up the test key.
     key = [

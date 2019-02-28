@@ -47,12 +47,12 @@ class CubeForCubie:
         ]
 
         # Assume that we fill the cube in the following order:
-        #   - 1. Top face
-        #   - 2. Front face
-        #   - 3. Right face
-        #   - 4. Back face
-        #   - 5. Left face
-        #   - 6. Down face
+        #   - 1. Top face, first chunk of message
+        #   - 2. Front face, second chunk of message
+        #   - 3. Right face, third chunk of message
+        #   - 4. Back face, second chunk of random
+        #   - 5. Left face, third chunk of random
+        #   - 6. Down face, first chunk of random
         self._top_face = CubeFaceForCubie(
             cube_face_input=cubie_input_list[0],
             cube_side_length=cube_side_length
@@ -65,15 +65,15 @@ class CubeForCubie:
             cube_face_input=cubie_input_list[2],
             cube_side_length=cube_side_length
         )
-        self._back_face = CubeFaceForCubie(
+        self._down_face = CubeFaceForCubie(
             cube_face_input=cubie_input_list[3],
             cube_side_length=cube_side_length
         )
-        self._left_face = CubeFaceForCubie(
+        self._back_face = CubeFaceForCubie(
             cube_face_input=cubie_input_list[4],
             cube_side_length=cube_side_length
         )
-        self._down_face = CubeFaceForCubie(
+        self._left_face = CubeFaceForCubie(
             cube_face_input=cubie_input_list[5],
             cube_side_length=cube_side_length
         )
@@ -89,9 +89,33 @@ class CubeForCubie:
             f"{self._top_face.face_string}" \
             f"{self._front_face.face_string}" \
             f"{self._right_face.face_string}" \
+            f"{self._down_face.face_string}" \
             f"{self._back_face.face_string}" \
-            f"{self._left_face.face_string}" \
-            f"{self._down_face.face_string}"
+            f"{self._left_face.face_string}"
+
+    @property
+    def message_content(self) -> str:
+        """Format all cubies that holds message into a continuous string.
+
+        :return: A string contains all cubies that hold message.
+        """
+        # Get all cube faces as string in the right order.
+        return \
+            f"{self._top_face.face_string}" \
+            f"{self._front_face.face_string}" \
+            f"{self._right_face.face_string}"
+
+    @property
+    def random_content(self) -> str:
+        """Format all cubies that hold random bits into a continuous string.
+
+        :return: A string contains all cubies that hold random bits.
+        """
+        # Get all cube faces as string in the right order.
+        return \
+            f"{self._down_face.face_string}" \
+            f"{self._back_face.face_string}" \
+            f"{self._left_face.face_string}"
 
     def get_tracked_location(self) -> int:
         """Get location for the tracked cubie.
@@ -105,10 +129,12 @@ class CubeForCubie:
             self._left_face.face_content + self._down_face.face_content
 
         # Return the tracked locations.
-        return [
-            location
-            for location, cubie in enumerate(all_cubie_item) if cubie.marked
-        ][0]
+        for location, cubie in enumerate(all_cubie_item):
+            if cubie.marked:
+                return location
+
+        # If no location was found, throw value error.
+        raise ValueError
 
     def shift_cubie_content(self):
         """Shift the cube binary representation to right by one bit."""
@@ -122,8 +148,8 @@ class CubeForCubie:
         # Re-Init the class with new content.
         self.__init__(
             cube_input=shifted_content,
-            cube_side_length=self._side_length,
-            track_location=track_location
+            track_location=track_location,
+            cube_side_length=self._side_length
         )
 
     def shift_cubie_content_back(self):

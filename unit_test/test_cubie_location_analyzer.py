@@ -1,5 +1,5 @@
 import numpy as np
-from content.helper.constants import CUBE_MOVE, Key, MOVE_ANGLE
+from content.helper.constants import Key, CUBE_MOVE, MOVE_ANGLE
 from content.analyzers.cubie_location_analyzer import CubieLocationAnalyzer
 
 
@@ -39,5 +39,5 @@ class TestCubieLocationAnalyzer:
     def test_get_all_location(self):
         np.testing.assert_array_equal(
             self.analyzer.get_all_location(),
-            [1, 37, 181, 143, 10, 35, 28, 172, 215, 82]
+            [1, 37, 145, 215, 10, 35, 28, 136, 179, 82]
         )
