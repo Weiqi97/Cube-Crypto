@@ -106,6 +106,11 @@ class CubieLocationAnalyzer:
         ]
 
     def location_tracker(self, keys: List[Key]) -> List[int]:
+        """Track position of a specific bit when moves are performed.
+
+        :param keys: A list of cube movements.
+        :return: A list of integers which each represent a location.
+        """
         cube = CubeForCubie(
             cube_input="_" * self._cube_size,
             cube_side_length=self._side_length,
