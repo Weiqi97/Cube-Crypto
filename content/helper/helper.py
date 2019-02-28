@@ -2,8 +2,10 @@
 
 import random
 import binascii
+import pandas as pd
 from typing import List
 from content.helper.constants import Key, CUBE_MOVE, MOVE_ANGLE
+from content.encryption.cube_face_for_cubie import CubeFaceForCubie
 
 
 def generate_random_keys(length: int, max_index: int) -> List[Key]:
@@ -20,6 +22,33 @@ def generate_random_keys(length: int, max_index: int) -> List[Key]:
             index=random.randint(1, max_index)
         ) for _ in range(length)
     ]
+
+
+def get_cube_layout(cube_side_length: int) -> pd.DataFrame:
+    """Show the cube layout by returning a DataFrame."""
+    # Create the pandas DataFrame filled with 0.
+    return pd.DataFrame(
+        data=0,
+        index=CubeFaceForCubie.get_frame_index(
+            cube_side_length=cube_side_length
+        ),
+        columns=CubeFaceForCubie.get_frame_column(
+            cube_side_length=cube_side_length
+        )
+    )
+
+
+def get_key_table(key: List[Key]) -> pd.DataFrame:
+    """Get list of keys as a DataFrame."""
+    # Extract the values from NamedTuple to list.
+    key_value_list = [[key.move, key.index, key.angle] for key in key]
+
+    # Pack values into a DataFrame.
+    return pd.DataFrame(
+        data=key_value_list,
+        index=[index + 1 for index in range(len(key))],
+        columns=["Movement", "Index", "Angle"]
+    )
 
 
 def xor(str_one: str, str_two: str) -> str:
