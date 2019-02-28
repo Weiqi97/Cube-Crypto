@@ -221,6 +221,15 @@ class TestCubeShift:
             "123456789012345678901234123456783456789056789012" \
             "290141236345856778901234123456783456789056789012"
 
+    def test_location_null(self):
+        # Create the cube without location tracker.
+        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        try:
+            cube.get_tracked_location()
+            raise AssertionError("Error message did not raise.")
+        except ValueError as error:
+            assert str(error) == "No Tracked Location"
+
     def test_special(self):
         # Create the cube.
         cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)

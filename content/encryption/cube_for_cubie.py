@@ -134,7 +134,7 @@ class CubeForCubie:
                 return location
 
         # If no location was found, throw value error.
-        raise ValueError
+        raise ValueError("No Tracked Location")
 
     def shift_cubie_content(self):
         """Shift the cube binary representation to right by one bit."""
