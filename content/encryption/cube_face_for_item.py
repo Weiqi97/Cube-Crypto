@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 from collections import deque
-from content.encryption.constants import WRONG_SIDE_LENGTH, \
+from content.helper.constants import WRONG_SIDE_LENGTH, \
     WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
 

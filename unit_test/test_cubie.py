@@ -1,5 +1,5 @@
 from content.encryption.cubie import Cubie
-from content.encryption.constants import CubieItem, WRONG_CUBIE_INPUT, \
+from content.helper.constants import CubieItem, WRONG_CUBIE_INPUT, \
     WRONG_ROTATION_ANGLE
 
 

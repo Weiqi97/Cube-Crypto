@@ -1,12 +1,13 @@
 """Defines the encryption protocol."""
 
-import binascii
+import math
+import random
 import numpy as np
 from typing import List
 from collections import deque
+from content.helper.constants import Key, CUBIE_LENGTH
 from content.encryption.cube_for_cubie import CubeForCubie
-from content.encryption.constants import CUBE_MOVE, MOVE_ANGLE, CUBIE_LENGTH, \
-    Key
+from content.helper.helper import xor, binary_to_string, string_to_binary
 
 
 class Encryption:
@@ -18,30 +19,70 @@ class Encryption:
         :param message: The message to encrypt.
         :param cube_side_length: The desired length of cube side.
         """
-        # Store the cube max index.
-        self._cube_max_index = int(np.floor(cube_side_length / 2))
-        # Find the size of each block.
-        block_size = cube_side_length ** 2 * 6 * CUBIE_LENGTH
-        # Convert the string to binary numbers.
-        binary_str = self.string_to_binary(message)
-        # Pad the binary string for the encryption.
+        # Store the important information for other method to access.
+        self._message = message
+        self._max_index = math.floor(cube_side_length / 2)
+        self._block_size = cube_side_length ** 2 * 3 * CUBIE_LENGTH
+
+        # Initialize the random chunks saver.
+        self._random_bits = []
+
+        # Get the cubes.
+        self._cubes = [
+            CubeForCubie(
+                cube_input=input_str, cube_side_length=cube_side_length
+            )
+            for input_str in self._get_binary_to_encrypt
+        ]
+
+        # Set up the holder for the key.
+        self._key = deque()
+
+    @property
+    def _get_binary_to_encrypt(self) -> List[str]:
+        """Convert the message to binary chunks and xor then with random bits.
+
+        :return: A list of binary chunks where each chunk contains:
+            - The first half is XOR result of original message
+            - The second half if random bits generated
+        """
+        # Obtain the binary string.
+        binary_str = string_to_binary(self._message)
+
+        # Obtain the padded binary string.
         binary_str_padded = self._pad_binary_str(
-            input_string=binary_str, block_size=block_size
+            input_string=binary_str, block_size=self._block_size
         )
 
         # Find number of blocks required.
-        cube_required = len(binary_str_padded) / block_size
+        cube_required = int(len(binary_str_padded) / self._block_size)
 
-        # Create the cube object.
-        self._cubes = [
-            CubeForCubie(
-                cube_input=message_chunk, cube_side_length=cube_side_length
-            )
-            for message_chunk in np.array_split(
-                ary=list(binary_str_padded), indices_or_sections=cube_required
-            )
+        # Split the binary into number of cubes required.
+        binary_chunks = np.array_split(
+            ary=list(binary_str_padded), indices_or_sections=cube_required
+        )
+
+        self._random_bits = [
+            self._get_random_str for _ in range(cube_required)
         ]
-        self._key = deque()
+
+        # Return input for each cube.
+        return [
+            xor(str_one="".join(binary),
+                str_two=self._random_bits[index]) + self._random_bits[index]
+            for index, binary in enumerate(binary_chunks)
+        ]
+
+    @property
+    def _get_random_str(self) -> str:
+        """Generate random binary string with the length of block size.
+
+        :return: A random binary string with the length of half a cube.
+        """
+        # Random pick 0 or 1 in size of half of a cube.
+        return "".join([
+            str(random.randint(0, 1)) for _ in range(self._block_size)
+        ])
 
     @staticmethod
     def _pad_binary_str(input_string: str, block_size: int) -> str:
@@ -52,7 +93,7 @@ class Encryption:
         :return: The padded binary string.
         """
         # Find the number of block required for the encryption.
-        num_block_need = int(np.ceil(len(input_string) / block_size))
+        num_block_need = math.ceil(len(input_string) / block_size)
         # Find the number of extra zero needed.
         extra_zero_need = num_block_need * block_size - len(input_string) - 2
         # Deal with special case.
@@ -62,69 +103,9 @@ class Encryption:
         # Return the padded string.
         return f"{input_string}01{'0' * extra_zero_need}"
 
-    @staticmethod
-    def string_to_binary(input_string: str) -> str:
-        """Convert Ascii string to binary string.
-
-        :param input_string: An input Ascii encoded string.
-        :return: The binary encoded equivalence of the input Ascii string.
-        """
-        string_to_byte = binascii.a2b_qp(input_string)
-        byte_to_binary = bin(int.from_bytes(string_to_byte, byteorder="big"))
-        byte_to_binary = byte_to_binary.replace("b", "")
-        # Make sure what ever being returned is multiple of 8.
-        return f"{'0' * (8 - len(byte_to_binary) % 8)}{byte_to_binary}" \
-            if len(byte_to_binary) % 8 != 0 \
-            else byte_to_binary
-
-    @staticmethod
-    def binary_to_string(input_binary: str) -> str:
-        """Convert binary string to Ascii string.
-
-        :param input_binary: An input binary encoded string.
-        :return: The Ascii encoded equivalence of the input binary string.
-        """
-        string_to_binary = int(input_binary, 2)
-        binary_to_byte = string_to_binary.to_bytes(
-            length=(string_to_binary.bit_length() + 7) // 8,
-            byteorder="big"
-        )
-        return binary_to_byte.decode("utf-8")
-
-    def get_pad_binary(self) -> str:
+    def get_current_binary(self) -> str:
         """Get the padded binary string at the current state."""
         return "".join([cube.content for cube in self._cubes])
-
-    def get_un_pad_binary(self) -> str:
-        """Remove the padding from the current binary string."""
-        # NOTE! This function should not be used while the cube is encrypted.
-        un_pad_string = self.get_pad_binary().rstrip("0")
-        return un_pad_string[:-2]
-
-    def get_pad_string(self):
-        """Return current padded Ascii string."""
-        return self.binary_to_string(input_binary=self.get_pad_binary())
-
-    def get_un_pad_string(self):
-        """Return current un-padded Ascii string."""
-        return self.binary_to_string(input_binary=self.get_un_pad_binary())
-
-    def generate_random_key(self, length: int) -> List[Key]:
-        """Generate a randomized key based on the input length.
-
-        :param length: The desired key length.
-        :return: A list of key object, each key contains move and angle.
-        """
-        # Helper function for generating one key.
-        def generate_one_key() -> Key:
-            """Generate key with random move, angle and index based on move."""
-            return Key(
-                move=np.random.choice(CUBE_MOVE, size=1)[0],
-                angle=np.random.choice(MOVE_ANGLE, size=1)[0],
-                index=np.random.randint(low=1, high=self._cube_max_index + 1)
-            )
-
-        return [generate_one_key() for _ in range(length)]
 
     def encrypt(self, key: List[Key]):
         """Encrypt the message based on a given key.
@@ -158,3 +139,23 @@ class Encryption:
                         index=each_key.index
                     )
                 )
+
+    def get_decrypted_str(self) -> str:
+        """Decrypt the message and return the original input.
+
+        :return: The original message that was encrypted as a string.
+        """
+        # First make sure that all cubes are decrypted.
+        self.decrypt()
+        # Retract the binary after XOR operation.
+        decrypted_binary = [
+            xor(
+                str_one=cube.content[:self._block_size],
+                str_two=cube.content[self._block_size:]
+            ) for cube in self._cubes
+        ]
+        # Un-pad the binary result. (Remove all 0's at the end.)
+        up_pad_binary = "".join(decrypted_binary).rstrip("0")[:-2]
+
+        # Convert the un-pad binary to a string and return it.
+        return binary_to_string(up_pad_binary)

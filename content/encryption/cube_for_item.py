@@ -1,8 +1,9 @@
 """Define contents and operations of the entire cube that holds any item."""
 
+import math
 import numpy as np
 from content.encryption.cube_face_for_item import CubeFaceForItem
-from content.encryption.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
+from content.helper.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 
@@ -21,7 +22,7 @@ class CubeForItem:
 
         # Save the cube side length and cube max index.
         self._side_length = cube_side_length
-        self._cube_max_index = int(np.floor(cube_side_length / 2))
+        self._cube_max_index = math.floor(cube_side_length / 2)
 
         # Split the cube input into six arrays.
         cube_input_list = np.array_split(ary=cube_input, indices_or_sections=6)

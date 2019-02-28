@@ -1,7 +1,7 @@
 import numpy as np
 from content.encryption.cube_for_item import CubeForItem
-from content.encryption.constants import CubeMove, WRONG_CUBE_MOVE, \
-    WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH, Key
+from content.helper.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
+    WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 
 # noinspection PyProtectedMember
