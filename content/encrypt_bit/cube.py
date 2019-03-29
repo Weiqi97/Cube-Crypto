@@ -1,12 +1,12 @@
 """Define contents and operations of the entire cube that holds cubies."""
 
 import math
-from content.encryption.cube_face_for_cubie import CubeFaceForCubie
+from content.encrypt_bit.face import Face
 from content.helper.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
     CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, CubieItem, Key
 
 
-class CubeForCubie:
+class Cube:
     """Create a full cube with desired side length on inputs."""
 
     def __init__(self,
@@ -53,27 +53,27 @@ class CubeForCubie:
         #   - 4. Back face, second chunk of random
         #   - 5. Left face, third chunk of random
         #   - 6. Down face, first chunk of random
-        self._top_face = CubeFaceForCubie(
+        self._top_face = Face(
             cube_face_input=cubie_input_list[0],
             cube_side_length=cube_side_length
         )
-        self._front_face = CubeFaceForCubie(
+        self._front_face = Face(
             cube_face_input=cubie_input_list[1],
             cube_side_length=cube_side_length
         )
-        self._right_face = CubeFaceForCubie(
+        self._right_face = Face(
             cube_face_input=cubie_input_list[2],
             cube_side_length=cube_side_length
         )
-        self._down_face = CubeFaceForCubie(
+        self._down_face = Face(
             cube_face_input=cubie_input_list[3],
             cube_side_length=cube_side_length
         )
-        self._back_face = CubeFaceForCubie(
+        self._back_face = Face(
             cube_face_input=cubie_input_list[4],
             cube_side_length=cube_side_length
         )
-        self._left_face = CubeFaceForCubie(
+        self._left_face = Face(
             cube_face_input=cubie_input_list[5],
             cube_side_length=cube_side_length
         )

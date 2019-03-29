@@ -5,13 +5,13 @@ import numpy as np
 import pandas as pd
 from typing import List
 from collections import deque
-from content.encryption.cubie import Cubie
+from content.encrypt_bit.cubie import Cubie
 from content.helper.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
     WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME, \
     CubieItem
 
 
-class CubeFaceForCubie:
+class Face:
     """Create a cube face with desired side length on inputs."""
 
     def __init__(self,

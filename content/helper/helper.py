@@ -5,7 +5,7 @@ import binascii
 import pandas as pd
 from typing import List
 from content.helper.constants import Key, CUBE_MOVE, MOVE_ANGLE
-from content.encryption.cube_face_for_cubie import CubeFaceForCubie
+from content.encrypt_bit.face import Face
 
 
 def generate_random_keys(length: int, max_index: int) -> List[Key]:
@@ -29,10 +29,10 @@ def get_cube_layout(cube_side_length: int) -> pd.DataFrame:
     # Create the pandas DataFrame filled with 0.
     return pd.DataFrame(
         data=0,
-        index=CubeFaceForCubie.get_frame_index(
+        index=Face.get_frame_index(
             cube_side_length=cube_side_length
         ),
-        columns=CubeFaceForCubie.get_frame_column(
+        columns=Face.get_frame_column(
             cube_side_length=cube_side_length
         )
     )

@@ -1,4 +1,4 @@
-from content.encryption.cubie import Cubie
+from content.encrypt_bit.cubie import Cubie
 from content.helper.constants import CubieItem, WRONG_CUBIE_INPUT, \
     WRONG_ROTATION_ANGLE
 

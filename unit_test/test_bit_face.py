@@ -1,6 +1,6 @@
 from collections import deque
-from content.encryption.cubie import Cubie
-from content.encryption.cube_face_for_cubie import CubeFaceForCubie
+from content.encrypt_bit.cubie import Cubie
+from content.encrypt_bit.face import Face
 from content.helper.constants import WRONG_CUBE_FACE_INPUT, \
     WRONG_SIDE_LENGTH, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME, \
     CubieItem
@@ -13,7 +13,7 @@ class TestCubeFace:
         CubieItem(content=content, marked=False)
         for content in face_input_contents
     ]
-    cube_face = CubeFaceForCubie(
+    cube_face = Face(
         cube_face_input=face_input,
         cube_side_length=3
     )
@@ -45,7 +45,7 @@ class TestCubeFace:
 
     def test_cube_fill_row(self):
         # Create new testing cube face since the value get changed.
-        cube_face = CubeFaceForCubie(
+        cube_face = Face(
             cube_face_input=self.face_input,
             cube_side_length=3
         )
@@ -78,7 +78,7 @@ class TestCubeFace:
 
     def test_cube_fill_col(self):
         # Create new testing cube face since the value get changed.
-        cube_face = CubeFaceForCubie(
+        cube_face = Face(
             cube_face_input=self.face_input,
             cube_side_length=3
         )
@@ -111,7 +111,7 @@ class TestCubeFace:
 
     def test_cube_face_rotate(self):
         # Create new testing cube face since the value get changed.
-        cube_face = CubeFaceForCubie(
+        cube_face = Face(
             cube_face_input=self.face_input,
             cube_side_length=3
         )
@@ -126,14 +126,14 @@ class TestCubeFaceErrorCheck:
         CubieItem(content=content, marked=False)
         for content in face_input_contents
     ]
-    cube_face = CubeFaceForCubie(
+    cube_face = Face(
         cube_face_input=face_input,
         cube_side_length=3
     )
 
     def test_init(self):
         try:
-            CubeFaceForCubie(
+            Face(
                 cube_face_input=list("abracadabra"),
                 cube_side_length=3
             )

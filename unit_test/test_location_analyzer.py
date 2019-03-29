@@ -1,6 +1,6 @@
 import numpy as np
 from content.helper.constants import Key, CUBE_MOVE, MOVE_ANGLE
-from content.analyzers.cubie_location_analyzer import CubieLocationAnalyzer
+from content.analyzers.location_analyzer import CubieLocationAnalyzer
 
 
 # noinspection PyProtectedMember

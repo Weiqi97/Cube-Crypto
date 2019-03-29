@@ -2,7 +2,7 @@
 
 import math
 from typing import List
-from content.encryption.cube_for_cubie import CubeForCubie
+from content.encrypt_bit.cube import Cube
 from content.helper.constants import Key, CUBE_MOVE, MOVE_ANGLE
 
 
@@ -23,7 +23,7 @@ class CubieLocationAnalyzer:
         self._track_item_location = track_item_location
 
     @staticmethod
-    def _get_location_after_key(key: Key, cube: CubeForCubie) -> int:
+    def _get_location_after_key(key: Key, cube: Cube) -> int:
         cube.shift(key=key)
         cube.shift_cubie_content()
         return cube.get_tracked_location()
@@ -46,7 +46,7 @@ class CubieLocationAnalyzer:
         :return: If the key actually moves the item. (Not Equal = True)
         """
         # Make a new copy of the cube.
-        temp_cube = CubeForCubie(
+        temp_cube = Cube(
             cube_input="_" * self._cube_size,
             cube_side_length=self._side_length,
             track_location=self._track_item_location
@@ -84,7 +84,7 @@ class CubieLocationAnalyzer:
         :return: New location of the tracked item.
         """
         # Make a new copy of the cube.
-        temp_cube = CubeForCubie(
+        temp_cube = Cube(
             cube_input="_" * self._cube_size,
             cube_side_length=self._side_length,
             track_location=self._track_item_location
@@ -112,7 +112,7 @@ class CubieLocationAnalyzer:
         :param keys: A list of cube movements.
         :return: A list of integers which each represent a location.
         """
-        cube = CubeForCubie(
+        cube = Cube(
             cube_input="_" * self._cube_size,
             cube_side_length=self._side_length,
             track_location=self._track_item_location

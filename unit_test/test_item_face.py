@@ -1,6 +1,6 @@
 import numpy as np
 from collections import deque
-from content.encryption.cube_face_for_item import CubeFaceForItem
+from content.encrypt_item.face import Face
 from content.helper.constants import WRONG_CUBE_FACE_INPUT, \
     WRONG_SIDE_LENGTH, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
@@ -8,7 +8,7 @@ from content.helper.constants import WRONG_CUBE_FACE_INPUT, \
 class TestCubeFace:
     # Setup testing input.
     face_input = [item for item in range(9)]
-    cube_face = CubeFaceForItem(cube_face_input=face_input, cube_side_length=3)
+    cube_face = Face(cube_face_input=face_input, cube_side_length=3)
 
     def test_cube_face(self):
         assert np.array_equal(self.cube_face.get_item_list, self.face_input)
@@ -34,7 +34,7 @@ class TestCubeFace:
 
     def test_cube_fill_row(self):
         # Create new testing cube face since the value get changed.
-        cube_face = CubeFaceForItem(
+        cube_face = Face(
             cube_face_input=self.face_input,
             cube_side_length=3
         )
@@ -52,7 +52,7 @@ class TestCubeFace:
 
     def test_cube_fill_col(self):
         # Create new testing cube face since the value get changed.
-        cube_face = CubeFaceForItem(
+        cube_face = Face(
             cube_face_input=self.face_input,
             cube_side_length=3
         )
@@ -63,7 +63,7 @@ class TestCubeFace:
 
     def test_cube_rotate(self):
         # Create new testing cube face since the value get changed.
-        cube_face = CubeFaceForItem(
+        cube_face = Face(
             cube_face_input=self.face_input,
             cube_side_length=3
         )
@@ -78,11 +78,11 @@ class TestCubeFace:
 class TestCubeFaceErrorCheck:
     # Setup testing input.
     face_input = [item for item in range(9)]
-    cube_face = CubeFaceForItem(cube_face_input=face_input, cube_side_length=3)
+    cube_face = Face(cube_face_input=face_input, cube_side_length=3)
 
     def test_init(self):
         try:
-            CubeFaceForItem(cube_face_input=list("wrong"), cube_side_length=3)
+            Face(cube_face_input=list("wrong"), cube_side_length=3)
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_CUBE_FACE_INPUT

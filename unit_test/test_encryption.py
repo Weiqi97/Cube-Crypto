@@ -1,5 +1,5 @@
 from content.helper.constants import Key
-from content.encryption.encryption import Encryption
+from content.encrypt_bit.encryption import Encryption
 
 
 # noinspection PyProtectedMember

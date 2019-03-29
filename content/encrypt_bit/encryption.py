@@ -6,7 +6,7 @@ import numpy as np
 from typing import List
 from collections import deque
 from content.helper.constants import Key, CUBIE_LENGTH
-from content.encryption.cube_for_cubie import CubeForCubie
+from content.encrypt_bit.cube import Cube
 from content.helper.helper import xor, binary_to_string, string_to_binary
 
 
@@ -29,7 +29,7 @@ class Encryption:
 
         # Get the cubes.
         self._cubes = [
-            CubeForCubie(
+            Cube(
                 cube_input=input_str, cube_side_length=cube_side_length
             )
             for input_str in self._get_binary_to_encrypt

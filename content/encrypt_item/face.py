@@ -1,5 +1,6 @@
 """Define contents and operations of one cube face that contains items."""
 
+import math
 import numpy as np
 import pandas as pd
 from collections import deque
@@ -7,7 +8,7 @@ from content.helper.constants import WRONG_SIDE_LENGTH, \
     WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME
 
 
-class CubeFaceForItem:
+class Face:
     """Create a cube face with desired side length on inputs."""
 
     def __init__(self, cube_face_input: list, cube_side_length):
@@ -58,7 +59,7 @@ class CubeFaceForItem:
         else:
             column_queue = deque("C")
             # Pad R on the right side and L on the left side.
-            for move_index in range(1, int(np.ceil(cube_side_length / 2))):
+            for move_index in range(1, int(math.ceil(cube_side_length / 2))):
                 column_queue.appendleft(f"L{move_index}")
                 column_queue.append(f"R{move_index}")
 
@@ -83,7 +84,7 @@ class CubeFaceForItem:
         else:
             index_queue = deque("C")
             # Pad D on the right side and T on the left side.
-            for move_index in range(1, int(np.ceil(cube_side_length / 2))):
+            for move_index in range(1, int(math.ceil(cube_side_length / 2))):
                 index_queue.appendleft(f"T{move_index}")
                 index_queue.append(f"D{move_index}")
 
