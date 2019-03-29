@@ -85,13 +85,7 @@ class Cube:
         :return: A string contains all cubies.
         """
         # Get all cube faces as string in the right order.
-        return \
-            f"{self._top_face.face_string}" \
-            f"{self._front_face.face_string}" \
-            f"{self._right_face.face_string}" \
-            f"{self._down_face.face_string}" \
-            f"{self._back_face.face_string}" \
-            f"{self._left_face.face_string}"
+        return self.message_content + self.random_content
 
     @property
     def message_content(self) -> str:
