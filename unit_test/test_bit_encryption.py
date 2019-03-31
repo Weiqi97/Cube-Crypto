@@ -12,30 +12,20 @@ class TestEncryptionOneCube:
     # Set the padded binary string.
     binary_chunk = [cube.content for cube in protocol._cubes]
 
-    def test_init(self):
-        # Check initialization.
-        assert len(self.protocol._key) == 0
-        assert len(self.protocol._cubes) == 2
-
     def test_current_string(self):
         assert self.protocol.get_current_binary() == "".join(self.binary_chunk)
 
-    # Can not be tested.
-    # def test_encryption(self):
-    #     self.protocol.encrypt(
-    #         key=[
-    #             Key(move="right", angle=360, index=1),
-    #             Key(move="top", angle=360, index=1),
-    #             Key(move="front", angle=360, index=1),
-    #             Key(move="left", angle=360, index=1),
-    #             Key(move="down", angle=360, index=1),
-    #             Key(move="back", angle=360, index=1)
-    #         ]
-    #     )
-    #
-    #     assert self.protocol.get_current_binary() == "".join(
-    #         chunk[-6:] + chunk[:-6] for chunk in self.binary_chunk
-    #     )
+    def test_encryption(self):
+        # Test redundant keys give the same result.
+        self.protocol.encrypt(key=[Key(move="right", angle=360, index=1)])
+        first_content = self.protocol.get_current_binary()
+
+        self.protocol.decrypt()
+
+        self.protocol.encrypt(key=[Key(move="left", angle=360, index=1)])
+        second_content = self.protocol.get_current_binary()
+
+        assert first_content == second_content
 
     def test_decrypt(self):
         assert self.protocol.get_decrypted_str() == self.message

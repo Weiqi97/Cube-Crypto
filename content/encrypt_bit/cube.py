@@ -422,7 +422,6 @@ class Cube:
 
     def xor(self):
         """Shift the cube binary representation to right by one bit."""
-
         # Find the xor result and use it as the new content to initiate class.
         xor_result = xor(
             str_one=self.message_content,
