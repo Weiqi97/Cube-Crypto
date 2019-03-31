@@ -1,4 +1,4 @@
-"""Define contents and operations of one cube face that contains cubies."""
+"""Define contents and operations of one cube face that contains bits."""
 
 import math
 import itertools

@@ -1,4 +1,4 @@
-"""Define contents and operations of the entire cube that holds cubies."""
+"""Define contents and operations of the entire cube that holds bits."""
 
 import math
 from content.encrypt_bit.face import Face

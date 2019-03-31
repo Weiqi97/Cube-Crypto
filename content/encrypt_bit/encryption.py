@@ -1,12 +1,12 @@
-"""Defines the encryption protocol."""
+"""Defines the encryption protocol for encrypting bits."""
 
 import math
 import random
 import numpy as np
 from typing import List
 from collections import deque
-from content.helper.constant import Key, CUBIE_LENGTH
 from content.encrypt_bit.cube import Cube
+from content.helper.constant import Key, CUBIE_LENGTH
 from content.helper.utility import xor, binary_to_string, string_to_binary
 
 
@@ -88,13 +88,13 @@ class Encryption:
         # Find the number of block required for the encryption.
         num_block_need = math.ceil(len(input_string) / block_size)
         # Find the number of extra zero needed.
-        extra_zero_need = num_block_need * block_size - len(input_string) - 2
+        extra_zero_need = num_block_need * block_size - len(input_string) - 1
         # Deal with special case.
         extra_zero_need = \
-            block_size - 2 if extra_zero_need == -2 else extra_zero_need
+            block_size - 1 if extra_zero_need == -1 else extra_zero_need
 
         # Return the padded string.
-        return f"{input_string}01{'0' * extra_zero_need}"
+        return f"{input_string}1{'0' * extra_zero_need}"
 
     def get_current_binary(self) -> str:
         """Get the padded binary string at the current state."""
@@ -150,7 +150,7 @@ class Encryption:
             for cube in self._cubes
         ]
         # Un-pad the binary result. (Remove all 0's at the end.)
-        up_pad_binary = "".join(decrypted_binary).rstrip("0")[:-2]
+        up_pad_binary = "".join(decrypted_binary).rstrip("0")[:-1]
 
         # Convert the un-pad binary to a string and return it.
         return binary_to_string(up_pad_binary)
