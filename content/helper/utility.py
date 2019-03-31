@@ -25,16 +25,6 @@ def generate_random_keys(length: int, max_index: int) -> List[Key]:
     ]
 
 
-def get_cube_layout(cube_side_length: int) -> pd.DataFrame:
-    """Show the cube layout by returning a DataFrame."""
-    # Create the pandas DataFrame filled with 0.
-    return pd.DataFrame(
-        data=0,
-        index=get_frame_index(cube_side_length=cube_side_length),
-        columns=get_frame_column(cube_side_length=cube_side_length)
-    )
-
-
 def get_key_table(key: List[Key]) -> pd.DataFrame:
     """Get list of keys as a DataFrame."""
     # Extract the values from NamedTuple to list.
@@ -48,18 +38,13 @@ def get_key_table(key: List[Key]) -> pd.DataFrame:
     )
 
 
-def xor(str_one: str, str_two: str) -> str:
-    """Find the XOR result of two strings.
-
-    :param str_one: The first input string.
-    :param str_two: The second input string.
-    :return: The XOR result of these two input strings.
-    """
-    return "".join(
-        [
-            "0" if value == str_two[index] else "1"
-            for index, value in enumerate(str_one)
-        ]
+def get_cube_layout(cube_side_length: int) -> pd.DataFrame:
+    """Show the cube layout by returning a DataFrame."""
+    # Create the pandas DataFrame filled with 0.
+    return pd.DataFrame(
+        data=0,
+        index=get_frame_index(cube_side_length=cube_side_length),
+        columns=get_frame_column(cube_side_length=cube_side_length)
     )
 
 
@@ -139,3 +124,18 @@ def binary_to_string(input_binary: str) -> str:
         length=(binary_from_str.bit_length() + 7) // 8, byteorder="big"
     )
     return byte_from_binary.decode("utf-8")
+
+
+def xor(str_one: str, str_two: str) -> str:
+    """Find the XOR result of two strings.
+
+    :param str_one: The first input string.
+    :param str_two: The second input string.
+    :return: The XOR result of these two input strings.
+    """
+    return "".join(
+        [
+            "0" if value == str_two[index] else "1"
+            for index, value in enumerate(str_one)
+        ]
+    )
