@@ -1,4 +1,4 @@
-from content.helper.constants import Key
+from content.helper.constant import Key
 from content.analyzers.key_analyzer import KeyAnalyzer
 
 

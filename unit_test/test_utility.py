@@ -1,6 +1,6 @@
 import pandas as pd
-import content.helper.helper as helper
-from content.helper.constants import CUBE_MOVE, MOVE_ANGLE, Key
+import content.helper.utility as helper
+from content.helper.constant import CUBE_MOVE, MOVE_ANGLE, Key
 
 
 class TestHelper:
@@ -49,3 +49,15 @@ class TestHelper:
 
     def test_binary_to_string(self):
         assert helper.binary_to_string(input_binary="01000001") == "A"
+
+    def test_cube_frame_column(self):
+        assert self.cube_face.get_frame_column(cube_side_length=4) == \
+            deque(["L2", "L1", "R1", "R2"])
+        assert self.cube_face.get_frame_column(cube_side_length=5) == \
+            deque(["L2", "L1", "C", "R1", "R2"])
+
+    def test_cube_frame_index(self):
+        assert self.cube_face.get_frame_index(cube_side_length=4) == \
+            deque(["T2", "T1", "D1", "D2"])
+        assert self.cube_face.get_frame_index(cube_side_length=5) == \
+            deque(["T2", "T1", "C", "D1", "D2"])

@@ -2,8 +2,9 @@
 
 import math
 from content.encrypt_bit.face import Face
-from content.helper.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
+from content.helper.constant import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
     CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, CubieItem, Key
+from content.helper.utility import xor
 
 
 class Cube:
@@ -418,3 +419,19 @@ class Cube:
         # If the input movement was not defined.
         else:
             raise ValueError(WRONG_CUBE_MOVE)
+
+    def xor(self):
+        """Shift the cube binary representation to right by one bit."""
+
+        # Find the xor result and use it as the new content to initiate class.
+        xor_result = xor(
+            str_one=self.message_content,
+            str_two=self.random_content
+        )
+
+        # Re-Init the class with new content.
+        self.__init__(
+            cube_input=xor_result + self.random_content,
+            track_location=self._track_location,
+            cube_side_length=self._side_length
+        )

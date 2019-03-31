@@ -1,15 +1,13 @@
 import numpy as np
 from content.encrypt_item.cube import Cube
-from content.helper.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
+from content.helper.constant import Key, CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 
 # noinspection PyProtectedMember
 class TestCubeOperations:
-    # Setup testing inputs.
+    # Setup testing inputs and create the cube.
     cube_input = [item for item in range(24)]
-
-    # Create the cube.
     cube = Cube(cube_input=cube_input, cube_side_length=2)
 
     def test_cube_content(self):

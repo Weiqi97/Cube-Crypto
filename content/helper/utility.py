@@ -1,11 +1,12 @@
 """Define the helper functions that may accessed by different parts."""
 
+import math
 import random
 import binascii
 import pandas as pd
 from typing import List
-from content.helper.constants import Key, CUBE_MOVE, MOVE_ANGLE
-from content.encrypt_bit.face import Face
+from collections import deque
+from content.helper.constant import Key, CUBE_MOVE, MOVE_ANGLE
 
 
 def generate_random_keys(length: int, max_index: int) -> List[Key]:
@@ -29,12 +30,8 @@ def get_cube_layout(cube_side_length: int) -> pd.DataFrame:
     # Create the pandas DataFrame filled with 0.
     return pd.DataFrame(
         data=0,
-        index=Face.get_frame_index(
-            cube_side_length=cube_side_length
-        ),
-        columns=Face.get_frame_column(
-            cube_side_length=cube_side_length
-        )
+        index=get_frame_index(cube_side_length=cube_side_length),
+        columns=get_frame_column(cube_side_length=cube_side_length)
     )
 
 
@@ -64,6 +61,56 @@ def xor(str_one: str, str_two: str) -> str:
             for index, value in enumerate(str_one)
         ]
     )
+
+
+def get_frame_column(cube_side_length: int) -> deque:
+    """Get column names for the cube face data frame.
+
+    :param cube_side_length: The desired side length of the cube.
+    :return: A deque object with the column names.
+    """
+    # If side length is even, start with empty queue.
+    if cube_side_length % 2 == 0:
+        column_queue = deque()
+        # Pad R on the right side and L on the left side.
+        for move_index in range(1, int(cube_side_length / 2) + 1):
+            column_queue.appendleft(f"L{move_index}")
+            column_queue.append(f"R{move_index}")
+
+    # If side length is odd, start the queue with a "C" at the center.
+    else:
+        column_queue = deque("C")
+        # Pad R on the right side and L on the left side.
+        for move_index in range(1, int(math.ceil(cube_side_length / 2))):
+            column_queue.appendleft(f"L{move_index}")
+            column_queue.append(f"R{move_index}")
+
+    return column_queue
+
+
+def get_frame_index(cube_side_length: int) -> deque:
+    """Get index names for the cube face data frame.
+
+    :param cube_side_length: The desired side length of the cube.
+    :return: A deque object with the index names.
+    """
+    # If side length is even, start with empty queue.
+    if cube_side_length % 2 == 0:
+        index_queue = deque()
+        # Pad D on the right side and T on the left side.
+        for move_index in range(1, int(cube_side_length / 2) + 1):
+            index_queue.appendleft(f"T{move_index}")
+            index_queue.append(f"D{move_index}")
+
+    # If side length is odd, start the queue with a "C" at the center.
+    else:
+        index_queue = deque("C")
+        # Pad D on the right side and T on the left side.
+        for move_index in range(1, int(math.ceil(cube_side_length / 2))):
+            index_queue.appendleft(f"T{move_index}")
+            index_queue.append(f"D{move_index}")
+
+    return index_queue
 
 
 def string_to_binary(input_string: str) -> str:

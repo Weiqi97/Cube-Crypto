@@ -5,9 +5,9 @@ import random
 import numpy as np
 from typing import List
 from collections import deque
-from content.helper.constants import Key, CUBIE_LENGTH
+from content.helper.constant import Key, CUBIE_LENGTH
 from content.encrypt_bit.cube import Cube
-from content.helper.helper import xor, binary_to_string, string_to_binary
+from content.helper.utility import xor, binary_to_string, string_to_binary
 
 
 class Encryption:
@@ -24,14 +24,9 @@ class Encryption:
         self._max_index = math.floor(cube_side_length / 2)
         self._block_size = cube_side_length ** 2 * 3 * CUBIE_LENGTH
 
-        # Initialize the random chunks saver.
-        self._random_bits = []
-
         # Get the cubes.
         self._cubes = [
-            Cube(
-                cube_input=input_str, cube_side_length=cube_side_length
-            )
+            Cube(cube_input=input_str, cube_side_length=cube_side_length)
             for input_str in self._get_binary_to_encrypt
         ]
 
@@ -62,14 +57,12 @@ class Encryption:
             ary=list(binary_str_padded), indices_or_sections=cube_required
         )
 
-        self._random_bits = [
-            self._get_random_str for _ in range(cube_required)
-        ]
+        random_bits = [self._get_random_str for _ in range(cube_required)]
 
         # Return input for each cube.
         return [
             xor(str_one="".join(binary),
-                str_two=self._random_bits[index]) + self._random_bits[index]
+                str_two=random_bits[index]) + random_bits[index]
             for index, binary in enumerate(binary_chunks)
         ]
 
@@ -116,10 +109,12 @@ class Encryption:
         for each_key in key:
             # Shift all the cubes.
             for cube in self._cubes:
-                # Shift cube.
-                cube.shift(key=each_key)
+                # Xor cube.
+                cube.xor()
                 # Shuffle bits.
                 cube.shift_cubie_content()
+                # Shift cube.
+                cube.shift(key=each_key)
             # Append the used key to key list.
             self._key.append(each_key)
 
@@ -129,8 +124,6 @@ class Encryption:
             # Pop the key from saved keys.
             each_key = self._key.pop()
             for cube in self._cubes:
-                # Shift content backward by one space.
-                cube.shift_cubie_content_back()
                 # Reverse the cube shift move.
                 cube.shift(
                     key=Key(
@@ -139,6 +132,10 @@ class Encryption:
                         index=each_key.index
                     )
                 )
+                # Shift content backward by one space.
+                cube.shift_cubie_content_back()
+                # Xor the cube.
+                cube.xor()
 
     def get_decrypted_str(self) -> str:
         """Decrypt the message and return the original input.
@@ -149,10 +146,8 @@ class Encryption:
         self.decrypt()
         # Retract the binary after XOR operation.
         decrypted_binary = [
-            xor(
-                str_one=cube.content[:self._block_size],
-                str_two=cube.content[self._block_size:]
-            ) for cube in self._cubes
+            xor(str_one=cube.message_content, str_two=cube.random_content)
+            for cube in self._cubes
         ]
         # Un-pad the binary result. (Remove all 0's at the end.)
         up_pad_binary = "".join(decrypted_binary).rstrip("0")[:-2]

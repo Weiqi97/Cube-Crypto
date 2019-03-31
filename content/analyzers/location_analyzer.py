@@ -3,7 +3,7 @@
 import math
 from typing import List
 from content.encrypt_bit.cube import Cube
-from content.helper.constants import Key, CUBE_MOVE, MOVE_ANGLE
+from content.helper.constant import Key, CUBE_MOVE, MOVE_ANGLE
 
 
 class CubieLocationAnalyzer:
