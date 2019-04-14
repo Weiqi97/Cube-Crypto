@@ -61,8 +61,7 @@ class Encryption:
 
         # Return input for each cube.
         return [
-            xor(str_one="".join(binary),
-                str_two=random_bits[index]) + random_bits[index]
+            "".join(binary) + random_bits[index]
             for index, binary in enumerate(binary_chunks)
         ]
 
@@ -145,10 +144,7 @@ class Encryption:
         # First make sure that all cubes are decrypted.
         self.decrypt()
         # Retract the binary after XOR operation.
-        decrypted_binary = [
-            xor(str_one=cube.message_content, str_two=cube.random_content)
-            for cube in self._cubes
-        ]
+        decrypted_binary = [cube.message_content for cube in self._cubes]
         # Un-pad the binary result. (Remove all 0's at the end.)
         up_pad_binary = "".join(decrypted_binary).rstrip("0")[:-1]
 
