@@ -1,16 +1,14 @@
 import numpy as np
-from content.encryption.cube_for_item import CubeForItem
-from content.helper.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
+from content.encrypt_item.cube import Cube
+from content.helper.constant import Key, CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 
 # noinspection PyProtectedMember
 class TestCubeOperations:
-    # Setup testing inputs.
+    # Setup testing inputs and create the cube.
     cube_input = [item for item in range(24)]
-
-    # Create the cube.
-    cube = CubeForItem(cube_input=cube_input, cube_side_length=2)
+    cube = Cube(cube_input=cube_input, cube_side_length=2)
 
     def test_cube_content(self):
         assert self.cube.content == self.cube_input
@@ -26,7 +24,7 @@ class TestCubeOperations:
 
     def test_top_shift(self):
         # This is the case where the top face rotate.
-        cube = CubeForItem(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.top.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
@@ -36,7 +34,7 @@ class TestCubeOperations:
 
     def test_down_shift(self):
         # This is the case where the down face rotate.
-        cube = CubeForItem(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.down.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
@@ -46,7 +44,7 @@ class TestCubeOperations:
 
     def test_right_shift(self):
         # This is the case where the right face rotate.
-        cube = CubeForItem(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.right.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
@@ -56,7 +54,7 @@ class TestCubeOperations:
 
     def test_left_shift(self):
         # This is the case where the left face rotate.
-        cube = CubeForItem(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.left.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
@@ -66,7 +64,7 @@ class TestCubeOperations:
 
     def test_front_shift(self):
         # This is the case where the front face rotate.
-        cube = CubeForItem(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.front.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
@@ -76,7 +74,7 @@ class TestCubeOperations:
 
     def test_back_shift(self):
         # This is the case where the back face rotate.
-        cube = CubeForItem(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.back.value, angle=90, index=1))
         assert np.array_equal(
             cube.content,
@@ -86,9 +84,9 @@ class TestCubeOperations:
 
     def test_special(self):
         # Create the cube.
-        cube = CubeForItem(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         try:
-            # Use a wrong key.
+            # Use a invalid key.
             cube.shift(Key(move="abracadabra", angle=90, index=0))
             raise AssertionError("Error message did not raise.")
         except ValueError as error:
@@ -98,14 +96,14 @@ class TestCubeOperations:
 class TestCubeErrorCheck:
     def test_wrong_input_length(self):
         try:
-            CubeForItem(cube_input=[1], cube_side_length=100)
+            Cube(cube_input=[1], cube_side_length=100)
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_CUBE_INPUT
 
     def test_wrong_cube_side_length(self):
         try:
-            CubeForItem(cube_input=[i for i in range(6)], cube_side_length=1)
+            Cube(cube_input=[i for i in range(6)], cube_side_length=1)
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_CUBE_SIDE_LENGTH

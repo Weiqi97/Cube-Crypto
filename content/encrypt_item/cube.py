@@ -1,13 +1,13 @@
-"""Define contents and operations of the entire cube that holds any item."""
+"""Define contents and operations of the entire cube that holds items."""
 
 import math
 import numpy as np
-from content.encryption.cube_face_for_item import CubeFaceForItem
-from content.helper.constants import Key, CubeMove, WRONG_CUBE_MOVE, \
+from content.encrypt_item.face import Face
+from content.helper.constant import Key, CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH
 
 
-class CubeForItem:
+class Cube:
     """Create a full cube with desired side length on inputs."""
 
     def __init__(self, cube_input: list, cube_side_length: int):
@@ -17,8 +17,8 @@ class CubeForItem:
         :param cube_side_length: The desired side length of the cube.
         """
         # Check length of the input.
-        assert len(cube_input) == cube_side_length ** 2 * 6, WRONG_CUBE_INPUT
         assert cube_side_length > 1, WRONG_CUBE_SIDE_LENGTH
+        assert len(cube_input) == cube_side_length ** 2 * 6, WRONG_CUBE_INPUT
 
         # Save the cube side length and cube max index.
         self._side_length = cube_side_length
@@ -34,45 +34,41 @@ class CubeForItem:
         #   - 4. Back face
         #   - 5. Left face
         #   - 6. Down face
-        self._top_face = CubeFaceForItem(
-            cube_face_input=cube_input_list[0],
-            cube_side_length=cube_side_length
+        self._top_face = Face(
+            face_input=cube_input_list[0],
+            side_length=cube_side_length
         )
-        self._front_face = CubeFaceForItem(
-            cube_face_input=cube_input_list[1],
-            cube_side_length=cube_side_length
+        self._front_face = Face(
+            face_input=cube_input_list[1],
+            side_length=cube_side_length
         )
-        self._right_face = CubeFaceForItem(
-            cube_face_input=cube_input_list[2],
-            cube_side_length=cube_side_length
+        self._right_face = Face(
+            face_input=cube_input_list[2],
+            side_length=cube_side_length
         )
-        self._back_face = CubeFaceForItem(
-            cube_face_input=cube_input_list[3],
-            cube_side_length=cube_side_length
+        self._back_face = Face(
+            face_input=cube_input_list[3],
+            side_length=cube_side_length
         )
-        self._left_face = CubeFaceForItem(
-            cube_face_input=cube_input_list[4],
-            cube_side_length=cube_side_length
+        self._left_face = Face(
+            face_input=cube_input_list[4],
+            side_length=cube_side_length
         )
-        self._down_face = CubeFaceForItem(
-            cube_face_input=cube_input_list[5],
-            cube_side_length=cube_side_length
+        self._down_face = Face(
+            face_input=cube_input_list[5],
+            side_length=cube_side_length
         )
 
     @property
     def content(self) -> list:
-        """Put all face contents in to a list.
-
-        :return: A list with all items in the correct order.
-        """
-        # Get all cube faces as string in the right order.
+        """Return all items in the cube as a list."""
         return \
             self._top_face.get_item_list + self._front_face.get_item_list + \
             self._right_face.get_item_list + self._back_face.get_item_list + \
             self._left_face.get_item_list + self._down_face.get_item_list
 
     def shift_content(self):
-        """Shift the cube binary representation to right by one bit."""
+        """Shift the cube binary representation to right by one item."""
         # Obtain the shifted content by padding the last bit to the first.
         shifted_content = [self.content[-1]] + self.content[:-1]
         # Re-Init the class with new content.
@@ -81,7 +77,7 @@ class CubeForItem:
         )
 
     def shift_content_back(self):
-        """Shift the cube binary representation to left by one bit."""
+        """Shift the cube binary representation to left by one item."""
         # Obtain the shifted content by padding the first bit to the last.
         shifted_content = self.content[1:] + [self.content[0]]
         # Re-Init the class with new content.

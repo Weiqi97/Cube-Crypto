@@ -2,8 +2,8 @@
 
 import math
 from typing import List
-from content.encryption.cube_for_cubie import CubeForCubie
-from content.helper.constants import Key, CUBE_MOVE, MOVE_ANGLE
+from content.encrypt_bit.cube import Cube
+from content.helper.constant import Key, CUBE_MOVE, MOVE_ANGLE
 
 
 class CubieLocationAnalyzer:
@@ -21,12 +21,6 @@ class CubieLocationAnalyzer:
         self._cube_size = cube_side_length ** 2 * 24
         # Store the location of the tracked item.
         self._track_item_location = track_item_location
-
-    @staticmethod
-    def _get_location_after_key(key: Key, cube: CubeForCubie) -> int:
-        cube.shift(key=key)
-        cube.shift_cubie_content()
-        return cube.get_tracked_location()
 
     def _get_basic_key(self) -> List[Key]:
         """Get all the possible keys with fixed 90 degrees.
@@ -46,7 +40,7 @@ class CubieLocationAnalyzer:
         :return: If the key actually moves the item. (Not Equal = True)
         """
         # Make a new copy of the cube.
-        temp_cube = CubeForCubie(
+        temp_cube = Cube(
             cube_input="_" * self._cube_size,
             cube_side_length=self._side_length,
             track_location=self._track_item_location
@@ -84,7 +78,7 @@ class CubieLocationAnalyzer:
         :return: New location of the tracked item.
         """
         # Make a new copy of the cube.
-        temp_cube = CubeForCubie(
+        temp_cube = Cube(
             cube_input="_" * self._cube_size,
             cube_side_length=self._side_length,
             track_location=self._track_item_location
@@ -106,13 +100,25 @@ class CubieLocationAnalyzer:
             for key in self._get_all_effective_key()
         ]
 
+    @staticmethod
+    def _get_location_after_key(key: Key, cube: Cube) -> int:
+        """Perform a move on the cube and find the tracked bit.
+
+        :param key: Indicate the movement on the cube.
+        :param cube: The cube object.
+        :return: The new location of the tracked bit.
+        """
+        cube.shift(key=key)
+        cube.shift_cubie_content()
+        return cube.get_tracked_location()
+
     def location_tracker(self, keys: List[Key]) -> List[int]:
         """Track position of a specific bit when moves are performed.
 
         :param keys: A list of cube movements.
         :return: A list of integers which each represent a location.
         """
-        cube = CubeForCubie(
+        cube = Cube(
             cube_input="_" * self._cube_size,
             cube_side_length=self._side_length,
             track_location=self._track_item_location

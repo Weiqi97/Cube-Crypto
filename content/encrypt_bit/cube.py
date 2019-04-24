@@ -1,12 +1,14 @@
-"""Define contents and operations of the entire cube that holds cubies."""
+"""Define contents and operations of the entire cube that holds bits."""
 
 import math
-from content.encryption.cube_face_for_cubie import CubeFaceForCubie
-from content.helper.constants import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
+from typing import List
+from content.encrypt_bit.face import Face
+from content.helper.constant import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
     CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, CubieItem, Key
+from content.helper.utility import xor
 
 
-class CubeForCubie:
+class Cube:
     """Create a full cube with desired side length on inputs."""
 
     def __init__(self,
@@ -53,27 +55,27 @@ class CubeForCubie:
         #   - 4. Back face, second chunk of random
         #   - 5. Left face, third chunk of random
         #   - 6. Down face, first chunk of random
-        self._top_face = CubeFaceForCubie(
+        self._top_face = Face(
             cube_face_input=cubie_input_list[0],
             cube_side_length=cube_side_length
         )
-        self._front_face = CubeFaceForCubie(
+        self._front_face = Face(
             cube_face_input=cubie_input_list[1],
             cube_side_length=cube_side_length
         )
-        self._right_face = CubeFaceForCubie(
+        self._right_face = Face(
             cube_face_input=cubie_input_list[2],
             cube_side_length=cube_side_length
         )
-        self._down_face = CubeFaceForCubie(
+        self._down_face = Face(
             cube_face_input=cubie_input_list[3],
             cube_side_length=cube_side_length
         )
-        self._back_face = CubeFaceForCubie(
+        self._back_face = Face(
             cube_face_input=cubie_input_list[4],
             cube_side_length=cube_side_length
         )
-        self._left_face = CubeFaceForCubie(
+        self._left_face = Face(
             cube_face_input=cubie_input_list[5],
             cube_side_length=cube_side_length
         )
@@ -85,17 +87,11 @@ class CubeForCubie:
         :return: A string contains all cubies.
         """
         # Get all cube faces as string in the right order.
-        return \
-            f"{self._top_face.face_string}" \
-            f"{self._front_face.face_string}" \
-            f"{self._right_face.face_string}" \
-            f"{self._down_face.face_string}" \
-            f"{self._back_face.face_string}" \
-            f"{self._left_face.face_string}"
+        return self.message_content + self.random_content
 
     @property
     def message_content(self) -> str:
-        """Format all cubies that holds message into a continuous string.
+        """Format all cubies that hold message into a continuous string.
 
         :return: A string contains all cubies that hold message.
         """
@@ -103,7 +99,24 @@ class CubeForCubie:
         return \
             f"{self._top_face.face_string}" \
             f"{self._front_face.face_string}" \
-            f"{self._right_face.face_string}"
+            f"{self._right_face.face_string}" \
+            f"{self._down_face.face_string}" \
+            f"{self._back_face.face_string}"
+
+    @property
+    def message_content_list(self) -> List[str]:
+        """Format all cubies that hold message into list of strings by faces.
+
+        :return: A list of strings that hold the actual message.
+        """
+        # Get all cube faces as string in the right order.
+        return [
+            self._top_face.face_string,
+            self._front_face.face_string,
+            self._right_face.face_string,
+            self._down_face.face_string,
+            self._back_face.face_string
+        ]
 
     @property
     def random_content(self) -> str:
@@ -112,10 +125,7 @@ class CubeForCubie:
         :return: A string contains all cubies that hold random bits.
         """
         # Get all cube faces as string in the right order.
-        return \
-            f"{self._down_face.face_string}" \
-            f"{self._back_face.face_string}" \
-            f"{self._left_face.face_string}"
+        return self._left_face.face_string
 
     def get_tracked_location(self) -> int:
         """Get location for the tracked cubie.
@@ -424,3 +434,21 @@ class CubeForCubie:
         # If the input movement was not defined.
         else:
             raise ValueError(WRONG_CUBE_MOVE)
+
+    def xor(self):
+        """Xor the random face with each other faces."""
+        # Find the xor result and use it as the new content to initiate class.
+        xor_result = "".join([
+            xor(
+                str_one=message_content,
+                str_two=self.random_content
+            )
+            for message_content in self.message_content_list
+        ])
+
+        # Re-Init the class with new content.
+        self.__init__(
+            cube_input=xor_result + self.random_content,
+            track_location=self._track_location,
+            cube_side_length=self._side_length
+        )

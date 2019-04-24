@@ -1,17 +1,18 @@
-"""Define contents and operations of one cube face that contains cubies."""
+"""Define contents and operations of one cube face that contains bits."""
 
+import math
 import itertools
 import numpy as np
 import pandas as pd
 from typing import List
 from collections import deque
-from content.encryption.cubie import Cubie
-from content.helper.constants import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
+from content.encrypt_bit.cubie import Cubie
+from content.helper.constant import CUBIE_LENGTH, WRONG_SIDE_LENGTH, \
     WRONG_CUBE_FACE_INPUT, WRONG_FRAME_INDEX_NAME, WRONG_FRAME_COLUMN_NAME, \
     CubieItem
 
 
-class CubeFaceForCubie:
+class Face:
     """Create a cube face with desired side length on inputs."""
 
     def __init__(self,
@@ -92,7 +93,7 @@ class CubeFaceForCubie:
         else:
             column_queue = deque("C")
             # Pad R on the right side and L on the left side.
-            for move_index in range(1, int(np.ceil(cube_side_length / 2))):
+            for move_index in range(1, int(math.ceil(cube_side_length / 2))):
                 column_queue.appendleft(f"L{move_index}")
                 column_queue.append(f"R{move_index}")
 
@@ -117,7 +118,7 @@ class CubeFaceForCubie:
         else:
             index_queue = deque("C")
             # Pad D on the right side and T on the left side.
-            for move_index in range(1, int(np.ceil(cube_side_length / 2))):
+            for move_index in range(1, int(math.ceil(cube_side_length / 2))):
                 index_queue.appendleft(f"T{move_index}")
                 index_queue.append(f"D{move_index}")
 
@@ -132,8 +133,10 @@ class CubeFaceForCubie:
         """Fill one row in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
+
         # Error check. The index is not out of the list.
         assert row_name in self._face_cubie_frame.index, WRONG_FRAME_INDEX_NAME
+
         # Fill the desired row.
         self._face_cubie_frame.loc[row_name] = input_list
 
@@ -146,9 +149,11 @@ class CubeFaceForCubie:
         """Fill one column in the cube face by index with a list of cubies."""
         # Error check. The input length is the same as side length of the cube.
         assert len(input_list) == self._side_length, WRONG_SIDE_LENGTH
+
         # Error check. The index is not out of the list.
         assert col_name in self._face_cubie_frame.columns, \
             WRONG_FRAME_COLUMN_NAME
+
         # Fill the desired column.
         self._face_cubie_frame[col_name] = input_list
 
@@ -156,8 +161,10 @@ class CubeFaceForCubie:
         """Get one row in the cube face by index as a string."""
         # Get the desired cube row.
         cubie_row = self.get_row(row_name=row_name)
+
         # Convert each cubie to its string format.
         cubie_str_row = [cubie.get_content_string() for cubie in cubie_row]
+
         # Concatenate the list to a string.
         return "".join(["|", "|".join(cubie_str_row), "|"])
 

@@ -1,6 +1,6 @@
 import copy
-from content.encryption.cube_for_cubie import CubeForCubie
-from content.helper.constants import CubeMove, WRONG_CUBE_MOVE, \
+from content.encrypt_bit.cube import Cube
+from content.helper.constant import CubeMove, WRONG_CUBE_MOVE, \
     WRONG_CUBE_INPUT, WRONG_CUBE_SIDE_LENGTH, Key
 
 
@@ -16,7 +16,7 @@ class TestCubeOperations:
         "6060606060606060606060606060606060606060606060606060606060606060"
 
     # Create the cube.
-    cube = CubeForCubie(
+    cube = Cube(
         cube_input=copy.deepcopy(cube_input),
         cube_side_length=4,
         track_location=10
@@ -39,7 +39,7 @@ class TestCubeOperations:
 
     def test_top_shift(self):
         # This is the case where the top face rotate. (4 by 4 by 4 cube)
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=4)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
         cube._shift_t(index=2)
         assert cube.content == "01010101010101010101010101010101" \
                                "01010101010101010101010101010101" \
@@ -56,7 +56,7 @@ class TestCubeOperations:
 
     def test_down_shift(self):
         # This is the case where the down face rotate. (4 by 4 by 4 cube)
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=4)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
         cube._shift_d(index=2)
         assert cube.content == "10101010101010101010101010101010" \
                                "10101010101010101010101010101010" \
@@ -73,7 +73,7 @@ class TestCubeOperations:
 
     def test_right_shift(self):
         # This is the case where the right face rotate. (4 by 4 by 4 cube)
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=4)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
         cube._shift_r(index=2)
         assert cube.content == "10101010101020201010101010102020" \
                                "10101010101020201010101010102020" \
@@ -90,7 +90,7 @@ class TestCubeOperations:
 
     def test_left_shift(self):
         # This is the case where the left face rotate. (4 by 4 by 4 cube)
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=4)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
         cube._shift_l(index=2)
         assert cube.content == "50501010101010105050101010101010" \
                                "50501010101010105050101010101010" \
@@ -107,7 +107,7 @@ class TestCubeOperations:
 
     def test_front_shift(self):
         # This is the case where the front face rotate. (4 by 4 by 4 cube)
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=4)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
         cube._shift_f(index=2)
         assert cube.content == "10101010101010101010101010101010" \
                                "10101010101010100606060606060606" \
@@ -124,7 +124,7 @@ class TestCubeOperations:
 
     def test_back_shift(self):
         # This is the case where the back face rotate. (4 by 4 by 4 cube)
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=4)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
         cube._shift_b(index=2)
         assert cube.content == "03030303030303031010101010101010" \
                                "10101010101010101010101010101010" \
@@ -141,7 +141,7 @@ class TestCubeOperations:
 
     def test_middle_shift(self):
         # This is the case where the back face rotate. (4 by 4 by 4 cube)
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=4)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=4)
         cube._shift_r(index=1)
         assert cube.content == "10101010202010101010101020201010" \
                                "10101010202010101010101020201010" \
@@ -156,6 +156,13 @@ class TestCubeOperations:
                                "60606060606060606060606060606060" \
                                "60606060606060606060606060606060"
 
+    def test_xor(self):
+        # Set the cube to be half 1 and half 0.
+        cube = Cube(cube_input="0" * 180 + "1" * 36, cube_side_length=3)
+        # Xor the cube and test result.
+        cube.xor()
+        assert cube.content == "1" * 216
+
 
 class TestCubeShift:
     # Setup testing inputs.
@@ -164,18 +171,18 @@ class TestCubeShift:
         "123456789012345678901234567890123456789012345678"
 
     def test_content_message(self):
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         assert cube.message_content == \
-            self.cube_input[:int(len(self.cube_input) / 2)]
+            self.cube_input[:int(len(self.cube_input) * 5 / 6)]
 
     def test_random_message(self):
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         assert cube.random_content == \
-            self.cube_input[int(len(self.cube_input) / 2):]
+            self.cube_input[int(len(self.cube_input) * 5 / 6):]
 
     def test_right_90(self):
         # Create the cube.
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.right.value, angle=90, index=1))
         assert cube.content == \
             "123412349012901278905678567834564123634585670789" \
@@ -183,7 +190,7 @@ class TestCubeShift:
 
     def test_left_90(self):
         # Create the cube.
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.left.value, angle=90, index=1))
         assert cube.content == \
             "129056783412345612341234901290123456789012345678" \
@@ -191,7 +198,7 @@ class TestCubeShift:
 
     def test_front_90(self):
         # Create the cube.
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.front.value, angle=90, index=1))
         assert cube.content == \
             "123456788567078985670789290141232901789063455678" \
@@ -199,7 +206,7 @@ class TestCubeShift:
 
     def test_back_90(self):
         # Create the cube.
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.back.value, angle=90, index=1))
         assert cube.content == \
             "890767859012345678901234567890123456456312340129" \
@@ -207,7 +214,7 @@ class TestCubeShift:
 
     def test_top_90(self):
         # Create the cube.
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.top.value, angle=90, index=1))
         assert cube.content == \
             "290141236345856734567890567890127890123412345678" \
@@ -215,7 +222,7 @@ class TestCubeShift:
 
     def test_down_90(self):
         # Create the cube.
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         cube.shift(Key(move=CubeMove.down.value, angle=90, index=1))
         assert cube.content == \
             "123456789012345678901234123456783456789056789012" \
@@ -223,7 +230,7 @@ class TestCubeShift:
 
     def test_location_null(self):
         # Create the cube without location tracker.
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         try:
             cube.get_tracked_location()
             raise AssertionError("Error message did not raise.")
@@ -232,7 +239,7 @@ class TestCubeShift:
 
     def test_special(self):
         # Create the cube.
-        cube = CubeForCubie(cube_input=self.cube_input, cube_side_length=2)
+        cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         try:
             cube.shift(Key(move="abracadabra", angle=90, index=0))
             raise AssertionError("Error message did not raise.")
@@ -243,14 +250,14 @@ class TestCubeShift:
 class TestCubeErrorCheck:
     def test_wrong_input_length(self):
         try:
-            CubeForCubie(cube_input="abracadabra", cube_side_length=100)
+            Cube(cube_input="abracadabra", cube_side_length=100)
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_CUBE_INPUT
 
     def test_wrong_cube_side_length(self):
         try:
-            CubeForCubie(cube_input="1" * 24, cube_side_length=1)
+            Cube(cube_input="1" * 24, cube_side_length=1)
             raise AssertionError("Error message did not raise.")
         except AssertionError as error:
             assert str(error) == WRONG_CUBE_SIDE_LENGTH
