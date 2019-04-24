@@ -91,7 +91,7 @@ class Cube:
 
     @property
     def message_content(self) -> str:
-        """Format all cubies that holds message into a continuous string.
+        """Format all cubies that hold message into a continuous string.
 
         :return: A string contains all cubies that hold message.
         """
@@ -105,7 +105,11 @@ class Cube:
 
     @property
     def message_content_list(self) -> List[str]:
+        """Format all cubies that hold message into list of strings by faces.
 
+        :return: A list of strings that hold the actual message.
+        """
+        # Get all cube faces as string in the right order.
         return [
             self._top_face.face_string,
             self._front_face.face_string,
@@ -432,7 +436,7 @@ class Cube:
             raise ValueError(WRONG_CUBE_MOVE)
 
     def xor(self):
-        """Shift the cube binary representation to right by one bit."""
+        """Xor the random face with each other faces."""
         # Find the xor result and use it as the new content to initiate class.
         xor_result = "".join([
             xor(
