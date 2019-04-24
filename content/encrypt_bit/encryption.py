@@ -7,7 +7,7 @@ from typing import List
 from collections import deque
 from content.encrypt_bit.cube import Cube
 from content.helper.constant import Key, CUBIE_LENGTH
-from content.helper.utility import xor, binary_to_string, string_to_binary
+from content.helper.utility import binary_to_string, string_to_binary
 
 
 class Encryption:
