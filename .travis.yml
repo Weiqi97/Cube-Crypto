@@ -19,7 +19,7 @@ script:
   - flake8
   - pydocstyle
 
-  # Test for unit test.
+  # Trigger unit test and find coverage.
   - pytest --cov=content
 
 # Find code coverage.
