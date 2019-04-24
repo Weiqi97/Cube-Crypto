@@ -158,7 +158,7 @@ class TestCubeOperations:
 
     def test_xor(self):
         # Set the cube to be half 1 and half 0.
-        cube = Cube(cube_input="0" * 108 + "1" * 108, cube_side_length=3)
+        cube = Cube(cube_input="0" * 180 + "1" * 36, cube_side_length=3)
         # Xor the cube and test result.
         cube.xor()
         assert cube.content == "1" * 216
@@ -173,12 +173,12 @@ class TestCubeShift:
     def test_content_message(self):
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         assert cube.message_content == \
-            self.cube_input[:int(len(self.cube_input) / 2)]
+            self.cube_input[:int(len(self.cube_input) * 5 / 6)]
 
     def test_random_message(self):
         cube = Cube(cube_input=self.cube_input, cube_side_length=2)
         assert cube.random_content == \
-            self.cube_input[int(len(self.cube_input) / 2):]
+            self.cube_input[int(len(self.cube_input) * 5 / 6):]
 
     def test_right_90(self):
         # Create the cube.

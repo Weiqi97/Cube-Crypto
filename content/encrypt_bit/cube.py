@@ -1,6 +1,7 @@
 """Define contents and operations of the entire cube that holds bits."""
 
 import math
+from typing import List
 from content.encrypt_bit.face import Face
 from content.helper.constant import WRONG_CUBE_INPUT, CUBIE_LENGTH, \
     CubeMove, WRONG_CUBE_MOVE, WRONG_CUBE_SIDE_LENGTH, CubieItem, Key
@@ -97,8 +98,21 @@ class Cube:
         # Get all cube faces as string in the right order.
         return \
             f"{self._top_face.face_string}" \
-            f"{self._front_face.face_string}" \
-            f"{self._right_face.face_string}"
+                f"{self._front_face.face_string}" \
+                f"{self._right_face.face_string}" \
+                f"{self._down_face.face_string}" \
+                f"{self._back_face.face_string}"
+
+    @property
+    def message_content_list(self) -> List[str]:
+
+        return [
+            self._top_face.face_string,
+            self._front_face.face_string,
+            self._right_face.face_string,
+            self._down_face.face_string,
+            self._back_face.face_string
+        ]
 
     @property
     def random_content(self) -> str:
@@ -107,10 +121,7 @@ class Cube:
         :return: A string contains all cubies that hold random bits.
         """
         # Get all cube faces as string in the right order.
-        return \
-            f"{self._down_face.face_string}" \
-            f"{self._back_face.face_string}" \
-            f"{self._left_face.face_string}"
+        return self._left_face.face_string
 
     def get_tracked_location(self) -> int:
         """Get location for the tracked cubie.
@@ -423,10 +434,13 @@ class Cube:
     def xor(self):
         """Shift the cube binary representation to right by one bit."""
         # Find the xor result and use it as the new content to initiate class.
-        xor_result = xor(
-            str_one=self.message_content,
-            str_two=self.random_content
-        )
+        xor_result = "".join([
+            xor(
+                str_one=message_content,
+                str_two=self.random_content
+            )
+            for message_content in self.message_content_list
+        ])
 
         # Re-Init the class with new content.
         self.__init__(

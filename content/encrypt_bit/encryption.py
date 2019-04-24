@@ -22,7 +22,8 @@ class Encryption:
         # Store the important information for other method to access.
         self._message = message
         self._max_index = math.floor(cube_side_length / 2)
-        self._block_size = cube_side_length ** 2 * 3 * CUBIE_LENGTH
+        self._random_size = cube_side_length ** 2 * CUBIE_LENGTH
+        self._message_size = cube_side_length ** 2 * 5 * CUBIE_LENGTH
 
         # Get the cubes.
         self._cubes = [
@@ -46,11 +47,11 @@ class Encryption:
 
         # Obtain the padded binary string.
         binary_str_padded = self._pad_binary_str(
-            input_string=binary_str, block_size=self._block_size
+            input_string=binary_str, block_size=self._message_size
         )
 
         # Find number of blocks required.
-        cube_required = int(len(binary_str_padded) / self._block_size)
+        cube_required = int(len(binary_str_padded) / self._message_size)
 
         # Split the binary into number of cubes required.
         binary_chunks = np.array_split(
@@ -73,7 +74,7 @@ class Encryption:
         """
         # Random pick 0 or 1 in size of half of a cube.
         return "".join([
-            str(random.randint(0, 1)) for _ in range(self._block_size)
+            str(random.randint(0, 1)) for _ in range(self._random_size)
         ])
 
     @staticmethod
