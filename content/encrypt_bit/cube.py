@@ -98,10 +98,10 @@ class Cube:
         # Get all cube faces as string in the right order.
         return \
             f"{self._top_face.face_string}" \
-                f"{self._front_face.face_string}" \
-                f"{self._right_face.face_string}" \
-                f"{self._down_face.face_string}" \
-                f"{self._back_face.face_string}"
+            f"{self._front_face.face_string}" \
+            f"{self._right_face.face_string}" \
+            f"{self._down_face.face_string}" \
+            f"{self._back_face.face_string}"
 
     @property
     def message_content_list(self) -> List[str]:
