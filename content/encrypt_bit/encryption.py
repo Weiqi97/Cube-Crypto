@@ -40,7 +40,7 @@ class Encryption:
 
         :return: A list of binary chunks where each chunk contains:
             - The first half is XOR result of original message
-            - The second half if random bits generated
+            - The second half is random bits generated
         """
         # Obtain the binary string.
         binary_str = string_to_binary(self._message)
